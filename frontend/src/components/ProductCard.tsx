@@ -1,0 +1,98 @@
+import Image from 'next/image';
+import Link from 'next/link';
+import { getImageUrl } from '@/lib/strapi';
+import { BRAND_COLORS } from '@/lib/config';
+import type { Product } from '@/types/product';
+
+interface Props {
+  product: Product;
+}
+
+export default function ProductCard({ product }: Props) {
+  const imageUrl = product.images?.[0] ? getImageUrl(product.images[0].formats?.medium || product.images[0]) : '/placeholder.svg';
+
+  return (
+    <Link
+      href={`/producto/${product.slug}`}
+      className="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border"
+      style={{ borderColor: '#e5e0d8' }}
+    >
+      <div className="aspect-[3/4] relative overflow-hidden" style={{ backgroundColor: '#f5f0e8' }}>
+        {product.images?.[0] ? (
+          <Image
+            src={imageUrl}
+            alt={product.name}
+            fill
+            unoptimized
+            className="object-cover group-hover:scale-110 transition-transform duration-500"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center" style={{ color: '#d6d3d1' }}>
+            <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+        )}
+
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+          {product.onSale && (
+            <span className="px-2.5 py-1 text-xs font-bold rounded-full" style={{ backgroundColor: '#dc2626', color: '#ffffff' }}>
+              OFERTA
+            </span>
+          )}
+          {product.newArrival && (
+            <span className="px-2.5 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: BRAND_COLORS.gold, color: '#ffffff' }}>
+              Nuevo
+            </span>
+          )}
+          {!product.onSale && !product.newArrival && (
+            <span className="px-2.5 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: BRAND_COLORS.gold, color: '#ffffff' }}>
+              100% Original
+            </span>
+          )}
+          {product.availability === 'out_of_stock' && (
+            <span className="px-2.5 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: '#1c1917', color: '#ffffff' }}>
+              Agotado
+            </span>
+          )}
+          {product.availability === 'low_stock' && (
+            <span className="px-2.5 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: '#92400e', color: '#ffffff' }}>
+              Últimas
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="p-5 flex flex-col flex-1">
+        {product.brand && (
+          <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>
+            {product.brand.name}
+          </span>
+        )}
+        <span className="text-xs uppercase tracking-wider font-medium mt-1" style={{ color: '#a8a29e' }}>
+          {product.subcat?.name || product.subcategory}
+        </span>
+        <h3 className="text-sm font-semibold mt-1.5 leading-snug transition-colors" style={{ color: '#1c1917' }}>
+          {product.name}
+        </h3>
+        <div className="mt-auto pt-3 flex items-center gap-2">
+          {product.onSale && product.oldPrice ? (
+            <>
+              <p className="text-base font-bold" style={{ color: '#dc2626' }}>
+                Q{product.price.toFixed(2)}
+              </p>
+              <p className="text-sm line-through" style={{ color: '#a8a29e' }}>
+                Q{product.oldPrice.toFixed(2)}
+              </p>
+            </>
+          ) : (
+            <p className="text-base font-bold" style={{ color: '#1c1917' }}>
+              Q{product.price.toFixed(2)}
+            </p>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+}

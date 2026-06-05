@@ -1,0 +1,30 @@
+node_modules/
+.next/
+*.local
+.env
+.env.local
+.DS_Store
+*.log
+dist/
+build/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# frontend
+frontend/node_modules/
+frontend/.next/
+
+# backend
+backend/node_modules/
+backend/.tmp/
+backend/.cache/
+backend/build/
+backend/dist/
+backend/exports/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
