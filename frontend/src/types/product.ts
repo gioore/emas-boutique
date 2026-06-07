@@ -1,36 +1,36 @@
 export interface Brand {
   id: number;
-  documentId: string;
-  name: string;
-  slug: string | null;
-  logo: Image | null;
-  active: boolean;
+  documentId?: string;
+  name?: string;
+  slug?: string | null;
+  logo?: { url: string } | null;
+  active?: boolean;
 }
 
 export interface Category {
   id: number;
-  documentId: string;
-  name: string;
-  slug: string | null;
-  description: string | null;
-  active: boolean;
-  order: number;
+  documentId?: string;
+  name?: string;
+  slug?: string | null;
+  description?: string | null;
+  active?: boolean;
+  order?: number;
 }
 
 export interface Subcategory {
   id: number;
-  documentId: string;
-  name: string;
-  slug: string | null;
-  description: string | null;
-  active: boolean;
-  order: number;
-  category: Category | null;
+  documentId?: string;
+  name?: string;
+  slug?: string | null;
+  description?: string | null;
+  active?: boolean;
+  order?: number;
+  category?: Category | null;
 }
 
 export interface Product {
   id: number;
-  documentId: string;
+  documentId?: string;
   name: string;
   slug: string;
   price: number;
@@ -45,19 +45,19 @@ export interface Product {
   featured: boolean;
   brand: Brand | null;
   sku: string | null;
-  availability: 'available' | 'low_stock' | 'out_of_stock' | 'pre_order' | null;
+  availability: string | null;
   newArrival: boolean | null;
   onSale: boolean | null;
   colors: string[] | null;
   tags: string[] | null;
   createdAt: string;
   updatedAt: string;
-  publishedAt: string;
+  publishedAt?: string;
 }
 
 export interface Image {
   id: number;
-  documentId: string;
+  documentId?: string;
   url: string;
   alternativeText: string | null;
   name: string;

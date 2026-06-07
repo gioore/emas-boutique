@@ -5,7 +5,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getImageUrl } from '@/lib/strapi';
+import { getImageUrl } from '@/lib/images';
 
 interface Product {
   id: number;

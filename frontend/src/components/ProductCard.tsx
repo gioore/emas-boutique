@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getImageUrl } from '@/lib/strapi';
+import { getImageUrl } from '@/lib/images';
 import { BRAND_COLORS } from '@/lib/config';
 import type { Product } from '@/types/product';
 

@@ -1,7 +1,7 @@
 import Hero from "@/components/Hero";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
-import { getFeaturedProducts, getNewArrivals, getOnSaleProducts, getBrands } from "@/lib/strapi";
+import { getFeaturedProducts, getNewArrivals, getOnSaleProducts, getBrands } from "@/lib/queries";
 import { BRAND_COLORS, SITE_CONFIG } from "@/lib/config";
 
 export default async function Home() {

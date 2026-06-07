@@ -1,7 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getProduct, getImageUrl } from '@/lib/strapi';
+import { getProduct } from '@/lib/queries';
+import { getImageUrl } from '@/lib/images';
+import { query } from '@/lib/db';
 import { SITE_CONFIG, BRAND_COLORS } from '@/lib/config';
 import ProductCard from '@/components/ProductCard';
 import ShareButton from '@/components/ShareButton';
@@ -53,20 +55,29 @@ export async function generateMetadata({ params }: Props) {
 async function fetchRelated(product: Product): Promise<Product[]> {
   if (!product.subcat?.id) return [];
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-    const token = process.env.STRAPI_API_TOKEN || '';
-    const res = await fetch(
-      `${apiUrl}/api/products?filters[subcat][id][$eq]=${product.subcat.id}&filters[id][$ne]=${product.id}&populate=*&pagination[limit]=4`,
-      {
-        headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}), 'Content-Type': 'application/json' },
-        next: { revalidate: 60 },
-      }
+    const rows = await query(
+      `SELECT * FROM products WHERE subcategory_id = $1 AND id != $2 ORDER BY created_at DESC LIMIT 4`,
+      [product.subcat.id, product.id]
     );
-    const data = await res.json();
-    return data.data || [];
+    return rows.map(formatProduct) as Product[];
   } catch {
     return [];
   }
+}
+
+function formatProduct(p: any): any {
+  return {
+    id: p.id, name: p.name, slug: p.slug, price: Number(p.price),
+    oldPrice: p.old_price ? Number(p.old_price) : null,
+    category: p.category || '', subcategory: p.subcategory || '',
+    description: p.description || '', sizes: p.sizes || [],
+    images: typeof p.images === 'string' ? JSON.parse(p.images) : (p.images || []),
+    featured: !!p.featured, sku: p.sku || null,
+    availability: p.availability || 'available',
+    newArrival: !!p.new_arrival, onSale: !!p.on_sale,
+    colors: p.colors || [], tags: p.tags || [],
+    createdAt: p.created_at, updatedAt: p.updated_at,
+  };
 }
 
 export default async function ProductoPage({ params }: Props) {

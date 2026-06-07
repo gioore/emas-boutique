@@ -1,8 +1,5 @@
 import type { Brand, Category, Product, Subcategory } from '@/types/product';
-
-const API_URL = process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-const API_TOKEN = process.env.STRAPI_API_TOKEN || '';
-const CATALOG_REVALIDATE_SECONDS = 60;
+import { query } from './db';
 
 export type CatalogSection = 'all' | 'mujer' | 'hombre';
 export type CategoryWithSubcategories = Category & { subcategories?: Subcategory[] };
@@ -14,104 +11,97 @@ export interface CatalogData {
   error?: string;
 }
 
-interface StrapiListResponse<T> {
-  data?: T[];
+function formatProduct(p: any): Product {
+  return {
+    id: p.id,
+    name: p.name,
+    slug: p.slug,
+    price: Number(p.price),
+    oldPrice: p.old_price ? Number(p.old_price) : null,
+    category: p.category || '',
+    subcategory: p.subcategory || '',
+    cat: p.cat_id ? { id: p.cat_id, name: p.cat_name, slug: p.cat_slug } : null,
+    subcat: p.subcat_id ? { id: p.subcat_id, name: p.subcat_name, slug: p.subcat_slug } : null,
+    description: p.description || '',
+    sizes: p.sizes || [],
+    images: typeof p.images === 'string' ? JSON.parse(p.images) : (p.images || []),
+    featured: !!p.featured,
+    brand: p.brand_id ? { id: p.brand_id, name: p.brand_name, slug: p.brand_slug } : null,
+    sku: p.sku || null,
+    availability: p.availability || 'available',
+    newArrival: !!p.new_arrival,
+    onSale: !!p.on_sale,
+    colors: p.colors || [],
+    tags: p.tags || [],
+    createdAt: p.created_at,
+    updatedAt: p.updated_at,
+  } as Product;
 }
 
-const productFields = [
-  'name',
-  'slug',
-  'price',
-  'oldPrice',
-  'category',
-  'subcategory',
-  'description',
-  'sizes',
-  'featured',
-  'availability',
-  'newArrival',
-  'onSale',
-  'colors',
-  'tags',
-  'createdAt',
-  'publishedAt',
-];
-
-function addFields(query: URLSearchParams, fields: string[]): void {
-  fields.forEach((field, index) => query.set(`fields[${index}]`, field));
-}
-
-async function fetchStrapi<T>(endpoint: string): Promise<T> {
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-    ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {}),
+function formatBrand(b: any): Brand {
+  return {
+    id: b.id,
+    name: b.name,
+    slug: b.slug,
+    logo: b.logo_url ? { url: b.logo_url } : null,
+    active: b.active ?? true,
   };
-
-  const res = await fetch(`${API_URL}/api${endpoint}`, {
-    headers,
-    next: { revalidate: CATALOG_REVALIDATE_SECONDS, tags: ['catalog'] },
-  });
-
-  if (!res.ok) {
-    throw new Error(`Catalog API error: ${res.status}`);
-  }
-
-  return res.json();
 }
 
-function buildProductQuery(section: CatalogSection): string {
-  const query = new URLSearchParams();
-
-  addFields(query, productFields);
-  query.set('populate[images][fields][0]', 'url');
-  query.set('populate[images][fields][1]', 'formats');
-  query.set('populate[images][fields][2]', 'alternativeText');
-  query.set('populate[brand][fields][0]', 'name');
-  query.set('populate[brand][fields][1]', 'slug');
-  query.set('populate[brand][fields][2]', 'active');
-  query.set('populate[cat][fields][0]', 'name');
-  query.set('populate[cat][fields][1]', 'slug');
-  query.set('populate[cat][fields][2]', 'active');
-  query.set('populate[subcat][fields][0]', 'name');
-  query.set('populate[subcat][fields][1]', 'slug');
-  query.set('populate[subcat][fields][2]', 'active');
-  query.set('sort[0]', 'createdAt:desc');
-  query.set('pagination[pageSize]', '100');
-
-  if (section !== 'all') {
-    query.set('filters[category][$eq]', section);
-  }
-
-  return `/products?${query.toString()}`;
+function formatCategory(c: any): CategoryWithSubcategories {
+  return {
+    id: c.id,
+    name: c.name,
+    slug: c.slug,
+    description: c.description || '',
+    active: c.active ?? true,
+    order: c.order || 0,
+    subcategories: (c.subcategories || []).map((s: any) => ({
+      id: s.id,
+      name: s.name,
+      slug: s.slug,
+      active: s.active ?? true,
+      order: s.order || 0,
+    })),
+  };
 }
 
 async function getProducts(section: CatalogSection): Promise<Product[]> {
-  const response = await fetchStrapi<StrapiListResponse<Product>>(buildProductQuery(section));
-  return response.data || [];
+  const where = section !== 'all' ? 'WHERE p.category = $1' : '';
+  const params = section !== 'all' ? [section] : [];
+
+  const rows = await query(`
+    SELECT p.*,
+      c.id as cat_id, c.name as cat_name, c.slug as cat_slug,
+      sc.id as subcat_id, sc.name as subcat_name, sc.slug as subcat_slug,
+      b.id as brand_id, b.name as brand_name, b.slug as brand_slug
+    FROM products p
+    LEFT JOIN categories c ON c.id = p.category_id
+    LEFT JOIN subcategories sc ON sc.id = p.subcategory_id
+    LEFT JOIN brands b ON b.id = p.brand_id
+    ${where}
+    ORDER BY p.created_at DESC
+    LIMIT 100
+  `, params);
+
+  return rows.map(formatProduct);
 }
 
 async function getBrands(): Promise<Brand[]> {
-  const query = new URLSearchParams();
-  addFields(query, ['name', 'slug', 'active']);
-  query.set('sort[0]', 'name:asc');
-  query.set('pagination[pageSize]', '100');
-
-  const response = await fetchStrapi<StrapiListResponse<Brand>>(`/brands?${query.toString()}`);
-  return response.data || [];
+  const rows = await query('SELECT * FROM brands WHERE active = true ORDER BY name');
+  return rows.map(formatBrand);
 }
 
 async function getCategories(): Promise<CategoryWithSubcategories[]> {
-  const query = new URLSearchParams();
-  addFields(query, ['name', 'slug', 'description', 'active', 'order']);
-  query.set('populate[subcategories][fields][0]', 'name');
-  query.set('populate[subcategories][fields][1]', 'slug');
-  query.set('populate[subcategories][fields][2]', 'active');
-  query.set('populate[subcategories][fields][3]', 'order');
-  query.set('sort[0]', 'order:asc');
-  query.set('pagination[pageSize]', '100');
+  const catRows = await query('SELECT * FROM categories ORDER BY "order"');
+  const subRows = await query('SELECT * FROM subcategories ORDER BY "order"');
 
-  const response = await fetchStrapi<StrapiListResponse<CategoryWithSubcategories>>(`/categories?${query.toString()}`);
-  return response.data || [];
+  return catRows.map((cat: any) => ({
+    ...formatCategory(cat),
+    subcategories: subRows
+      .filter((s: any) => s.category_id === cat.id)
+      .map((s: any) => ({ id: s.id, name: s.name, slug: s.slug, active: s.active ?? true, order: s.order || 0 })),
+  }));
 }
 
 export async function getCatalogData(section: CatalogSection = 'all'): Promise<CatalogData> {

@@ -1,12 +1,10 @@
-import type { Image } from '@/types/product';
-
 export interface Brand {
   id: number;
-  documentId: string;
-  name: string;
-  slug: string | null;
-  logo: Image | null;
-  active: boolean;
+  documentId?: string;
+  name?: string;
+  slug?: string | null;
+  logo?: { url: string } | null;
+  active?: boolean;
 }
 
 export interface BrandsResponse {

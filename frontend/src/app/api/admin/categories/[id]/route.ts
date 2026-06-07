@@ -1,57 +1,33 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { NextRequest, NextResponse } from 'next/server';
-import { revalidateTag } from 'next/cache';
 import { requireAuth } from '@/lib/admin-auth-server';
-
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-const API_TOKEN = process.env.STRAPI_API_TOKEN || '';
-
-async function fetchStrapi(endpoint: string, options: RequestInit = {}) {
-  const url = `${STRAPI_URL}/api${endpoint}`;
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-    ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {}),
-    ...(options.headers as Record<string, string> || {}),
-  };
-  const res = await fetch(url, { ...options, headers });
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(JSON.stringify(data));
-  }
-  return data;
-}
+import { execute } from '@/lib/db';
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await requireAuth();
     const { id } = await params;
     const body = await request.json();
-    const data = await fetchStrapi(`/categories/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(body),
-    });
-    revalidateTag('catalog', 'max');
-    return NextResponse.json(data);
+    const data = body.data || body;
+    const slug = data.slug || data.name.toLowerCase().replace(/\s+/g, '-');
+    await execute(
+      'UPDATE categories SET name=$1, slug=$2, description=$3, active=$4, "order"=$5, updated_at=now() WHERE id=$6',
+      [data.name, slug, data.description || '', data.active ?? true, data.order ?? 0, id]
+    );
+    return NextResponse.json({ data: { id: Number(id), ...data, slug } });
   } catch (err: any) {
-    if (err.message === 'No autorizado') {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-    }
+    if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await requireAuth();
     const { id } = await params;
-    const data = await fetchStrapi(`/categories/${id}`, { method: 'DELETE' });
-    revalidateTag('catalog', 'max');
-    return NextResponse.json(data);
+    await execute('DELETE FROM categories WHERE id = $1', [id]);
+    return NextResponse.json({ data: null });
   } catch (err: any) {
-    if (err.message === 'No autorizado') {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-    }
+    if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

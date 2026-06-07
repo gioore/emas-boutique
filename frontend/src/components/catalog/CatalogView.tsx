@@ -54,7 +54,7 @@ function getSubcategoriesForMode(categories: CategoryWithSubcategories[], mode: 
   return (category?.subcategories || [])
     .filter((subcategory) => subcategory.active !== false)
     .map((subcategory) => subcategory.name)
-    .filter(Boolean);
+    .filter((name): name is string => Boolean(name));
 }
 
 export default function CatalogView({ mode, title, subtitle, products, brands, categories, error }: Props) {
@@ -77,7 +77,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
   const filteredSubcategories = useMemo(() => {
     if (mode !== 'all' || !filters.category) return allSubcategories;
 
-    const selectedCategory = categories.find((category) => category.documentId === filters.category);
+    const selectedCategory = categories.find((category) => String(category.id) === filters.category);
     return (selectedCategory?.subcategories || [])
       .filter((subcategory: Subcategory) => subcategory.active !== false)
       .map((subcategory: Subcategory) => subcategory.name)
@@ -101,7 +101,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
     }
 
     if (mode === 'all' && filters.category) {
-      result = result.filter((product) => product.cat?.documentId === filters.category);
+      result = result.filter((product) => String(product.cat?.id) === filters.category);
     }
 
     if (filters.subcategory) {
@@ -109,7 +109,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
     }
 
     if (filters.brand) {
-      result = result.filter((product) => product.brand?.documentId === filters.brand);
+      result = result.filter((product) => String(product.brand?.id) === filters.brand);
     }
 
     if (filters.size) {

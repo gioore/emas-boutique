@@ -1,23 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/admin-auth-server';
+import { createHash } from 'crypto';
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-const API_TOKEN = process.env.STRAPI_API_TOKEN || '';
+const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dt9ad6ovb';
+const API_KEY = process.env.CLOUDINARY_API_KEY || '616424281177613';
+const API_SECRET = process.env.CLOUDINARY_API_SECRET || 'sIS29BJ4kDQGxGUN67lnJGYiu8o';
+
 const MAX_FILES = 8;
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
-
-function getErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : 'Error al subir imagenes';
-}
 
 function isFile(value: FormDataEntryValue): value is File {
   return typeof File !== 'undefined' && value instanceof File;
 }
 
+function signParams(params: Record<string, string>): string {
+  const sorted = Object.keys(params).sort().map(k => `${k}=${params[k]}`).join('&');
+  return createHash('sha1').update(sorted + API_SECRET).digest('hex');
+}
+
 export async function POST(request: NextRequest) {
   try {
     await requireAuth();
+
     const incomingFormData = await request.formData();
     const files = incomingFormData.getAll('files').filter(isFile);
 
@@ -38,29 +43,48 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const formData = new FormData();
-    files.forEach((file) => formData.append('files', file, file.name));
+    const results = [];
 
-    const headers: Record<string, string> = {};
-    if (API_TOKEN) {
-      headers['Authorization'] = `Bearer ${API_TOKEN}`;
+    for (const file of files) {
+      const timestamp = Math.floor(Date.now() / 1000);
+      const params: Record<string, string> = {
+        timestamp: String(timestamp),
+        folder: 'products',
+      };
+      const signature = signParams(params);
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', 'products');
+      formData.append('timestamp', String(timestamp));
+      formData.append('api_key', API_KEY);
+      formData.append('signature', signature);
+
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(err);
+      }
+
+      const result = await res.json();
+      results.push({
+        id: results.length + 1,
+        url: result.secure_url,
+        alternativeText: file.name.replace(/\.[^/.]+$/, ''),
+        width: result.width,
+        height: result.height,
+        format: result.format,
+        public_id: result.public_id,
+      });
     }
 
-    const res = await fetch(`${STRAPI_URL}/api/upload`, {
-      method: 'POST',
-      headers,
-      body: formData,
-    });
-
-    if (!res.ok) {
-      const err = await res.text();
-      throw new Error(err);
-    }
-
-    const data = await res.json();
-    return NextResponse.json(data, { status: 201 });
+    return NextResponse.json(results, { status: 201 });
   } catch (err: unknown) {
-    const message = getErrorMessage(err);
+    const message = err instanceof Error ? err.message : 'Error al subir imagenes';
     if (message === 'No autorizado') {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
