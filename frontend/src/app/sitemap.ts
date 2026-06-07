@@ -21,13 +21,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+
     const res = await fetch(`${API_URL}/api/products?fields[0]=slug&fields[1]=updatedAt&pagination[limit]=100`, {
       headers: {
         ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {}),
         'Content-Type': 'application/json',
       },
-      next: { revalidate: 3600 },
+      signal: controller.signal,
     });
+    clearTimeout(timeout);
+
     const data = await res.json();
     const products = data.data || [];
 
