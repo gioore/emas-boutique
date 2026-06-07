@@ -1,0 +1,310 @@
+'use client';
+
+import { useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import ProductCard from '@/components/ProductCard';
+import { BRAND_COLORS, SITE_CONFIG } from '@/lib/config';
+import type { CategoryWithSubcategories, CatalogSection } from '@/lib/catalog';
+import type { Brand, Product, Subcategory } from '@/types/product';
+
+interface Filters {
+  category: string;
+  subcategory: string;
+  brand: string;
+  size: string;
+  availability: string;
+  minPrice: string;
+  maxPrice: string;
+  sort: string;
+  search: string;
+}
+
+interface Props {
+  mode: CatalogSection;
+  title: string;
+  subtitle: string;
+  products: Product[];
+  brands: Brand[];
+  categories: CategoryWithSubcategories[];
+  error?: string;
+}
+
+const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', 'Única', 'Unica', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45'];
+
+function normalize(value?: string | null): string {
+  return (value || '').toLowerCase();
+}
+
+function getCategoryKey(product: Product): string {
+  return normalize(product.cat?.slug || product.cat?.name || product.category);
+}
+
+function getSubcategoriesForMode(categories: CategoryWithSubcategories[], mode: CatalogSection): string[] {
+  if (mode === 'all') {
+    const names = new Set<string>();
+    for (const category of categories) {
+      for (const subcategory of category.subcategories || []) {
+        if (subcategory.active !== false && subcategory.name) names.add(subcategory.name);
+      }
+    }
+    return [...names];
+  }
+
+  const category = categories.find((item) => normalize(item.slug || item.name) === mode);
+  return (category?.subcategories || [])
+    .filter((subcategory) => subcategory.active !== false)
+    .map((subcategory) => subcategory.name)
+    .filter(Boolean);
+}
+
+export default function CatalogView({ mode, title, subtitle, products, brands, categories, error }: Props) {
+  const searchParams = useSearchParams();
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState<Filters>({
+    category: mode === 'all' ? searchParams.get('categoria') || '' : '',
+    subcategory: searchParams.get('subcategoria') || '',
+    brand: searchParams.get('marca') || '',
+    size: searchParams.get('talla') || '',
+    availability: searchParams.get('disponibilidad') || '',
+    minPrice: searchParams.get('minPrice') || '',
+    maxPrice: searchParams.get('maxPrice') || '',
+    sort: searchParams.get('sort') || 'newest',
+    search: searchParams.get('search') || '',
+  });
+
+  const allSubcategories = useMemo(() => getSubcategoriesForMode(categories, mode), [categories, mode]);
+
+  const filteredSubcategories = useMemo(() => {
+    if (mode !== 'all' || !filters.category) return allSubcategories;
+
+    const selectedCategory = categories.find((category) => category.documentId === filters.category);
+    return (selectedCategory?.subcategories || [])
+      .filter((subcategory: Subcategory) => subcategory.active !== false)
+      .map((subcategory: Subcategory) => subcategory.name)
+      .filter(Boolean);
+  }, [allSubcategories, categories, filters.category, mode]);
+
+  const filtered = useMemo(() => {
+    let result = [...products];
+
+    if (mode !== 'all') {
+      result = result.filter((product) => getCategoryKey(product) === mode);
+    }
+
+    if (filters.search) {
+      const query = normalize(filters.search);
+      result = result.filter((product) =>
+        normalize(product.name).includes(query) ||
+        normalize(product.description).includes(query) ||
+        product.tags?.some((tag) => normalize(tag).includes(query))
+      );
+    }
+
+    if (mode === 'all' && filters.category) {
+      result = result.filter((product) => product.cat?.documentId === filters.category);
+    }
+
+    if (filters.subcategory) {
+      result = result.filter((product) => product.subcat?.name === filters.subcategory || product.subcategory === filters.subcategory);
+    }
+
+    if (filters.brand) {
+      result = result.filter((product) => product.brand?.documentId === filters.brand);
+    }
+
+    if (filters.size) {
+      result = result.filter((product) => product.sizes?.includes(filters.size));
+    }
+
+    if (filters.availability) {
+      result = result.filter((product) => product.availability === filters.availability);
+    }
+
+    if (filters.minPrice) {
+      result = result.filter((product) => product.price >= parseFloat(filters.minPrice));
+    }
+
+    if (filters.maxPrice) {
+      result = result.filter((product) => product.price <= parseFloat(filters.maxPrice));
+    }
+
+    switch (filters.sort) {
+      case 'price-asc':
+        result.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-desc':
+        result.sort((a, b) => b.price - a.price);
+        break;
+      case 'name-asc':
+        result.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'name-desc':
+        result.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      case 'newest':
+      default:
+        result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        break;
+    }
+
+    return result;
+  }, [filters, mode, products]);
+
+  const hasActiveFilters = Object.entries(filters).some(([key, value]) => key !== 'sort' && value);
+
+  const updateFilter = (key: keyof Filters, value: string) => {
+    setFilters((current) => ({ ...current, [key]: value }));
+  };
+
+  const clearFilters = () => {
+    setFilters({ category: '', subcategory: '', brand: '', size: '', availability: '', minPrice: '', maxPrice: '', sort: 'newest', search: '' });
+  };
+
+  return (
+    <div className="min-h-screen" style={{ backgroundColor: mode === 'all' ? BRAND_COLORS.background : BRAND_COLORS.white }}>
+      <div className="border-b" style={{ backgroundColor: mode === 'all' ? BRAND_COLORS.white : BRAND_COLORS.background, borderColor: '#e5e0d8' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <span className="text-xs uppercase tracking-[0.3em] font-medium" style={{ color: BRAND_COLORS.textMuted }}>
+            {mode === 'all' ? SITE_CONFIG.name : 'Categoria'}
+          </span>
+          <h1 className="text-4xl font-bold mt-2" style={{ color: BRAND_COLORS.text }}>{title}</h1>
+          <p className="mt-2" style={{ color: BRAND_COLORS.textMuted }}>{subtitle}</p>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {error && (
+          <div className="mb-6 p-4 rounded-xl text-sm" style={{ backgroundColor: '#fffbeb', color: '#92400e', border: '1px solid #fde68a' }}>
+            {error}
+          </div>
+        )}
+
+        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+          <div className="flex-1 relative">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: BRAND_COLORS.textMuted }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              placeholder={`Buscar en ${title}...`}
+              value={filters.search}
+              onChange={(event) => updateFilter('search', event.target.value)}
+              className="w-full pl-10 pr-4 py-3 border rounded-xl outline-none transition-colors"
+              style={{ borderColor: '#e5e0d8', backgroundColor: BRAND_COLORS.white, color: BRAND_COLORS.text }}
+            />
+          </div>
+          <div className="flex gap-3">
+            <select value={filters.sort} onChange={(event) => updateFilter('sort', event.target.value)} className="px-4 py-3 border rounded-xl outline-none text-sm" style={{ borderColor: '#e5e0d8', backgroundColor: BRAND_COLORS.white, color: BRAND_COLORS.text }}>
+              <option value="newest">Mas recientes</option>
+              <option value="price-asc">Menor precio</option>
+              <option value="price-desc">Mayor precio</option>
+              <option value="name-asc">A-Z</option>
+              <option value="name-desc">Z-A</option>
+            </select>
+            <button onClick={() => setShowFilters((current) => !current)} className="px-4 py-3 border rounded-xl text-sm font-medium transition-colors flex items-center gap-2" style={{ borderColor: '#e5e0d8', backgroundColor: showFilters ? BRAND_COLORS.primary : BRAND_COLORS.white, color: showFilters ? BRAND_COLORS.white : BRAND_COLORS.text }}>
+              Filtros
+              {hasActiveFilters && <span className="w-2 h-2 rounded-full" style={{ backgroundColor: BRAND_COLORS.gold }} />}
+            </button>
+          </div>
+        </div>
+
+        {showFilters && (
+          <div className="mb-8 p-6 rounded-xl border" style={{ backgroundColor: BRAND_COLORS.white, borderColor: '#e5e0d8' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {mode === 'all' && (
+                <div>
+                  <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Categoria</label>
+                  <select value={filters.category} onChange={(event) => { updateFilter('category', event.target.value); updateFilter('subcategory', ''); }} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+                    <option value="">Todas</option>
+                    {categories.filter((category) => category.active !== false).map((category) => (
+                      <option key={category.documentId} value={category.documentId}>{category.name}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              <div>
+                <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Subcategoria</label>
+                <select value={filters.subcategory} onChange={(event) => updateFilter('subcategory', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+                  <option value="">Todas</option>
+                  {filteredSubcategories.map((subcategory) => (
+                    <option key={subcategory} value={subcategory}>{subcategory}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Marca</label>
+                <select value={filters.brand} onChange={(event) => updateFilter('brand', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+                  <option value="">Todas</option>
+                  {brands.filter((brand) => brand.active !== false).map((brand) => (
+                    <option key={brand.documentId} value={brand.documentId}>{brand.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Disponibilidad</label>
+                <select value={filters.availability} onChange={(event) => updateFilter('availability', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+                  <option value="">Todas</option>
+                  <option value="available">Disponible</option>
+                  <option value="low_stock">Ultimas unidades</option>
+                  <option value="out_of_stock">Agotado</option>
+                  <option value="pre_order">Bajo pedido</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Talla</label>
+                <select value={filters.size} onChange={(event) => updateFilter('size', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+                  <option value="">Todas</option>
+                  {SIZE_OPTIONS.map((size) => (
+                    <option key={size} value={size}>{size}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Precio minimo</label>
+                <input type="number" min="0" placeholder="Q0" value={filters.minPrice} onChange={(event) => updateFilter('minPrice', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }} />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Precio maximo</label>
+                <input type="number" min="0" placeholder="Q1000" value={filters.maxPrice} onChange={(event) => updateFilter('maxPrice', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }} />
+              </div>
+
+              <div className="flex items-end">
+                <button onClick={clearFilters} className="px-4 py-2 border rounded-lg text-sm font-medium transition-colors w-full" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.textMuted }}>
+                  Limpiar filtros
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="flex items-center justify-between mb-6">
+          <p className="text-sm" style={{ color: BRAND_COLORS.textMuted }}>
+            {filtered.length} producto{filtered.length !== 1 ? 's' : ''}{hasActiveFilters && ' encontrados'}
+          </p>
+        </div>
+
+        {filtered.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+            {filtered.map((product) => <ProductCard key={product.id} product={product} />)}
+          </div>
+        ) : (
+          <div className="text-center py-20">
+            <p className="text-lg" style={{ color: BRAND_COLORS.textMuted }}>No se encontraron productos.</p>
+            <p className="text-sm mt-2" style={{ color: '#a8a29e' }}>Intenta ajustar los filtros o buscar con otros terminos.</p>
+            {hasActiveFilters && (
+              <button onClick={clearFilters} className="mt-4 px-6 py-2.5 text-sm font-medium rounded-lg transition-colors" style={{ backgroundColor: BRAND_COLORS.primary, color: BRAND_COLORS.white }}>
+                Limpiar filtros
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

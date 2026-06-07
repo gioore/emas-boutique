@@ -14,7 +14,7 @@ export default function ProductCard({ product }: Props) {
   return (
     <Link
       href={`/producto/${product.slug}`}
-      className="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border"
+      className="group flex flex-col bg-white rounded-2xl overflow-hidden border transition-all duration-500"
       style={{ borderColor: '#e5e0d8' }}
     >
       <div className="aspect-[3/4] relative overflow-hidden" style={{ backgroundColor: '#f5f0e8' }}>
@@ -23,8 +23,7 @@ export default function ProductCard({ product }: Props) {
             src={imageUrl}
             alt={product.name}
             fill
-            unoptimized
-            className="object-cover group-hover:scale-110 transition-transform duration-500"
+            className="object-cover group-hover:scale-110 transition-transform duration-700"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
@@ -35,7 +34,12 @@ export default function ProductCard({ product }: Props) {
           </div>
         )}
 
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+        <div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 50%)' }}
+        />
+
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
           {product.onSale && (
             <span className="px-2.5 py-1 text-xs font-bold rounded-full" style={{ backgroundColor: '#dc2626', color: '#ffffff' }}>
               OFERTA
@@ -47,7 +51,7 @@ export default function ProductCard({ product }: Props) {
             </span>
           )}
           {!product.onSale && !product.newArrival && (
-            <span className="px-2.5 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: BRAND_COLORS.gold, color: '#ffffff' }}>
+            <span className="px-2.5 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: 'rgba(212,163,115,0.9)', color: '#ffffff' }}>
               100% Original
             </span>
           )}
@@ -73,7 +77,10 @@ export default function ProductCard({ product }: Props) {
         <span className="text-xs uppercase tracking-wider font-medium mt-1" style={{ color: '#a8a29e' }}>
           {product.subcat?.name || product.subcategory}
         </span>
-        <h3 className="text-sm font-semibold mt-1.5 leading-snug transition-colors" style={{ color: '#1c1917' }}>
+        <h3
+          className="text-sm font-semibold mt-1.5 leading-snug transition-colors duration-300 group-hover:text-[#d4a373]"
+          style={{ color: '#1c1917' }}
+        >
           {product.name}
         </h3>
         <div className="mt-auto pt-3 flex items-center gap-2">

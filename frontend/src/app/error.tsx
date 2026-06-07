@@ -1,7 +1,7 @@
 'use client';
 import { BRAND_COLORS } from '@/lib/config';
 
-export default function Error({ error, reset }: { error: Error; reset: () => void }) {
+export default function Error({ reset }: { error: Error; reset: () => void }) {
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: BRAND_COLORS.background }}>
       <div className="text-center px-4">

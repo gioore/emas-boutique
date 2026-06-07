@@ -5,6 +5,7 @@ import { getProduct, getImageUrl } from '@/lib/strapi';
 import { SITE_CONFIG, BRAND_COLORS } from '@/lib/config';
 import ProductCard from '@/components/ProductCard';
 import ShareButton from '@/components/ShareButton';
+import ProductBuyClient from '@/components/ProductBuyClient';
 import type { Product } from '@/types/product';
 
 const AVAILABILITY_LABELS: Record<string, string> = {
@@ -29,9 +30,20 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   try {
     const { data: product } = await getProduct(slug);
+    const images = product.images?.[0] ? [getImageUrl(product.images[0].formats?.large || product.images[0])] : [];
+    const description = product.description?.replace(/<[^>]*>/g, '').slice(0, 160) || `Compra ${product.name} por Q${product.price.toFixed(2)}`;
     return {
       title: `${product.name} - ${SITE_CONFIG.name}`,
-      description: product.description?.replace(/<[^>]*>/g, '').slice(0, 160) || `Q${product.price.toFixed(2)}`,
+      description,
+      openGraph: {
+        title: `${product.name} - ${SITE_CONFIG.name}`,
+        description,
+        url: `https://emasboutique.com/producto/${slug}`,
+        images: images.length > 0 ? [{ url: images[0], width: 1200, height: 1600, alt: product.name }] : [],
+        locale: 'es_GT',
+        siteName: SITE_CONFIG.name,
+        type: 'website',
+      },
     };
   } catch {
     return { title: `Producto no encontrado - ${SITE_CONFIG.name}` };
@@ -69,7 +81,6 @@ export default async function ProductoPage({ params }: Props) {
   }
 
   const relatedProducts = await fetchRelated(product);
-  const whatsappMessage = SITE_CONFIG.whatsappProductMessage(product.name, product.price);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: BRAND_COLORS.white }}>
@@ -124,7 +135,6 @@ export default async function ProductoPage({ params }: Props) {
                   src={getImageUrl(product.images[0].formats?.large || product.images[0])}
                   alt={product.name}
                   fill
-                  unoptimized
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority
@@ -168,7 +178,6 @@ export default async function ProductoPage({ params }: Props) {
                         alt=""
                         width={80}
                         height={80}
-                        unoptimized
                         className="w-full h-full object-cover"
                       />
                     )}
@@ -239,25 +248,6 @@ export default async function ProductoPage({ params }: Props) {
 
             <div className="w-12 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
 
-            {product.sizes && product.sizes.length > 0 && (
-              <div>
-                <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: BRAND_COLORS.text }}>
-                  Tallas disponibles
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {product.sizes.map((size) => (
-                    <span
-                      key={size}
-                      className="px-5 py-2.5 border rounded-lg text-sm font-medium transition-colors cursor-default"
-                      style={{ borderColor: '#d6d3d1', color: BRAND_COLORS.text, backgroundColor: BRAND_COLORS.white }}
-                    >
-                      {size}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {product.colors && product.colors.length > 0 && (
               <div className="mt-6">
                 <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: BRAND_COLORS.text }}>
@@ -303,23 +293,11 @@ export default async function ProductoPage({ params }: Props) {
               </Link>
             </div>
 
-            <div className="mt-6 pt-8 border-t" style={{ borderColor: '#e5e0d8' }}>
-              <a
-                href={`https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(whatsappMessage)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-10 py-4 text-white font-semibold rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-lg"
-                style={{ backgroundColor: '#25D366' }}
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                </svg>
-                Comprar por WhatsApp
-              </a>
-              <p className="text-xs mt-3 text-center sm:text-left" style={{ color: '#a8a29e' }}>
-                Haz clic para contactarnos directamente y te atenderemos al instante
-              </p>
-            </div>
+            <ProductBuyClient
+              productName={product.name}
+              productPrice={product.price}
+              sizes={product.sizes || []}
+            />
 
             <div className="flex items-center gap-4 mt-4">
               <ShareButton title={product.name} />

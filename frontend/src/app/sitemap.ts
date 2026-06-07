@@ -1,10 +1,11 @@
 import { MetadataRoute } from 'next';
-import { SITE_CONFIG } from '@/lib/config';
 
 const BASE_URL = 'https://emasboutique.com';
+const API_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+const API_TOKEN = process.env.STRAPI_API_TOKEN || '';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  return [
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const staticPages: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
     { url: `${BASE_URL}/catalogo`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: `${BASE_URL}/mujer`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
@@ -18,4 +19,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/privacidad`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
     { url: `${BASE_URL}/terminos`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
   ];
+
+  try {
+    const res = await fetch(`${API_URL}/api/products?fields[0]=slug&fields[1]=updatedAt&pagination[limit]=100`, {
+      headers: {
+        ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {}),
+        'Content-Type': 'application/json',
+      },
+      next: { revalidate: 3600 },
+    });
+    const data = await res.json();
+    const products = data.data || [];
+
+    const productPages: MetadataRoute.Sitemap = products.map((p: any) => ({
+      url: `${BASE_URL}/producto/${p.slug}`,
+      lastModified: new Date(p.updatedAt),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    }));
+
+    return [...staticPages, ...productPages];
+  } catch {
+    return staticPages;
+  }
 }

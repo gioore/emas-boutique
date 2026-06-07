@@ -1,6 +1,9 @@
 'use client';
 
+/* eslint-disable @typescript-eslint/no-explicit-any, react-hooks/set-state-in-effect */
+
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { getImageUrl } from '@/lib/strapi';
 
@@ -187,9 +190,11 @@ export default function AdminDashboard() {
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0" style={{ backgroundColor: '#f5f0e8' }}>
                           {product.images?.[0] && (
-                            <img
+                            <Image
                               src={getImageUrl(product.images[0])}
                               alt=""
+                              width={48}
+                              height={48}
                               className="w-full h-full object-cover"
                             />
                           )}

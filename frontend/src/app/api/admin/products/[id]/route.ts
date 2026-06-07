@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidateTag } from 'next/cache';
 import { requireAuth } from '@/lib/admin-auth-server';
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
@@ -31,6 +34,7 @@ export async function PUT(
       method: 'PUT',
       body: JSON.stringify(body),
     });
+    revalidateTag('catalog', 'max');
     return NextResponse.json(data);
   } catch (err: any) {
     if (err.message === 'No autorizado') {
@@ -50,6 +54,7 @@ export async function DELETE(
     const data = await fetchStrapi(`/products/${id}`, {
       method: 'DELETE',
     });
+    revalidateTag('catalog', 'max');
     return NextResponse.json(data);
   } catch (err: any) {
     if (err.message === 'No autorizado') {

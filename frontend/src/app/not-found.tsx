@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { SITE_CONFIG, BRAND_COLORS } from '@/lib/config';
+import { BRAND_COLORS } from '@/lib/config';
 
 export default function NotFound() {
   return (

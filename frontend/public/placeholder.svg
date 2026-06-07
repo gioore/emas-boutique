@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice">
+  <rect width="800" height="1000" fill="#f5f0e8"/>
+  <rect x="130" y="230" width="540" height="540" rx="36" fill="#ffffff" stroke="#d6d3d1" stroke-width="8"/>
+  <circle cx="300" cy="390" r="58" fill="#d4a373" opacity="0.65"/>
+  <path d="M190 690 L355 520 L455 620 L540 540 L640 690 Z" fill="#d6d3d1"/>
+  <text x="400" y="835" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" fill="#78716c">EMAS Boutique</text>
+</svg>

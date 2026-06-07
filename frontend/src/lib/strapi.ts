@@ -1,6 +1,6 @@
-const API_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+const API_URL = process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 
-const API_TOKEN = process.env.NEXT_PUBLIC_STRAPI_TOKEN || process.env.STRAPI_API_TOKEN || '';
+const API_TOKEN = process.env.STRAPI_API_TOKEN || '';
 
 interface FetchOptions extends RequestInit {
   headers?: Record<string, string>;
@@ -33,8 +33,9 @@ export function getImageUrl(image: { url: string }): string {
 }
 
 export async function getProducts(params?: Record<string, string>): Promise<import('@/types/product').ProductsResponse> {
-  const query = params ? '?' + new URLSearchParams(params).toString() : '';
-  return fetchAPI(`/products${query}&populate=*`);
+  const query = new URLSearchParams(params);
+  query.set('populate', '*');
+  return fetchAPI(`/products?${query.toString()}`);
 }
 
 export async function getProduct(slug: string): Promise<import('@/types/product').ProductResponse> {

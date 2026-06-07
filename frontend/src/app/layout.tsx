@@ -12,9 +12,23 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const BASE_URL = 'https://emasboutique.com';
+
 export const metadata: Metadata = {
   title: "EMAS Boutique - Mercadería importada 100% original",
   description: "Descubre nuestra colección importada. Vestidos, blusas, pantalones, bolsos y más. Envíos a toda Guatemala.",
+  openGraph: {
+    title: "EMAS Boutique - Mercadería importada 100% original",
+    description: "Vestidos, blusas, pantalones, bolsos y accesorios importados. Envíos a toda Guatemala.",
+    url: BASE_URL,
+    siteName: "EMAS Boutique",
+    locale: "es_GT",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
