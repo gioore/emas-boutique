@@ -1,16 +1,25 @@
 'use client';
-import { BRAND_COLORS } from '@/lib/config';
 
-export default function Error({ reset }: { error: Error; reset: () => void }) {
+export default function AdminError({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: BRAND_COLORS.background }}>
-      <div className="text-center px-4">
-        <h2 className="text-2xl font-bold mb-2" style={{ color: BRAND_COLORS.text }}>Algo salió mal</h2>
-        <p className="mb-8" style={{ color: BRAND_COLORS.textMuted }}>Ocurrió un error inesperado. Intenta de nuevo.</p>
-        <button onClick={reset} className="px-8 py-3 font-semibold rounded-full transition-all" style={{ backgroundColor: BRAND_COLORS.primary, color: BRAND_COLORS.white }}>
-          Intentar de nuevo
-        </button>
-      </div>
+    <div className="p-8 text-center">
+      <p className="text-lg font-semibold" style={{ color: '#991b1b' }}>Error en el administrador</p>
+      <p className="text-sm mt-2" style={{ color: '#57534e' }}>
+        {error.message || 'Ocurrió un error inesperado'}
+      </p>
+      <button
+        onClick={reset}
+        className="mt-4 px-4 py-2 text-sm font-medium rounded-lg transition-colors"
+        style={{ backgroundColor: '#1c1917', color: '#ffffff' }}
+      >
+        Reintentar
+      </button>
     </div>
   );
 }

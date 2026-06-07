@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   try {
     const { data: product } = await getProduct(slug);
-    const images = product.images?.[0] ? [getImageUrl(product.images[0].formats?.large || product.images[0])] : [];
+    const images = product.images?.[0] ? [getImageUrl(product.images[0])] : [];
     const description = product.description?.replace(/<[^>]*>/g, '').slice(0, 160) || `Compra ${product.name} por Q${product.price.toFixed(2)}`;
     return {
       title: `${product.name} - ${SITE_CONFIG.name}`,
@@ -143,7 +143,7 @@ export default async function ProductoPage({ params }: Props) {
             <div className="aspect-[3/4] rounded-2xl overflow-hidden relative shadow-lg" style={{ backgroundColor: BRAND_COLORS.backgroundAlt }}>
               {product.images?.[0] ? (
                 <Image
-                  src={getImageUrl(product.images[0].formats?.large || product.images[0])}
+                  src={getImageUrl(product.images[0])}
                   alt={product.name}
                   fill
                   className="object-cover"
@@ -185,7 +185,7 @@ export default async function ProductoPage({ params }: Props) {
                   >
                     {img.url && (
                       <Image
-                        src={getImageUrl(img.formats?.small || img)}
+                        src={getImageUrl(img)}
                         alt=""
                         width={80}
                         height={80}

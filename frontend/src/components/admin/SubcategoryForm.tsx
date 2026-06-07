@@ -1,7 +1,5 @@
 'use client';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -85,8 +83,8 @@ export default function SubcategoryForm({ initialData, isEditing }: Props) {
 
       setSuccess(isEditing ? 'Subcategoría actualizada exitosamente' : 'Subcategoría creada exitosamente');
       setTimeout(() => router.push('/admin/subcategorias'), 1500);
-    } catch (err: any) {
-      setError(err.message || 'Error al guardar la subcategoría');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Error al guardar la subcategoría');
     } finally {
       setSaving(false);
     }

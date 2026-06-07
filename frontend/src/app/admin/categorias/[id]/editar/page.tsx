@@ -1,14 +1,20 @@
 'use client';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import CategoryForm from '@/components/admin/CategoryForm';
 
+interface CategoryData {
+  id: number;
+  name: string;
+  description: string;
+  order: number;
+  active: boolean;
+}
+
 export default function EditarCategoriaPage() {
   const params = useParams();
-  const [category, setCategory] = useState<any>(null);
+  const [category, setCategory] = useState<CategoryData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -18,12 +24,12 @@ export default function EditarCategoriaPage() {
         const res = await fetch('/api/admin/categories');
         if (res.status === 401) { window.location.href = '/admin/login'; return; }
         const data = await res.json();
-        const found = data.data?.find((c: any) => String(c.id) === params.id);
+        const found = (data.data ?? []).find((c: { id: number }) => String(c.id) === params.id);
         if (found) {
           setCategory({
             id: found.id,
             name: found.name,
-            description: found.description,
+            description: found.description || '',
             order: found.order,
             active: found.active,
           });
@@ -61,9 +67,8 @@ export default function EditarCategoriaPage() {
         <h1 className="text-2xl font-bold" style={{ color: '#1c1917' }}>Editar Categoría</h1>
         <p className="mt-1" style={{ color: '#78716c' }}>Modifica los datos de la categoría</p>
       </div>
-
       <div className="rounded-xl border p-6 max-w-lg" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
-        <CategoryForm initialData={category} isEditing />
+        <CategoryForm initialData={category ?? undefined} isEditing />
       </div>
     </div>
   );

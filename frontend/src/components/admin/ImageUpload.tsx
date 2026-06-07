@@ -3,7 +3,6 @@
 import { useRef, useState } from 'react';
 import Image from 'next/image';
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 const MAX_IMAGES = 8;
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const MAX_IMAGE_DIMENSION = 1600;
@@ -204,8 +203,7 @@ export default function ImageUpload({ existingImages = [], onImagesChange }: Pro
 
   const getImageSrc = (img: UploadImage) => {
     if (img.file) return img.url;
-    if (img.url.startsWith('http')) return img.url;
-    return `${STRAPI_URL}${img.url}`;
+    return img.url.startsWith('http') ? img.url : '/placeholder.svg';
   };
 
   return (

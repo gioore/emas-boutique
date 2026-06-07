@@ -8,10 +8,15 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const { id } = await params;
     const body = await request.json();
     const data = body.data || body;
-    const slug = data.slug || data.name.toLowerCase().replace(/\s+/g, '-');
+
+    if (!data.name || typeof data.name !== 'string' || !data.name.trim()) {
+      return NextResponse.json({ error: 'El nombre de la subcategoría es requerido' }, { status: 400 });
+    }
+
+    const slug = data.slug || data.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
     await execute(
       'UPDATE subcategories SET name=$1, slug=$2, description=$3, active=$4, "order"=$5, category_id=$6, updated_at=now() WHERE id=$7',
-      [data.name, slug, data.description || '', data.active ?? true, data.order ?? 0, data.category_id || null, id]
+      [data.name.trim(), slug, data.description || '', data.active ?? true, data.order ?? 0, data.category_id || null, id]
     );
     return NextResponse.json({ data: { id: Number(id), ...data, slug } });
   } catch (err: any) {

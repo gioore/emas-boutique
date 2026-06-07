@@ -1,11 +1,10 @@
 'use client';
 
-/* eslint-disable @typescript-eslint/no-explicit-any, react-hooks/set-state-in-effect */
-
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getImageUrl } from '@/lib/images';
+import { TableSkeleton } from '@/components/Skeleton';
 
 interface Product {
   id: number;
@@ -91,8 +90,23 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <div className="w-8 h-8 border-4 rounded-full border-t-transparent animate-spin" style={{ borderColor: '#1c1917', borderTopColor: 'transparent' }} />
+      <div>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <div className="h-7 w-36 rounded animate-pulse" style={{ backgroundColor: '#e5e0d8' }} />
+            <div className="h-4 w-48 mt-2 rounded animate-pulse" style={{ backgroundColor: '#e5e0d8' }} />
+          </div>
+          <div className="h-10 w-40 rounded-lg animate-pulse" style={{ backgroundColor: '#e5e0d8' }} />
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="rounded-xl border p-4 animate-pulse" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
+              <div className="h-7 w-12 rounded" style={{ backgroundColor: '#e5e0d8' }} />
+              <div className="h-3 w-20 mt-2 rounded" style={{ backgroundColor: '#e5e0d8' }} />
+            </div>
+          ))}
+        </div>
+        <TableSkeleton rows={5} cols={6} />
       </div>
     );
   }

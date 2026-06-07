@@ -60,26 +60,39 @@ export async function POST(request: NextRequest) {
       formData.append('api_key', API_KEY);
       formData.append('signature', signature);
 
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
-        method: 'POST',
-        body: formData,
-      });
+      let lastError: Error | null = null;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+            method: 'POST',
+            body: formData,
+          });
 
-      if (!res.ok) {
-        const err = await res.text();
-        throw new Error(err);
+          if (!res.ok) {
+            const errText = await res.text();
+            lastError = new Error(errText);
+            if (attempt === 0) continue;
+            throw lastError;
+          }
+
+          const result = await res.json();
+          results.push({
+            id: results.length + 1,
+            url: result.secure_url,
+            alternativeText: file.name.replace(/\.[^/.]+$/, ''),
+            width: result.width,
+            height: result.height,
+            format: result.format,
+            public_id: result.public_id,
+          });
+          lastError = null;
+          break;
+        } catch (err) {
+          lastError = err instanceof Error ? err : new Error('Error al subir imagen');
+          if (attempt === 0) continue;
+          throw lastError;
+        }
       }
-
-      const result = await res.json();
-      results.push({
-        id: results.length + 1,
-        url: result.secure_url,
-        alternativeText: file.name.replace(/\.[^/.]+$/, ''),
-        width: result.width,
-        height: result.height,
-        format: result.format,
-        public_id: result.public_id,
-      });
     }
 
     return NextResponse.json(results, { status: 201 });

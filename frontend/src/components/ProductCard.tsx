@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function ProductCard({ product }: Props) {
-  const imageUrl = product.images?.[0] ? getImageUrl(product.images[0].formats?.medium || product.images[0]) : '/placeholder.svg';
+  const imageUrl = product.images?.[0] ? getImageUrl(product.images[0]) : '/placeholder.svg';
 
   return (
     <Link

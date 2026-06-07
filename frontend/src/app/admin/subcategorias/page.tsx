@@ -1,9 +1,8 @@
 'use client';
 
-/* eslint-disable react-hooks/set-state-in-effect */
-
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { TableSkeleton } from '@/components/Skeleton';
 
 interface Subcategory {
   id: number;
@@ -57,8 +56,15 @@ export default function AdminSubcategoriesPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <div className="w-8 h-8 border-4 rounded-full border-t-transparent animate-spin" style={{ borderColor: '#1c1917', borderTopColor: 'transparent' }} />
+      <div>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <div className="h-7 w-36 rounded animate-pulse" style={{ backgroundColor: '#e5e0d8' }} />
+            <div className="h-4 w-48 mt-2 rounded animate-pulse" style={{ backgroundColor: '#e5e0d8' }} />
+          </div>
+          <div className="h-10 w-40 rounded-lg animate-pulse" style={{ backgroundColor: '#e5e0d8' }} />
+        </div>
+        <TableSkeleton rows={4} cols={5} />
       </div>
     );
   }

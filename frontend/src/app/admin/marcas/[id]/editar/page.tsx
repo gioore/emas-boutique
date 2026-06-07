@@ -1,14 +1,18 @@
 'use client';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import BrandForm from '@/components/admin/BrandForm';
 
+interface BrandData {
+  id: number;
+  name: string;
+  active: boolean;
+}
+
 export default function EditarMarcaPage() {
   const params = useParams();
-  const [brand, setBrand] = useState<any>(null);
+  const [brand, setBrand] = useState<BrandData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -18,14 +22,9 @@ export default function EditarMarcaPage() {
         const res = await fetch('/api/admin/brands');
         if (res.status === 401) { window.location.href = '/admin/login'; return; }
         const data = await res.json();
-        const found = data.data?.find((b: any) => String(b.id) === params.id);
+        const found = (data.data ?? []).find((b: { id: number }) => String(b.id) === params.id);
         if (found) {
-          setBrand({
-            id: found.id,
-            name: found.name,
-            active: found.active,
-            logo: found.logo || null,
-          });
+          setBrand({ id: found.id, name: found.name, active: found.active });
         } else {
           setError('Marca no encontrada');
         }
@@ -60,9 +59,8 @@ export default function EditarMarcaPage() {
         <h1 className="text-2xl font-bold" style={{ color: '#1c1917' }}>Editar Marca</h1>
         <p className="mt-1" style={{ color: '#78716c' }}>Modifica los datos de la marca</p>
       </div>
-
       <div className="rounded-xl border p-6 max-w-lg" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
-        <BrandForm initialData={brand} isEditing />
+        <BrandForm initialData={brand ?? undefined} isEditing />
       </div>
     </div>
   );

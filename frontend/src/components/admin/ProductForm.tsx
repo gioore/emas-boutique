@@ -1,7 +1,5 @@
 'use client';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import ImageUpload from './ImageUpload';
@@ -48,13 +46,13 @@ interface ProductFormData {
 }
 
 interface Props {
-  initialData?: Partial<ProductFormData> & { id?: number; cat?: any; subcat?: any };
+  initialData?: Partial<ProductFormData> & { id?: number; cat?: string | { id: number }; subcat?: string | { id: number } };
   isEditing?: boolean;
 }
 
-function extractId(value: any): string {
+function extractId(value: unknown): string {
   if (!value) return '';
-  if (typeof value === 'object') return String(value.id);
+  if (typeof value === 'object' && value !== null && 'id' in value) return String((value as Record<string, unknown>).id);
   return String(value);
 }
 
@@ -66,6 +64,18 @@ export default function ProductForm({ initialData, isEditing }: Props) {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
+
+  const [dirty, setDirty] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (dirty) e.preventDefault();
+    };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, [dirty]);
+
+  const markDirty = () => setDirty(true);
 
   const [form, setForm] = useState<ProductFormData>({
     name: initialData?.name || '',
@@ -160,7 +170,7 @@ export default function ProductForm({ initialData, isEditing }: Props) {
     const catSlug = categories.find(c => String(c.id) === form.cat)?.slug || '';
     const subcatName = subcategories.find(s => String(s.id) === form.subcat)?.name || '';
 
-    const data: Record<string, any> = {
+    const data: Record<string, unknown> = {
       name: form.name,
       slug,
       price: parseFloat(form.price),
@@ -206,14 +216,15 @@ export default function ProductForm({ initialData, isEditing }: Props) {
 
       setSuccess(isEditing ? 'Producto actualizado exitosamente' : 'Producto creado exitosamente');
       setTimeout(() => router.push('/admin'), 1500);
-    } catch (err: any) {
-      setError(err.message || 'Error al guardar el producto');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Error al guardar el producto');
     } finally {
       setSaving(false);
     }
   };
 
-  const updateField = (field: keyof ProductFormData, value: any) => {
+  const updateField = <K extends keyof ProductFormData>(field: K, value: ProductFormData[K]) => {
+    setDirty(true);
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 

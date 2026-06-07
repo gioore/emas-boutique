@@ -1,5 +1,5 @@
-export function getImageUrl(image: { url: string }): string {
+export function getImageUrl(image: { url: string } | null | undefined): string {
+  if (!image?.url) return '/placeholder.svg';
   if (image.url.startsWith('http')) return image.url;
-  const base = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-  return `${base}${image.url}`;
+  return '/placeholder.svg';
 }

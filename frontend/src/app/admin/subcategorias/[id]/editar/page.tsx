@@ -1,14 +1,20 @@
 'use client';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import SubcategoryForm from '@/components/admin/SubcategoryForm';
 
+interface SubcategoryData {
+  id: number;
+  name: string;
+  category: string;
+  order: number;
+  active: boolean;
+}
+
 export default function EditarSubcategoriaPage() {
   const params = useParams();
-  const [subcategory, setSubcategory] = useState<any>(null);
+  const [subcategory, setSubcategory] = useState<SubcategoryData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -18,7 +24,7 @@ export default function EditarSubcategoriaPage() {
         const res = await fetch('/api/admin/subcategories');
         if (res.status === 401) { window.location.href = '/admin/login'; return; }
         const data = await res.json();
-        const found = data.data?.find((s: any) => String(s.id) === params.id);
+        const found = (data.data ?? []).find((s: { id: number }) => String(s.id) === params.id);
         if (found) {
           setSubcategory({
             id: found.id,
@@ -61,9 +67,8 @@ export default function EditarSubcategoriaPage() {
         <h1 className="text-2xl font-bold" style={{ color: '#1c1917' }}>Editar Subcategoría</h1>
         <p className="mt-1" style={{ color: '#78716c' }}>Modifica los datos de la subcategoría</p>
       </div>
-
       <div className="rounded-xl border p-6 max-w-lg" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
-        <SubcategoryForm initialData={subcategory} isEditing />
+        <SubcategoryForm initialData={subcategory ?? undefined} isEditing />
       </div>
     </div>
   );

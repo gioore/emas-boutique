@@ -1,27 +1,42 @@
 'use client';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import ProductForm from '@/components/admin/ProductForm';
 
+interface EditProduct {
+  id: number;
+  name: string;
+  price: string;
+  cat: string;
+  subcat: string;
+  brand: string;
+  description: string;
+  sizes: string[];
+  featured: boolean;
+  newArrival: boolean;
+  onSale: boolean;
+  colors: string;
+  tags: string;
+  availability: string;
+  sku: string;
+  oldPrice: string;
+  images: { id: number; url: string }[];
+}
+
 export default function EditarProductoPage() {
   const params = useParams();
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<EditProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        const res = await fetch(`/api/admin/products`);
-        if (res.status === 401) {
-          window.location.href = '/admin/login';
-          return;
-        }
+        const res = await fetch('/api/admin/products');
+        if (res.status === 401) { window.location.href = '/admin/login'; return; }
         const data = await res.json();
-        const found = data.data?.find((p: any) => String(p.id) === params.id);
+        const found = (data.data ?? []).find((p: { id: number }) => String(p.id) === params.id);
         if (found) {
           setProduct({
             id: found.id,
@@ -76,9 +91,8 @@ export default function EditarProductoPage() {
         <h1 className="text-2xl font-bold" style={{ color: '#1c1917' }}>Editar Producto</h1>
         <p className="mt-1" style={{ color: '#78716c' }}>Modifica los campos del producto</p>
       </div>
-
       <div className="rounded-xl border p-6 max-w-2xl" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
-        <ProductForm initialData={product} isEditing />
+        <ProductForm initialData={product ?? undefined} isEditing />
       </div>
     </div>
   );

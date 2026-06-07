@@ -18,10 +18,15 @@ export async function POST(request: NextRequest) {
     await requireAuth();
     const body = await request.json();
     const data = body.data || body;
-    const slug = data.slug || data.name.toLowerCase().replace(/\s+/g, '-');
+
+    if (!data.name || typeof data.name !== 'string' || !data.name.trim()) {
+      return NextResponse.json({ error: 'El nombre de la marca es requerido' }, { status: 400 });
+    }
+
+    const slug = data.slug || data.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
     const result = await queryOne(
       'INSERT INTO brands (name, slug, logo_url, active) VALUES ($1,$2,$3,$4) RETURNING id',
-      [data.name, slug, data.logo_url || null, data.active ?? true]
+      [data.name.trim(), slug, data.logo_url || null, data.active ?? true]
     );
     return NextResponse.json({ data: { id: result?.id, name: data.name, slug } }, { status: 201 });
   } catch (err: any) {

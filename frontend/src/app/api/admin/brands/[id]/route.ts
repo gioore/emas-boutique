@@ -8,10 +8,15 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const { id } = await params;
     const body = await request.json();
     const data = body.data || body;
-    const slug = data.slug || data.name.toLowerCase().replace(/\s+/g, '-');
+
+    if (!data.name || typeof data.name !== 'string' || !data.name.trim()) {
+      return NextResponse.json({ error: 'El nombre de la marca es requerido' }, { status: 400 });
+    }
+
+    const slug = data.slug || data.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
     await execute(
       'UPDATE brands SET name=$1, slug=$2, logo_url=$3, active=$4, updated_at=now() WHERE id=$5',
-      [data.name, slug, data.logo_url || null, data.active ?? true, id]
+      [data.name.trim(), slug, data.logo_url || null, data.active ?? true, id]
     );
     return NextResponse.json({ data: { id: Number(id), ...data, slug } });
   } catch (err: any) {

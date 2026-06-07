@@ -1,7 +1,5 @@
 'use client';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -57,8 +55,8 @@ export default function BrandForm({ initialData, isEditing }: Props) {
 
       setSuccess(isEditing ? 'Marca actualizada exitosamente' : 'Marca creada exitosamente');
       setTimeout(() => router.push('/admin/marcas'), 1500);
-    } catch (err: any) {
-      setError(err.message || 'Error al guardar la marca');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Error al guardar la marca');
     } finally {
       setSaving(false);
     }
