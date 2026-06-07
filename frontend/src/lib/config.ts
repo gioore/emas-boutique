@@ -22,6 +22,43 @@ export const SITE_CONFIG = {
   ],
 };
 
+export const WHY_EMAS = [
+  {
+    title: '100% Original',
+    description: 'Todo nuestro inventario es mercadería importada original. Sin imitaciones.',
+    icon: 'shield',
+  },
+  {
+    title: 'Atención Personalizada',
+    description: 'Te atendemos por WhatsApp de forma directa y sin complicaciones.',
+    icon: 'chat',
+  },
+  {
+    title: 'Envíos Seguros',
+    description: 'Empacamos con cuidado y enviamos a toda Guatemala con entregas rápidas.',
+    icon: 'truck',
+  },
+];
+
+export const TESTIMONIALS = [
+  {
+    name: 'María F.',
+    text: 'Compré un vestido y llegó antes de lo esperado. La calidad es increíble, exactamente como se ve en las fotos. Volveré a comprar seguro.',
+  },
+  {
+    name: 'Ana G.',
+    text: 'Me encanta que todo sea original. La atención por WhatsApp es súper rápida y resolvieron todas mis dudas. Recomendada.',
+  },
+  {
+    name: 'Carlos M.',
+    text: 'Compré un reloj para regalo y quedaron fascinados. Producto original, bien empacado y el precio justo.',
+  },
+  {
+    name: 'Sofía R.',
+    text: 'EMAS Boutique es mi tienda de confianza. Siempre encuentran lo que busco y los envíos llegan perfectos.',
+  },
+];
+
 export const BRAND_COLORS = {
   primary: '#18181b',
   secondary: '#d4a373',

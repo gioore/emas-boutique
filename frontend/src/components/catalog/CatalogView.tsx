@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProductCard from '@/components/ProductCard';
 import { BRAND_COLORS, SITE_CONFIG } from '@/lib/config';
@@ -49,7 +49,6 @@ function getSubcategoriesForMode(categories: CategoryWithSubcategories[], mode: 
     }
     return [...names];
   }
-
   const category = categories.find((item) => normalize(item.slug || item.name) === mode);
   return (category?.subcategories || [])
     .filter((subcategory) => subcategory.active !== false)
@@ -60,6 +59,9 @@ function getSubcategoriesForMode(categories: CategoryWithSubcategories[], mode: 
 export default function CatalogView({ mode, title, subtitle, products, brands, categories, error }: Props) {
   const searchParams = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
+  const [sticky, setSticky] = useState(false);
+  const sortBarRef = useRef<HTMLDivElement>(null);
+
   const [filters, setFilters] = useState<Filters>({
     category: mode === 'all' ? searchParams.get('categoria') || '' : '',
     subcategory: searchParams.get('subcategoria') || '',
@@ -72,11 +74,25 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
     search: searchParams.get('search') || '',
   });
 
+  useEffect(() => {
+    if (!sortBarRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setSticky(!entry.isIntersecting),
+      { threshold: 0 }
+    );
+    observer.observe(sortBarRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = showFilters ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [showFilters]);
+
   const allSubcategories = useMemo(() => getSubcategoriesForMode(categories, mode), [categories, mode]);
 
   const filteredSubcategories = useMemo(() => {
     if (mode !== 'all' || !filters.category) return allSubcategories;
-
     const selectedCategory = categories.find((category) => String(category.id) === filters.category);
     return (selectedCategory?.subcategories || [])
       .filter((subcategory: Subcategory) => subcategory.active !== false)
@@ -86,11 +102,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
 
   const filtered = useMemo(() => {
     let result = [...products];
-
-    if (mode !== 'all') {
-      result = result.filter((product) => getCategoryKey(product) === mode);
-    }
-
+    if (mode !== 'all') result = result.filter((product) => getCategoryKey(product) === mode);
     if (filters.search) {
       const query = normalize(filters.search);
       result = result.filter((product) =>
@@ -99,58 +111,25 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
         product.tags?.some((tag) => normalize(tag).includes(query))
       );
     }
-
-    if (mode === 'all' && filters.category) {
-      result = result.filter((product) => String(product.cat?.id) === filters.category);
-    }
-
-    if (filters.subcategory) {
-      result = result.filter((product) => product.subcat?.name === filters.subcategory || product.subcategory === filters.subcategory);
-    }
-
-    if (filters.brand) {
-      result = result.filter((product) => String(product.brand?.id) === filters.brand);
-    }
-
-    if (filters.size) {
-      result = result.filter((product) => product.sizes?.includes(filters.size));
-    }
-
-    if (filters.availability) {
-      result = result.filter((product) => product.availability === filters.availability);
-    }
-
-    if (filters.minPrice) {
-      result = result.filter((product) => product.price >= parseFloat(filters.minPrice));
-    }
-
-    if (filters.maxPrice) {
-      result = result.filter((product) => product.price <= parseFloat(filters.maxPrice));
-    }
-
+    if (mode === 'all' && filters.category) result = result.filter((product) => String(product.cat?.id) === filters.category);
+    if (filters.subcategory) result = result.filter((product) => product.subcat?.name === filters.subcategory || product.subcategory === filters.subcategory);
+    if (filters.brand) result = result.filter((product) => String(product.brand?.id) === filters.brand);
+    if (filters.size) result = result.filter((product) => product.sizes?.includes(filters.size));
+    if (filters.availability) result = result.filter((product) => product.availability === filters.availability);
+    if (filters.minPrice) result = result.filter((product) => product.price >= parseFloat(filters.minPrice));
+    if (filters.maxPrice) result = result.filter((product) => product.price <= parseFloat(filters.maxPrice));
     switch (filters.sort) {
-      case 'price-asc':
-        result.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-desc':
-        result.sort((a, b) => b.price - a.price);
-        break;
-      case 'name-asc':
-        result.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case 'name-desc':
-        result.sort((a, b) => b.name.localeCompare(a.name));
-        break;
-      case 'newest':
-      default:
-        result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-        break;
+      case 'price-asc': result.sort((a, b) => a.price - b.price); break;
+      case 'price-desc': result.sort((a, b) => b.price - a.price); break;
+      case 'name-asc': result.sort((a, b) => a.name.localeCompare(b.name)); break;
+      case 'name-desc': result.sort((a, b) => b.name.localeCompare(a.name)); break;
+      default: result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()); break;
     }
-
     return result;
   }, [filters, mode, products]);
 
   const hasActiveFilters = Object.entries(filters).some(([key, value]) => key !== 'sort' && value);
+  const activeFilterCount = Object.entries(filters).filter(([key, value]) => key !== 'sort' && value).length;
 
   const updateFilter = (key: keyof Filters, value: string) => {
     setFilters((current) => ({ ...current, [key]: value }));
@@ -160,13 +139,82 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
     setFilters({ category: '', subcategory: '', brand: '', size: '', availability: '', minPrice: '', maxPrice: '', sort: 'newest', search: '' });
   };
 
+  const FilterContent = () => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {mode === 'all' && (
+        <div>
+          <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Categoria</label>
+          <select value={filters.category} onChange={(event) => { updateFilter('category', event.target.value); updateFilter('subcategory', ''); }} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+            <option value="">Todas</option>
+            {categories.filter((category) => category.active !== false).map((category) => (
+              <option key={category.id} value={String(category.id)}>{category.name}</option>
+            ))}
+          </select>
+        </div>
+      )}
+      <div>
+        <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Subcategoria</label>
+        <select value={filters.subcategory} onChange={(event) => updateFilter('subcategory', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+          <option value="">Todas</option>
+          {filteredSubcategories.map((subcategory) => (
+            <option key={subcategory} value={subcategory}>{subcategory}</option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Marca</label>
+        <select value={filters.brand} onChange={(event) => updateFilter('brand', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+          <option value="">Todas</option>
+          {brands.filter((brand) => brand.active !== false).map((brand) => (
+            <option key={brand.id} value={String(brand.id)}>{brand.name}</option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Disponibilidad</label>
+        <select value={filters.availability} onChange={(event) => updateFilter('availability', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+          <option value="">Todas</option>
+          <option value="available">Disponible</option>
+          <option value="low_stock">Ultimas unidades</option>
+          <option value="out_of_stock">Agotado</option>
+          <option value="pre_order">Bajo pedido</option>
+        </select>
+      </div>
+      <div>
+        <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Talla</label>
+        <select value={filters.size} onChange={(event) => updateFilter('size', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+          <option value="">Todas</option>
+          {SIZE_OPTIONS.map((size) => (
+            <option key={size} value={size}>{size}</option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Precio minimo</label>
+        <input type="number" min="0" placeholder="Q0" value={filters.minPrice} onChange={(event) => updateFilter('minPrice', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }} />
+      </div>
+      <div>
+        <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Precio maximo</label>
+        <input type="number" min="0" placeholder="Q1000" value={filters.maxPrice} onChange={(event) => updateFilter('maxPrice', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }} />
+      </div>
+      <div className="flex items-end">
+        <button onClick={clearFilters} className="px-4 py-2 border rounded-lg text-sm font-medium transition-colors w-full" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.textMuted }}>
+          Limpiar filtros
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: mode === 'all' ? BRAND_COLORS.background : BRAND_COLORS.white }}>
       <div className="border-b" style={{ backgroundColor: mode === 'all' ? BRAND_COLORS.white : BRAND_COLORS.background, borderColor: '#e5e0d8' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <span className="text-xs uppercase tracking-[0.3em] font-medium" style={{ color: BRAND_COLORS.textMuted }}>
-            {mode === 'all' ? SITE_CONFIG.name : 'Categoria'}
-          </span>
+          <div className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] font-medium mb-2" style={{ color: BRAND_COLORS.textMuted }}>
+            <span>{mode === 'all' ? SITE_CONFIG.name : 'Categoria'}</span>
+            {hasActiveFilters && (
+              <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: BRAND_COLORS.gold }} />
+            )}
+          </div>
           <h1 className="text-4xl font-bold mt-2" style={{ color: BRAND_COLORS.text }}>{title}</h1>
           <p className="mt-2" style={{ color: BRAND_COLORS.textMuted }}>{subtitle}</p>
         </div>
@@ -179,7 +227,8 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        {/* Search & Sort bar */}
+        <div ref={sortBarRef} className="flex flex-col sm:flex-row gap-4 mb-8">
           <div className="flex-1 relative">
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: BRAND_COLORS.textMuted }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -201,87 +250,75 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
               <option value="name-asc">A-Z</option>
               <option value="name-desc">Z-A</option>
             </select>
-            <button onClick={() => setShowFilters((current) => !current)} className="px-4 py-3 border rounded-xl text-sm font-medium transition-colors flex items-center gap-2" style={{ borderColor: '#e5e0d8', backgroundColor: showFilters ? BRAND_COLORS.primary : BRAND_COLORS.white, color: showFilters ? BRAND_COLORS.white : BRAND_COLORS.text }}>
+            <button onClick={() => setShowFilters(true)} className="relative px-4 py-3 border rounded-xl text-sm font-medium transition-colors flex items-center gap-2" style={{ borderColor: '#e5e0d8', backgroundColor: hasActiveFilters ? BRAND_COLORS.primary : BRAND_COLORS.white, color: hasActiveFilters ? BRAND_COLORS.white : BRAND_COLORS.text }}>
               Filtros
-              {hasActiveFilters && <span className="w-2 h-2 rounded-full" style={{ backgroundColor: BRAND_COLORS.gold }} />}
+              {activeFilterCount > 0 && (
+                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold" style={{ backgroundColor: BRAND_COLORS.gold, color: '#1c1917' }}>
+                  {activeFilterCount}
+                </span>
+              )}
             </button>
           </div>
         </div>
 
-        {showFilters && (
-          <div className="mb-8 p-6 rounded-xl border" style={{ backgroundColor: BRAND_COLORS.white, borderColor: '#e5e0d8' }}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {mode === 'all' && (
-                <div>
-                  <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Categoria</label>
-                  <select value={filters.category} onChange={(event) => { updateFilter('category', event.target.value); updateFilter('subcategory', ''); }} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
-                    <option value="">Todas</option>
-                    {categories.filter((category) => category.active !== false).map((category) => (
-                      <option key={category.id} value={String(category.id)}>{category.name}</option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              <div>
-                <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Subcategoria</label>
-                <select value={filters.subcategory} onChange={(event) => updateFilter('subcategory', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
-                  <option value="">Todas</option>
-                  {filteredSubcategories.map((subcategory) => (
-                    <option key={subcategory} value={subcategory}>{subcategory}</option>
-                  ))}
+        {/* Sticky sort bar */}
+        {sticky && (
+          <div className="sticky top-16 z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 border-b shadow-sm" style={{ backgroundColor: 'rgba(250,247,242,0.95)', backdropFilter: 'blur-sm', borderColor: '#e5e0d8' }}>
+            <div className="max-w-7xl mx-auto flex items-center justify-between">
+              <p className="text-sm" style={{ color: BRAND_COLORS.textMuted }}>
+                {filtered.length} producto{filtered.length !== 1 ? 's' : ''}
+              </p>
+              <div className="flex gap-3">
+                <select value={filters.sort} onChange={(event) => updateFilter('sort', event.target.value)} className="px-3 py-2 border rounded-lg outline-none text-xs" style={{ borderColor: '#e5e0d8', backgroundColor: BRAND_COLORS.white, color: BRAND_COLORS.text }}>
+                  <option value="newest">Mas recientes</option>
+                  <option value="price-asc">Menor precio</option>
+                  <option value="price-desc">Mayor precio</option>
+                  <option value="name-asc">A-Z</option>
+                  <option value="name-desc">Z-A</option>
                 </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Marca</label>
-                <select value={filters.brand} onChange={(event) => updateFilter('brand', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
-                  <option value="">Todas</option>
-                  {brands.filter((brand) => brand.active !== false).map((brand) => (
-                    <option key={brand.id} value={String(brand.id)}>{brand.name}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Disponibilidad</label>
-                <select value={filters.availability} onChange={(event) => updateFilter('availability', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
-                  <option value="">Todas</option>
-                  <option value="available">Disponible</option>
-                  <option value="low_stock">Ultimas unidades</option>
-                  <option value="out_of_stock">Agotado</option>
-                  <option value="pre_order">Bajo pedido</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Talla</label>
-                <select value={filters.size} onChange={(event) => updateFilter('size', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
-                  <option value="">Todas</option>
-                  {SIZE_OPTIONS.map((size) => (
-                    <option key={size} value={size}>{size}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Precio minimo</label>
-                <input type="number" min="0" placeholder="Q0" value={filters.minPrice} onChange={(event) => updateFilter('minPrice', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }} />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Precio maximo</label>
-                <input type="number" min="0" placeholder="Q1000" value={filters.maxPrice} onChange={(event) => updateFilter('maxPrice', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }} />
-              </div>
-
-              <div className="flex items-end">
-                <button onClick={clearFilters} className="px-4 py-2 border rounded-lg text-sm font-medium transition-colors w-full" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.textMuted }}>
-                  Limpiar filtros
+                <button onClick={() => setShowFilters(true)} className="px-3 py-2 border rounded-lg text-xs font-medium" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+                  Filtros{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
                 </button>
               </div>
             </div>
           </div>
         )}
+
+        {/* Desktop inline filters */}
+        <div className="hidden lg:block">
+          {showFilters && (
+            <div className="mb-8 p-6 rounded-xl border animate-scale-in" style={{ backgroundColor: BRAND_COLORS.white, borderColor: '#e5e0d8' }}>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-semibold uppercase tracking-wider" style={{ color: BRAND_COLORS.text }}>Filtros</h3>
+                <button onClick={() => setShowFilters(false)} className="text-sm" style={{ color: BRAND_COLORS.textMuted }}>Cerrar</button>
+              </div>
+              <FilterContent />
+            </div>
+          )}
+        </div>
+
+        {/* Mobile slide-in drawer */}
+        <div className="lg:hidden">
+          {showFilters && (
+            <div className="fixed inset-0 z-50" onClick={() => setShowFilters(false)} style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} />
+          )}
+          <div
+            className={`fixed top-0 left-0 h-full w-80 z-50 overflow-y-auto shadow-2xl lg:hidden ${showFilters ? 'animate-slide-in-left' : ''}`}
+            style={{ backgroundColor: BRAND_COLORS.background, display: showFilters ? 'block' : 'none' }}
+          >
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-sm font-semibold uppercase tracking-wider" style={{ color: BRAND_COLORS.text }}>Filtros</h3>
+                <button onClick={() => setShowFilters(false)} className="p-2 rounded-lg hover:bg-[#e5e0d8] transition-colors">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: BRAND_COLORS.text }}>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <FilterContent />
+            </div>
+          </div>
+        </div>
 
         <div className="flex items-center justify-between mb-6">
           <p className="text-sm" style={{ color: BRAND_COLORS.textMuted }}>

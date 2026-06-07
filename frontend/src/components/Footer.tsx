@@ -6,7 +6,7 @@ export default function Footer() {
     <footer style={{ backgroundColor: '#1c1917', color: '#d6d3d1' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12">
-          <div className="sm:col-span-2 lg:col-span-1 animate-fade-in">
+          <div className="sm:col-span-2 lg:col-span-1 reveal visible">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold" style={{ backgroundColor: '#d4a373', color: '#1c1917' }}>
                 EB
@@ -17,77 +17,77 @@ export default function Footer() {
               {SITE_CONFIG.footer.description}
             </p>
           </div>
-          <div className="animate-fade-in-delay-1">
+          <div>
             <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-widest">Categorías</h4>
             <ul className="space-y-3 text-sm">
               <li>
-                <Link href="/mujer" className="transition-colors duration-200" style={{ color: '#a8a29e' }}>
+                <Link href="/mujer" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#a8a29e' }}>
                   Mujer
                 </Link>
               </li>
               <li>
-                <Link href="/hombre" className="transition-colors duration-200" style={{ color: '#a8a29e' }}>
+                <Link href="/hombre" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#a8a29e' }}>
                   Hombre
                 </Link>
               </li>
               <li>
-                <Link href="/catalogo" className="transition-colors duration-200" style={{ color: '#a8a29e' }}>
+                <Link href="/catalogo" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#a8a29e' }}>
                   Catálogo
                 </Link>
               </li>
             </ul>
           </div>
-          <div className="animate-fade-in-delay-1">
+          <div>
             <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-widest">Ayuda</h4>
             <ul className="space-y-3 text-sm">
               <li>
-                <Link href="/faq" className="transition-colors duration-200" style={{ color: '#a8a29e' }}>
+                <Link href="/faq" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#a8a29e' }}>
                   FAQ
                 </Link>
               </li>
               <li>
-                <Link href="/guia-de-tallas" className="transition-colors duration-200" style={{ color: '#a8a29e' }}>
+                <Link href="/guia-de-tallas" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#a8a29e' }}>
                   Guía de Tallas
                 </Link>
               </li>
               <li>
-                <Link href="/envios" className="transition-colors duration-200" style={{ color: '#a8a29e' }}>
+                <Link href="/envios" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#a8a29e' }}>
                   Envíos
                 </Link>
               </li>
               <li>
-                <Link href="/cambios-devoluciones" className="transition-colors duration-200" style={{ color: '#a8a29e' }}>
+                <Link href="/cambios-devoluciones" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#a8a29e' }}>
                   Cambios y Devoluciones
                 </Link>
               </li>
             </ul>
           </div>
-          <div className="animate-fade-in-delay-2">
+          <div>
             <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-widest">Empresa</h4>
             <ul className="space-y-3 text-sm">
               <li>
-                <Link href="/quienes-somos" className="transition-colors duration-200" style={{ color: '#a8a29e' }}>
+                <Link href="/quienes-somos" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#a8a29e' }}>
                   Quiénes Somos
                 </Link>
               </li>
               <li>
-                <Link href="/contacto" className="transition-colors duration-200" style={{ color: '#a8a29e' }}>
+                <Link href="/contacto" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#a8a29e' }}>
                   Contacto
                 </Link>
               </li>
               <li>
-                <Link href="/privacidad" className="transition-colors duration-200" style={{ color: '#a8a29e' }}>
+                <Link href="/privacidad" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#a8a29e' }}>
                   Privacidad
                 </Link>
               </li>
               <li>
-                <Link href="/terminos" className="transition-colors duration-200" style={{ color: '#a8a29e' }}>
+                <Link href="/terminos" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#a8a29e' }}>
                   Términos
                 </Link>
               </li>
             </ul>
           </div>
-          <div className="animate-fade-in-delay-2">
+          <div>
             <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-widest">Social</h4>
             <ul className="space-y-3 text-sm">
               <li>
@@ -95,7 +95,7 @@ export default function Footer() {
                   href={`https://wa.me/${SITE_CONFIG.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 transition-colors duration-200"
+                  className="inline-flex items-center gap-2 transition-all duration-200 hover:text-white hover:translate-x-1"
                   style={{ color: '#a8a29e' }}
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -109,7 +109,7 @@ export default function Footer() {
                   href={`https://instagram.com/${SITE_CONFIG.instagram}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 transition-colors duration-200"
+                  className="inline-flex items-center gap-2 transition-all duration-200 hover:text-white hover:translate-x-1"
                   style={{ color: '#a8a29e' }}
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -121,7 +121,10 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="border-t mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderColor: '#292524' }}>
+
+        <div className="section-divider my-10" />
+
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs" style={{ color: '#78716c' }}>
             {SITE_CONFIG.footer.copyright}
           </p>

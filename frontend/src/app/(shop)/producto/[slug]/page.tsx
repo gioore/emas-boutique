@@ -8,6 +8,7 @@ import { SITE_CONFIG, BRAND_COLORS } from '@/lib/config';
 import ProductCard from '@/components/ProductCard';
 import ShareButton from '@/components/ShareButton';
 import ProductBuyClient from '@/components/ProductBuyClient';
+import ProductImageGallery from '@/components/ProductImageGallery';
 import type { Product } from '@/types/product';
 
 const AVAILABILITY_LABELS: Record<string, string> = {
@@ -92,9 +93,10 @@ export default async function ProductoPage({ params }: Props) {
   }
 
   const relatedProducts = await fetchRelated(product);
+  const colors: string[] = Array.isArray(product.colors) ? product.colors : [];
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: BRAND_COLORS.white }}>
+    <div className="min-h-screen pb-24 sm:pb-0" style={{ backgroundColor: BRAND_COLORS.white }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -139,64 +141,12 @@ export default async function ProductoPage({ params }: Props) {
         </nav>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
-          <div className="space-y-4">
-            <div className="aspect-[3/4] rounded-2xl overflow-hidden relative shadow-lg" style={{ backgroundColor: BRAND_COLORS.backgroundAlt }}>
-              {product.images?.[0] ? (
-                <Image
-                  src={getImageUrl(product.images[0])}
-                  alt={product.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority
-                />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center" style={{ color: '#d6d3d1' }}>
-                  <svg className="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </div>
-              )}
-              <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
-                {product.onSale && (
-                  <span className="px-3 py-1 text-xs font-bold rounded-full" style={{ backgroundColor: '#dc2626', color: '#ffffff' }}>
-                    OFERTA
-                  </span>
-                )}
-                {product.newArrival && (
-                  <span className="px-3 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: BRAND_COLORS.gold, color: '#ffffff' }}>
-                    Nuevo Ingreso
-                  </span>
-                )}
-                {!product.onSale && !product.newArrival && (
-                  <span className="px-3 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: BRAND_COLORS.gold, color: '#ffffff' }}>
-                    100% Original
-                  </span>
-                )}
-              </div>
-            </div>
-            {product.images && product.images.length > 1 && (
-              <div className="flex gap-3 overflow-x-auto pb-2">
-                {product.images.map((img, i) => (
-                  <div
-                    key={i}
-                    className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 border-2 transition-colors"
-                    style={{ borderColor: i === 0 ? BRAND_COLORS.primary : '#e5e0d8' }}
-                  >
-                    {img.url && (
-                      <Image
-                        src={getImageUrl(img)}
-                        alt=""
-                        width={80}
-                        height={80}
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <ProductImageGallery
+            images={product.images || []}
+            productName={product.name}
+            onSale={!!product.onSale}
+            newArrival={!!product.newArrival}
+          />
 
           <div className="flex flex-col justify-center">
             {product.brand && (
@@ -259,27 +209,8 @@ export default async function ProductoPage({ params }: Props) {
 
             <div className="w-12 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
 
-            {product.colors && product.colors.length > 0 && (
-              <div className="mt-6">
-                <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: BRAND_COLORS.text }}>
-                  Colores disponibles
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {product.colors.map((color, i) => (
-                    <span
-                      key={i}
-                      className="px-4 py-1.5 border rounded-lg text-xs font-medium"
-                      style={{ borderColor: '#d6d3d1', color: BRAND_COLORS.text, backgroundColor: BRAND_COLORS.white }}
-                    >
-                      {color}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {product.description && (
-              <div className="mt-8">
+              <div className="mb-8">
                 <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: BRAND_COLORS.text }}>
                   Descripción
                 </h3>
@@ -291,7 +222,7 @@ export default async function ProductoPage({ params }: Props) {
               </div>
             )}
 
-            <div className="mt-8">
+            <div className="mb-6">
               <Link
                 href="/guia-de-tallas"
                 className="inline-flex items-center gap-2 text-sm font-medium underline underline-offset-4"
@@ -308,9 +239,10 @@ export default async function ProductoPage({ params }: Props) {
               productName={product.name}
               productPrice={product.price}
               sizes={product.sizes || []}
+              colors={colors}
             />
 
-            <div className="flex items-center gap-4 mt-4">
+            <div className="flex items-center gap-4 mt-6">
               <ShareButton title={product.name} />
             </div>
           </div>
