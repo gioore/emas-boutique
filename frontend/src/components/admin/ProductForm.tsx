@@ -159,10 +159,15 @@ export default function ProductForm({ initialData, isEditing }: Props) {
       .map((t) => t.trim())
       .filter(Boolean);
 
+    const catName = categories.find(c => String(c.id) === form.cat)?.name || '';
+    const subcatName = subcategories.find(s => String(s.id) === form.subcat)?.name || '';
+
     const data: Record<string, any> = {
       name: form.name,
       slug,
       price: parseFloat(form.price),
+      category: catName,
+      subcategory: subcatName,
       cat: form.cat ? parseInt(form.cat) : undefined,
       subcat: form.subcat ? parseInt(form.subcat) : undefined,
       description: form.description,

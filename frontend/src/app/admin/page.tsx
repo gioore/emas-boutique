@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { getImageUrl } from '@/lib/strapi';
 
 interface Product {
   id: number;
@@ -187,7 +188,7 @@ export default function AdminDashboard() {
                         <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0" style={{ backgroundColor: '#f5f0e8' }}>
                           {product.images?.[0] && (
                             <img
-                              src={`${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}${product.images[0].url}`}
+                              src={getImageUrl(product.images[0])}
                               alt=""
                               className="w-full h-full object-cover"
                             />
