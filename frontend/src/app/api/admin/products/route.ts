@@ -6,8 +6,20 @@ import { query, queryOne } from '@/lib/db';
 export async function GET() {
   try {
     await requireAuth();
-    const rows = await query('SELECT * FROM products ORDER BY id DESC');
-    return NextResponse.json({ data: rows });
+    const rows = await query(`
+      SELECT p.*, b.name as brand_name, c.name as cat_name, sc.name as subcat_name
+      FROM products p
+      LEFT JOIN brands b ON b.id = p.brand_id
+      LEFT JOIN categories c ON c.id = p.category_id
+      LEFT JOIN subcategories sc ON sc.id = p.subcategory_id
+      ORDER BY p.id DESC
+    `);
+    const mapped = rows.map((p: any) => ({
+      ...p,
+      price: Number(p.price),
+      old_price: p.old_price ? Number(p.old_price) : null,
+    }));
+    return NextResponse.json({ data: mapped });
   } catch (err: any) {
     if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     return NextResponse.json({ error: err.message }, { status: 500 });

@@ -12,23 +12,20 @@ const SHOE_SIZE_OPTIONS = ['35', '36', '37', '38', '39', '40', '41', '42', '43',
 
 interface Brand {
   id: number;
-  documentId: string;
   name: string;
 }
 
 interface Category {
   id: number;
-  documentId: string;
   name: string;
   slug: string;
 }
 
 interface Subcategory {
   id: number;
-  documentId: string;
   name: string;
   slug: string;
-  category: { id: number } | number;
+  category_id: number | null;
 }
 
 interface ProductFormData {
@@ -51,7 +48,7 @@ interface ProductFormData {
 }
 
 interface Props {
-  initialData?: Partial<ProductFormData> & { documentId?: string; cat?: any; subcat?: any };
+  initialData?: Partial<ProductFormData> & { id?: number; cat?: any; subcat?: any };
   isEditing?: boolean;
 }
 
@@ -116,8 +113,7 @@ export default function ProductForm({ initialData, isEditing }: Props) {
   }, []);
 
   const filteredSubcategories = subcategories.filter((sub) => {
-    const catId = typeof sub.category === 'object' ? sub.category?.id : sub.category;
-    return String(catId) === form.cat;
+    return String(sub.category_id) === form.cat;
   });
 
   const selectedSubcat = subcategories.find((s) => String(s.id) === form.subcat);
@@ -170,8 +166,9 @@ export default function ProductForm({ initialData, isEditing }: Props) {
       price: parseFloat(form.price),
       category: catSlug,
       subcategory: subcatName,
-      cat: form.cat ? parseInt(form.cat) : undefined,
-      subcat: form.subcat ? parseInt(form.subcat) : undefined,
+      category_id: form.cat ? parseInt(form.cat) : null,
+      subcategory_id: form.subcat ? parseInt(form.subcat) : null,
+      brand_id: form.brand ? parseInt(form.brand) : null,
       description: form.description,
       sizes: form.sizes,
       featured: form.featured,
@@ -182,22 +179,18 @@ export default function ProductForm({ initialData, isEditing }: Props) {
       sku: form.sku || undefined,
       colors: colorsArray.length > 0 ? colorsArray : undefined,
       tags: tagsArray.length > 0 ? tagsArray : undefined,
-      images: form.images.map((img) => img.id),
+      images: form.images,
     };
 
     if (form.oldPrice && form.onSale) {
       data.oldPrice = parseFloat(form.oldPrice);
     }
 
-    if (form.brand) {
-      data.brand = parseInt(form.brand);
-    }
-
     const body = { data };
 
     try {
       const url = isEditing
-        ? `/api/admin/products/${initialData?.documentId}`
+        ? `/api/admin/products/${initialData?.id}`
         : '/api/admin/products';
 
       const res = await fetch(url, {

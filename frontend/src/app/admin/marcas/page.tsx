@@ -7,19 +7,17 @@ import Link from 'next/link';
 
 interface Brand {
   id: number;
-  documentId: string;
   name: string;
   slug: string | null;
   active: boolean;
-  logo: { id: number; url: string } | null;
-  publishedAt: string;
+  logo_url: string | null;
 }
 
 export default function AdminBrandsPage() {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
   const [deleting, setDeleting] = useState(false);
 
   const loadBrands = async () => {
@@ -42,12 +40,12 @@ export default function AdminBrandsPage() {
 
   useEffect(() => { loadBrands(); }, []);
 
-  const handleDelete = async (documentId: string) => {
+  const handleDelete = async (brandId: number) => {
     setDeleting(true);
     try {
-      const res = await fetch(`/api/admin/brands/${documentId}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/brands/${brandId}`, { method: 'DELETE' });
       if (res.ok) {
-        setBrands((prev) => prev.filter((b) => b.documentId !== documentId));
+        setBrands((prev) => prev.filter((b) => b.id !== brandId));
       }
     } catch {
       setError('Error al eliminar');
@@ -130,14 +128,14 @@ export default function AdminBrandsPage() {
                     <td className="px-4 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <Link
-                          href={`/admin/marcas/${brand.documentId}/editar`}
+                          href={`/admin/marcas/${brand.id}/editar`}
                           className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
                           style={{ backgroundColor: '#f5f5f4', color: '#44403c' }}
                         >
                           Editar
                         </Link>
                         <button
-                          onClick={() => setDeleteId(brand.documentId)}
+                          onClick={() => setDeleteId(brand.id)}
                           className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
                           style={{ backgroundColor: '#fef2f2', color: '#dc2626' }}
                         >

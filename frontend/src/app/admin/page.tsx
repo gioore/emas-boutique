@@ -9,27 +9,31 @@ import { getImageUrl } from '@/lib/images';
 
 interface Product {
   id: number;
-  documentId: string;
   name: string;
   price: number;
-  oldPrice?: number;
+  old_price?: number;
   category: string;
   subcategory: string;
+  category_id: number | null;
+  subcategory_id: number | null;
   featured: boolean;
-  newArrival: boolean;
-  onSale: boolean;
+  new_arrival: boolean;
+  on_sale: boolean;
   availability: string;
   sku?: string;
-  brand: { id: number; name: string } | null;
+  brand_id: number | null;
+  brand_name?: string;
+  cat_name?: string;
+  subcat_name?: string;
   images: { id: number; url: string }[];
-  publishedAt: string;
+  created_at: string;
 }
 
 export default function AdminDashboard() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [search, setSearch] = useState('');
 
@@ -55,14 +59,14 @@ export default function AdminDashboard() {
     loadProducts();
   }, []);
 
-  const handleDelete = async (documentId: string) => {
+  const handleDelete = async (productId: number) => {
     setDeleting(true);
     try {
-      const res = await fetch(`/api/admin/products/${documentId}`, {
+      const res = await fetch(`/api/admin/products/${productId}`, {
         method: 'DELETE',
       });
       if (res.ok) {
-        setProducts((prev) => prev.filter((p) => p.documentId !== documentId));
+        setProducts((prev) => prev.filter((p) => p.id !== productId));
       }
     } catch {
       setError('Error al eliminar');
@@ -75,8 +79,8 @@ export default function AdminDashboard() {
   const metrics = {
     total: products.length,
     featured: products.filter((p) => p.featured).length,
-    onSale: products.filter((p) => p.onSale).length,
-    newArrivals: products.filter((p) => p.newArrival).length,
+    onSale: products.filter((p) => p.on_sale).length,
+    newArrivals: products.filter((p) => p.new_arrival).length,
     outOfStock: products.filter((p) => p.availability === 'out_of_stock').length,
     lowStock: products.filter((p) => p.availability === 'low_stock').length,
   };
@@ -211,18 +215,18 @@ export default function AdminDashboard() {
                     </td>
                     <td className="px-4 py-4 hidden sm:table-cell">
                       <span className="text-sm" style={{ color: '#57534e' }}>
-                        {product.brand?.name || '—'}
+                        {product.brand_name || '—'}
                       </span>
                     </td>
                     <td className="px-4 py-4 hidden sm:table-cell">
-                      <span className="text-sm capitalize" style={{ color: '#57534e' }}>{(product as any).cat?.name || product.category}</span>
-                      <span className="text-xs ml-1" style={{ color: '#a8a29e' }}>/ {(product as any).subcat?.name || product.subcategory}</span>
+                      <span className="text-sm capitalize" style={{ color: '#57534e' }}>{product.cat_name || product.category}</span>
+                      <span className="text-xs ml-1" style={{ color: '#a8a29e' }}>/ {product.subcat_name || product.subcategory}</span>
                     </td>
                     <td className="px-4 py-4">
                       <div>
                         <span className="text-sm font-medium" style={{ color: '#1c1917' }}>Q{product.price.toFixed(2)}</span>
-                        {product.onSale && product.oldPrice && (
-                          <span className="text-xs line-through ml-1" style={{ color: '#a8a29e' }}>Q{product.oldPrice.toFixed(2)}</span>
+                        {product.on_sale && product.old_price && (
+                          <span className="text-xs line-through ml-1" style={{ color: '#a8a29e' }}>Q{Number(product.old_price).toFixed(2)}</span>
                         )}
                       </div>
                     </td>
@@ -231,16 +235,16 @@ export default function AdminDashboard() {
                         {product.featured && (
                           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f0fdf4', color: '#166534' }}>Destacado</span>
                         )}
-                        {product.newArrival && (
+                        {product.new_arrival && (
                           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#fef3c7', color: '#92400e' }}>Nuevo</span>
                         )}
-                        {product.onSale && (
+                        {product.on_sale && (
                           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#fef2f2', color: '#991b1b' }}>Oferta</span>
                         )}
                         {product.availability === 'out_of_stock' && (
                           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f5f5f4', color: '#57534e' }}>Agotado</span>
                         )}
-                        {(!product.featured && !product.newArrival && !product.onSale) && (
+                        {(!product.featured && !product.new_arrival && !product.on_sale) && (
                           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f0fdf4', color: '#166534' }}>Activo</span>
                         )}
                       </div>
@@ -248,14 +252,14 @@ export default function AdminDashboard() {
                     <td className="px-4 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <Link
-                          href={`/admin/productos/${product.documentId}/editar`}
+                          href={`/admin/productos/${product.id}/editar`}
                           className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
                           style={{ backgroundColor: '#f5f5f4', color: '#44403c' }}
                         >
                           Editar
                         </Link>
                         <button
-                          onClick={() => setDeleteId(product.documentId)}
+                          onClick={() => setDeleteId(product.id)}
                           className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
                           style={{ backgroundColor: '#fef2f2', color: '#dc2626' }}
                         >
@@ -280,7 +284,7 @@ export default function AdminDashboard() {
               <button onClick={() => setDeleteId(null)} className="px-4 py-2 border font-medium rounded-lg text-sm" style={{ borderColor: '#d6d3d1', color: '#44403c' }}>
                 Cancelar
               </button>
-              <button onClick={() => handleDelete(deleteId)} disabled={deleting} className="px-4 py-2 font-medium rounded-lg disabled:opacity-50 text-sm" style={{ backgroundColor: '#dc2626', color: '#ffffff' }}>
+              <button onClick={() => handleDelete(deleteId!)} disabled={deleting} className="px-4 py-2 font-medium rounded-lg disabled:opacity-50 text-sm" style={{ backgroundColor: '#dc2626', color: '#ffffff' }}>
                 {deleting ? 'Eliminando...' : 'Eliminar'}
               </button>
             </div>

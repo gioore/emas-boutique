@@ -21,25 +21,25 @@ export default function EditarProductoPage() {
           return;
         }
         const data = await res.json();
-        const found = data.data?.find((p: any) => p.documentId === params.id);
+        const found = data.data?.find((p: any) => String(p.id) === params.id);
         if (found) {
           setProduct({
-            documentId: found.documentId,
+            id: found.id,
             name: found.name,
             price: found.price.toString(),
-            cat: found.cat,
-            subcat: found.subcat,
-            brand: found.brand?.id?.toString() || '',
+            cat: found.category_id?.toString() || '',
+            subcat: found.subcategory_id?.toString() || '',
+            brand: found.brand_id?.toString() || '',
             description: found.description || '',
             sizes: found.sizes || [],
             featured: found.featured,
-            newArrival: found.newArrival,
-            onSale: found.onSale,
-            colors: found.colors?.join(', ') || '',
-            tags: found.tags?.join(', ') || '',
+            newArrival: found.new_arrival,
+            onSale: found.on_sale,
+            colors: Array.isArray(found.colors) ? found.colors.join(', ') : found.colors || '',
+            tags: Array.isArray(found.tags) ? found.tags.join(', ') : found.tags || '',
             availability: found.availability || 'available',
             sku: found.sku || '',
-            oldPrice: found.oldPrice?.toString() || '',
+            oldPrice: found.old_price?.toString() || '',
             images: found.images || [],
           });
         } else {

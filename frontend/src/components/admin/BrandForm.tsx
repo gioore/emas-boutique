@@ -11,7 +11,7 @@ interface BrandFormData {
 }
 
 interface Props {
-  initialData?: Partial<BrandFormData> & { documentId?: string };
+  initialData?: Partial<BrandFormData> & { id?: number };
   isEditing?: boolean;
 }
 
@@ -41,7 +41,7 @@ export default function BrandForm({ initialData, isEditing }: Props) {
 
     try {
       const url = isEditing
-        ? `/api/admin/brands/${initialData?.documentId}`
+        ? `/api/admin/brands/${initialData?.id}`
         : '/api/admin/brands';
 
       const res = await fetch(url, {

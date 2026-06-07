@@ -217,7 +217,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
                   <select value={filters.category} onChange={(event) => { updateFilter('category', event.target.value); updateFilter('subcategory', ''); }} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
                     <option value="">Todas</option>
                     {categories.filter((category) => category.active !== false).map((category) => (
-                      <option key={category.documentId} value={category.documentId}>{category.name}</option>
+                      <option key={category.id} value={String(category.id)}>{category.name}</option>
                     ))}
                   </select>
                 </div>
@@ -238,7 +238,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
                 <select value={filters.brand} onChange={(event) => updateFilter('brand', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
                   <option value="">Todas</option>
                   {brands.filter((brand) => brand.active !== false).map((brand) => (
-                    <option key={brand.documentId} value={brand.documentId}>{brand.name}</option>
+                    <option key={brand.id} value={String(brand.id)}>{brand.name}</option>
                   ))}
                 </select>
               </div>

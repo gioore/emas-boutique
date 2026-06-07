@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface CategoryOption {
-  documentId: string;
+  id: number;
   name: string;
 }
 
@@ -18,7 +18,7 @@ interface SubcategoryFormData {
 }
 
 interface Props {
-  initialData?: Partial<SubcategoryFormData> & { documentId?: string };
+  initialData?: Partial<SubcategoryFormData> & { id?: number };
   isEditing?: boolean;
 }
 
@@ -61,7 +61,7 @@ export default function SubcategoryForm({ initialData, isEditing }: Props) {
     const body = {
       data: {
         name: form.name,
-        category: form.category,
+        category_id: form.category ? parseInt(form.category) : null,
         order: Number(form.order),
         active: form.active,
       },
@@ -69,7 +69,7 @@ export default function SubcategoryForm({ initialData, isEditing }: Props) {
 
     try {
       const url = isEditing
-        ? `/api/admin/subcategories/${initialData?.documentId}`
+        ? `/api/admin/subcategories/${initialData?.id}`
         : '/api/admin/subcategories';
 
       const res = await fetch(url, {
@@ -129,7 +129,7 @@ export default function SubcategoryForm({ initialData, isEditing }: Props) {
         >
           <option value="">Selecciona una categoría</option>
           {categories.map((cat) => (
-            <option key={cat.documentId} value={cat.documentId}>{cat.name}</option>
+            <option key={cat.id} value={cat.id}>{cat.name}</option>
           ))}
         </select>
       </div>

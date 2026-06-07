@@ -18,10 +18,10 @@ export default function EditarMarcaPage() {
         const res = await fetch('/api/admin/brands');
         if (res.status === 401) { window.location.href = '/admin/login'; return; }
         const data = await res.json();
-        const found = data.data?.find((b: any) => b.documentId === params.id);
+        const found = data.data?.find((b: any) => String(b.id) === params.id);
         if (found) {
           setBrand({
-            documentId: found.documentId,
+            id: found.id,
             name: found.name,
             active: found.active,
             logo: found.logo || null,

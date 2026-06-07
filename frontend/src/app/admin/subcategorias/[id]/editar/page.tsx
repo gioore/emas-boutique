@@ -18,12 +18,12 @@ export default function EditarSubcategoriaPage() {
         const res = await fetch('/api/admin/subcategories');
         if (res.status === 401) { window.location.href = '/admin/login'; return; }
         const data = await res.json();
-        const found = data.data?.find((s: any) => s.documentId === params.id);
+        const found = data.data?.find((s: any) => String(s.id) === params.id);
         if (found) {
           setSubcategory({
-            documentId: found.documentId,
+            id: found.id,
             name: found.name,
-            category: found.category?.documentId || found.category?.id || null,
+            category: found.category_id?.toString() || '',
             order: found.order,
             active: found.active,
           });

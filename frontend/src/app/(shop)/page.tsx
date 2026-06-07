@@ -148,8 +148,8 @@ export default async function Home() {
             <div className="flex flex-wrap justify-center gap-4">
               {brands.filter(b => b.active !== false).map((brand) => (
                 <Link
-                  key={brand.documentId}
-                  href={`/catalogo?marca=${brand.documentId}`}
+                  key={brand.id}
+                  href={`/catalogo?marca=${brand.id}`}
                   className="px-8 py-4 rounded-xl border text-sm font-semibold transition-all hover:scale-105 hover:shadow-md"
                   style={{ backgroundColor: BRAND_COLORS.white, borderColor: '#e5e0d8', color: BRAND_COLORS.text }}
                 >

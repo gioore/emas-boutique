@@ -7,7 +7,6 @@ import Link from 'next/link';
 
 interface Category {
   id: number;
-  documentId: string;
   name: string;
   description: string | null;
   order: number | null;
@@ -18,7 +17,7 @@ export default function AdminCategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
   const [deleting, setDeleting] = useState(false);
 
   const loadCategories = async () => {
@@ -41,12 +40,12 @@ export default function AdminCategoriesPage() {
 
   useEffect(() => { loadCategories(); }, []);
 
-  const handleDelete = async (documentId: string) => {
+  const handleDelete = async (categoryId: number) => {
     setDeleting(true);
     try {
-      const res = await fetch(`/api/admin/categories/${documentId}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/categories/${categoryId}`, { method: 'DELETE' });
       if (res.ok) {
-        setCategories((prev) => prev.filter((c) => c.documentId !== documentId));
+        setCategories((prev) => prev.filter((c) => c.id !== categoryId));
       }
     } catch {
       setError('Error al eliminar');
@@ -135,14 +134,14 @@ export default function AdminCategoriesPage() {
                     <td className="px-4 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <Link
-                          href={`/admin/categorias/${category.documentId}/editar`}
+                          href={`/admin/categorias/${category.id}/editar`}
                           className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
                           style={{ backgroundColor: '#f5f5f4', color: '#44403c' }}
                         >
                           Editar
                         </Link>
                         <button
-                          onClick={() => setDeleteId(category.documentId)}
+                          onClick={() => setDeleteId(category.id)}
                           className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
                           style={{ backgroundColor: '#fef2f2', color: '#dc2626' }}
                         >

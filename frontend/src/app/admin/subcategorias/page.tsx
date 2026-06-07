@@ -7,18 +7,17 @@ import Link from 'next/link';
 
 interface Subcategory {
   id: number;
-  documentId: string;
   name: string;
   order: number | null;
   active: boolean;
-  category: { name: string } | null;
+  category_name: string;
 }
 
 export default function AdminSubcategoriesPage() {
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
   const [deleting, setDeleting] = useState(false);
 
   const loadSubcategories = async () => {
@@ -41,12 +40,12 @@ export default function AdminSubcategoriesPage() {
 
   useEffect(() => { loadSubcategories(); }, []);
 
-  const handleDelete = async (documentId: string) => {
+  const handleDelete = async (subcategoryId: number) => {
     setDeleting(true);
     try {
-      const res = await fetch(`/api/admin/subcategories/${documentId}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/subcategories/${subcategoryId}`, { method: 'DELETE' });
       if (res.ok) {
-        setSubcategories((prev) => prev.filter((s) => s.documentId !== documentId));
+        setSubcategories((prev) => prev.filter((s) => s.id !== subcategoryId));
       }
     } catch {
       setError('Error al eliminar');
@@ -116,7 +115,7 @@ export default function AdminSubcategoriesPage() {
                       <span className="text-sm font-medium" style={{ color: '#1c1917' }}>{subcategory.name}</span>
                     </td>
                     <td className="px-4 py-4">
-                      <span className="text-sm" style={{ color: '#78716c' }}>{subcategory.category?.name || '—'}</span>
+                      <span className="text-sm" style={{ color: '#78716c' }}>{subcategory.category_name || '—'}</span>
                     </td>
                     <td className="px-4 py-4">
                       <span className="text-sm" style={{ color: '#78716c' }}>{subcategory.order ?? '—'}</span>
@@ -135,14 +134,14 @@ export default function AdminSubcategoriesPage() {
                     <td className="px-4 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <Link
-                          href={`/admin/subcategorias/${subcategory.documentId}/editar`}
+                          href={`/admin/subcategorias/${subcategory.id}/editar`}
                           className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
                           style={{ backgroundColor: '#f5f5f4', color: '#44403c' }}
                         >
                           Editar
                         </Link>
                         <button
-                          onClick={() => setDeleteId(subcategory.documentId)}
+                          onClick={() => setDeleteId(subcategory.id)}
                           className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
                           style={{ backgroundColor: '#fef2f2', color: '#dc2626' }}
                         >

@@ -13,7 +13,7 @@ interface CategoryFormData {
 }
 
 interface Props {
-  initialData?: Partial<CategoryFormData> & { documentId?: string };
+  initialData?: Partial<CategoryFormData> & { id?: number };
   isEditing?: boolean;
 }
 
@@ -47,7 +47,7 @@ export default function CategoryForm({ initialData, isEditing }: Props) {
 
     try {
       const url = isEditing
-        ? `/api/admin/categories/${initialData?.documentId}`
+        ? `/api/admin/categories/${initialData?.id}`
         : '/api/admin/categories';
 
       const res = await fetch(url, {

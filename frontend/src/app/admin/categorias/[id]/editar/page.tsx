@@ -18,10 +18,10 @@ export default function EditarCategoriaPage() {
         const res = await fetch('/api/admin/categories');
         if (res.status === 401) { window.location.href = '/admin/login'; return; }
         const data = await res.json();
-        const found = data.data?.find((c: any) => c.documentId === params.id);
+        const found = data.data?.find((c: any) => String(c.id) === params.id);
         if (found) {
           setCategory({
-            documentId: found.documentId,
+            id: found.id,
             name: found.name,
             description: found.description,
             order: found.order,
