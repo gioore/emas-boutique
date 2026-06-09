@@ -196,6 +196,7 @@ export default function AdminDashboard() {
         </div>
       ) : (
         <div className="rounded-xl border overflow-hidden" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
+          <div className="max-h-[calc(100vh-320px)] overflow-y-auto">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -292,6 +293,7 @@ export default function AdminDashboard() {
                 ))}
               </tbody>
             </table>
+          </div>
           </div>
         </div>
       )}
