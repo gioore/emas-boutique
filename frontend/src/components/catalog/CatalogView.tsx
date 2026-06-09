@@ -85,8 +85,8 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = showFilters ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    document.body.classList.toggle('overflow-hidden', showFilters);
+    return () => { document.body.classList.remove('overflow-hidden'); };
   }, [showFilters]);
 
   const allSubcategories = useMemo(() => getSubcategoriesForMode(categories, mode), [categories, mode]);

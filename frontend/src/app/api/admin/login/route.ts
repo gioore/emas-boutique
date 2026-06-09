@@ -12,14 +12,13 @@ function cleanupExpired(): void {
   }
 }
 
-setInterval(cleanupExpired, WINDOW_MS);
-
 function getClientKey(request: NextRequest): string {
   const forwardedFor = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
   return forwardedFor || request.headers.get('x-real-ip') || 'unknown';
 }
 
 function isRateLimited(key: string): boolean {
+  cleanupExpired();
   const now = Date.now();
   const current = attempts.get(key);
   if (!current || current.resetAt < now) {

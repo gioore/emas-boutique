@@ -17,8 +17,8 @@ export default function Header() {
   const pathname = usePathname();
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    document.body.classList.toggle('overflow-hidden', menuOpen);
+    return () => { document.body.classList.remove('overflow-hidden'); };
   }, [menuOpen]);
 
   const isActive = (href: string) => {
@@ -82,7 +82,7 @@ export default function Header() {
             <button
               className="md:hidden p-2 relative z-50"
               onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Abrir menú"
+              aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
             >
               <svg className="w-6 h-6" style={{ color: BRAND_COLORS.text }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {menuOpen ? (

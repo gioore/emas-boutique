@@ -218,6 +218,9 @@ export default function ImageUpload({ existingImages = [], onImagesChange }: Pro
           borderColor: dragOver ? '#1c1917' : '#d6d3d1',
           backgroundColor: dragOver ? '#faf7f2' : '#ffffff',
         }}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inputRef.current?.click(); } }}
         onDragOver={(event) => { event.preventDefault(); setDragOver(true); }}
         onDragLeave={() => setDragOver(false)}
         onDrop={(event) => { event.preventDefault(); setDragOver(false); void uploadFiles(event.dataTransfer.files); }}

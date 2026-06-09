@@ -39,6 +39,13 @@ export default function AdminBrandsPage() {
 
   useEffect(() => { loadBrands(); }, []);
 
+  useEffect(() => {
+    if (!deleteId) return;
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setDeleteId(null); };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [deleteId]);
+
   const handleDelete = async (brandId: number) => {
     setDeleting(true);
     try {

@@ -1,6 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/admin-auth-server';
-import { execute } from '@/lib/db';
+import { execute, queryOne } from '@/lib/db';
+
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    await requireAuth();
+    const { id } = await params;
+    const row = await queryOne('SELECT * FROM brands WHERE id = $1', [id]);
+    if (!row) return NextResponse.json({ error: 'Marca no encontrada' }, { status: 404 });
+    return NextResponse.json({ data: row });
+  } catch (err: any) {
+    if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {

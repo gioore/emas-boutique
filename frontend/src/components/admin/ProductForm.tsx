@@ -182,7 +182,6 @@ export default function ProductForm({ initialData, isEditing }: Props) {
       description: form.description,
       sizes: form.sizes,
       featured: form.featured,
-      whatsapp: SITE_CONFIG.whatsapp,
       availability: form.availability,
       newArrival: form.newArrival,
       onSale: form.onSale,

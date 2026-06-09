@@ -2,9 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { SITE_CONFIG } from '@/lib/config';
-import { useRouter } from 'next/navigation';
-
-const STORAGE_KEY = 'emas_admin_config';
 
 interface ConfigForm {
   name: string;
@@ -19,34 +16,33 @@ interface ConfigForm {
   footerDescription: string;
 }
 
+const DEFAULTS: ConfigForm = {
+  name: SITE_CONFIG.name,
+  tagline: SITE_CONFIG.tagline,
+  description: SITE_CONFIG.description,
+  instagram: SITE_CONFIG.instagram,
+  whatsapp: SITE_CONFIG.whatsapp,
+  whatsappDisplay: SITE_CONFIG.whatsappDisplay,
+  heroTitle: SITE_CONFIG.heroTitle,
+  heroSubtitle: SITE_CONFIG.heroSubtitle,
+  heroDescription: SITE_CONFIG.heroDescription,
+  footerDescription: SITE_CONFIG.footer.description,
+};
+
 export default function AdminConfiguracion() {
-  const router = useRouter();
   const [form, setForm] = useState<ConfigForm | null>(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try {
-        setForm(JSON.parse(stored));
-        return;
-      } catch {
-        // fall through to defaults
-      }
-    }
-    setForm({
-      name: SITE_CONFIG.name,
-      tagline: SITE_CONFIG.tagline,
-      description: SITE_CONFIG.description,
-      instagram: SITE_CONFIG.instagram,
-      whatsapp: SITE_CONFIG.whatsapp,
-      whatsappDisplay: SITE_CONFIG.whatsappDisplay,
-      heroTitle: SITE_CONFIG.heroTitle,
-      heroSubtitle: SITE_CONFIG.heroSubtitle,
-      heroDescription: SITE_CONFIG.heroDescription,
-      footerDescription: SITE_CONFIG.footer.description,
-    });
+    fetch('/api/admin/config')
+      .then((r) => { if (r.status === 401) { window.location.href = '/admin/login'; return null; } return r.json(); })
+      .then((res) => {
+        if (res?.data && Object.keys(res.data).length > 0) setForm({ ...DEFAULTS, ...res.data });
+        else setForm(DEFAULTS);
+      })
+      .catch(() => setForm(DEFAULTS));
   }, []);
 
   const update = (key: keyof ConfigForm, value: string) => {
@@ -54,19 +50,25 @@ export default function AdminConfiguracion() {
     setForm({ ...form, [key]: value });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form) return;
     setSaving(true);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(form));
-    setTimeout(() => {
-      setSaving(false);
+    setError('');
+    try {
+      const res = await fetch('/api/admin/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: form }),
+      });
+      if (res.status === 401) { window.location.href = '/admin/login'; return; }
+      if (!res.ok) { const e = await res.json(); throw new Error(e.error || 'Error al guardar'); }
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
-    }, 300);
-  };
-
-  const handleCancel = () => {
-    router.push('/admin');
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Error al guardar');
+    } finally {
+      setSaving(false);
+    }
   };
 
   if (!form) {
@@ -88,13 +90,6 @@ export default function AdminConfiguracion() {
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={handleCancel}
-            className="px-5 py-2.5 font-medium rounded-lg transition-colors text-sm border"
-            style={{ borderColor: '#d6d3d1', color: '#44403c' }}
-          >
-            Cancelar
-          </button>
-          <button
             onClick={handleSave}
             disabled={saving}
             className="px-5 py-2.5 font-medium rounded-lg transition-colors text-sm disabled:opacity-50"
@@ -104,6 +99,12 @@ export default function AdminConfiguracion() {
           </button>
         </div>
       </div>
+
+      {error && (
+        <div className="mb-6 p-3 rounded-lg text-sm" style={{ backgroundColor: '#fef2f2', color: '#991b1b' }}>
+          {error}
+        </div>
+      )}
 
       <div className="space-y-8">
         {/* Información General */}

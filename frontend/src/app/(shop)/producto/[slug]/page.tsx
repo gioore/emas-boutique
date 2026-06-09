@@ -112,8 +112,9 @@ export default async function ProductoPage({ params }: Props) {
   try {
     const result = await getProduct(slug);
     product = result.data;
-  } catch {
-    notFound();
+  } catch (err) {
+    if (err instanceof Error && err.message === 'Product not found') notFound();
+    throw err;
   }
 
   const relatedProducts = await fetchRelated(product);

@@ -51,10 +51,11 @@ export default function ProductBuyClient({ productName, productPrice, sizes, col
   const [selectedSize, setSelectedSize] = useState<string>('');
 
   const getMessage = () => {
-    let msg = `Hola, me interesa este producto:%0A%0A*${productName}*%0APrecio: Q${productPrice.toFixed(2)}%0A`;
-    if (selectedSize) msg += `Talla: ${selectedSize}%0A`;
-    msg += `%0A${typeof window !== 'undefined' ? window.location.href : ''}`;
-    return msg;
+    const url = typeof window !== 'undefined' ? window.location.href : '';
+    let msg = `Hola, me interesa este producto:\n\n*${productName}*\nPrecio: Q${productPrice.toFixed(2)}\n`;
+    if (selectedSize) msg += `Talla: ${selectedSize}\n`;
+    msg += `\n${url}`;
+    return encodeURIComponent(msg);
   };
 
   const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsapp}?text=${getMessage()}`;
@@ -72,18 +73,20 @@ export default function ProductBuyClient({ productName, productPrice, sizes, col
               const hex = getColorHex(color);
               const light = isLightColor(hex);
               return (
-                <div
+                <button
+                  type="button"
                   key={i}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border cursor-default"
                   style={{
                     backgroundColor: hex,
                     borderColor: light ? '#d6d3d1' : 'transparent',
                     color: light ? '#1c1917' : '#ffffff',
                   }}
+                  aria-label={`Color: ${color}`}
                 >
                   <span className="w-2 h-2 rounded-full" style={{ backgroundColor: hex, border: light ? '1px solid #d6d3d1' : '1px solid rgba(255,255,255,0.3)' }} />
                   {color}
-                </div>
+                </button>
               );
             })}
           </div>

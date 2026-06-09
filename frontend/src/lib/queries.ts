@@ -5,7 +5,8 @@ interface ProductRow {
   category: string | null; subcategory: string | null;
   category_id: number | null; subcategory_id: number | null;
   description: string | null; sizes: string[] | null; images: any;
-  featured: boolean; brand_id: number | null; sku: string | null;
+  featured: boolean; brand_id: number | null; brand_name: string | null; brand_slug: string | null;
+  sku: string | null;
   availability: string | null; new_arrival: boolean; on_sale: boolean;
   colors: string[] | null; tags: string[] | null;
   created_at: string; updated_at: string;
@@ -27,7 +28,7 @@ function formatProduct(p: ProductRow) {
     sizes: p.sizes || [],
     images,
     featured: !!p.featured,
-    brand: p.brand_id ? { id: p.brand_id, name: '' } : null,
+    brand: p.brand_id ? { id: p.brand_id, name: p.brand_name || '', slug: p.brand_slug || '' } : null,
     sku: p.sku || null,
     availability: (p.availability as 'available' | 'low_stock' | 'out_of_stock' | 'pre_order') || 'available',
     newArrival: !!p.new_arrival,
@@ -98,17 +99,17 @@ export async function getProduct(slug: string) {
 }
 
 export async function getFeaturedProducts() {
-  const rows = await query<ProductRow>('SELECT * FROM products WHERE featured = true');
+  const rows = await query<ProductRow>('SELECT p.*, b.name as brand_name, b.slug as brand_slug FROM products p LEFT JOIN brands b ON b.id = p.brand_id WHERE p.featured = true ORDER BY p.created_at DESC LIMIT 20');
   return rows.map(formatProduct);
 }
 
 export async function getNewArrivals() {
-  const rows = await query<ProductRow>('SELECT * FROM products WHERE new_arrival = true ORDER BY created_at DESC');
+  const rows = await query<ProductRow>('SELECT p.*, b.name as brand_name, b.slug as brand_slug FROM products p LEFT JOIN brands b ON b.id = p.brand_id WHERE p.new_arrival = true ORDER BY p.created_at DESC LIMIT 20');
   return rows.map(formatProduct);
 }
 
 export async function getOnSaleProducts() {
-  const rows = await query<ProductRow>('SELECT * FROM products WHERE on_sale = true');
+  const rows = await query<ProductRow>('SELECT p.*, b.name as brand_name, b.slug as brand_slug FROM products p LEFT JOIN brands b ON b.id = p.brand_id WHERE p.on_sale = true ORDER BY p.created_at DESC LIMIT 20');
   return rows.map(formatProduct);
 }
 

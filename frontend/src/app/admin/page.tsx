@@ -58,6 +58,13 @@ export default function AdminDashboard() {
     loadProducts();
   }, []);
 
+  useEffect(() => {
+    if (!deleteId) return;
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setDeleteId(null); };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [deleteId]);
+
   const handleDelete = async (productId: number) => {
     setDeleting(true);
     try {
