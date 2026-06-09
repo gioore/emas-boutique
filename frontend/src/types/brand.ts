@@ -7,14 +7,3 @@ export interface Brand {
   active?: boolean;
 }
 
-export interface BrandsResponse {
-  data: Brand[];
-  meta: {
-    pagination: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
-}

@@ -78,33 +78,4 @@ export interface ImageFormat {
   name: string;
 }
 
-export interface ProductsResponse {
-  data: Product[];
-  meta: {
-    pagination: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
-}
 
-export interface ProductResponse {
-  data: Product;
-  meta: Record<string, unknown>;
-}
-
-export const AVAILABILITY_LABELS: Record<string, string> = {
-  available: 'Disponible',
-  low_stock: 'Últimas unidades',
-  out_of_stock: 'Agotado',
-  pre_order: 'Bajo pedido',
-};
-
-export const AVAILABILITY_COLORS: Record<string, string> = {
-  available: '#166534',
-  low_stock: '#92400e',
-  out_of_stock: '#991b1b',
-  pre_order: '#1e40af',
-};

@@ -23,48 +23,6 @@ function formatBrand(b: any) {
   };
 }
 
-function formatCategory(c: any) {
-  return {
-    id: c.id,
-    name: c.name,
-    slug: c.slug,
-    description: c.description || '',
-    active: c.active ?? true,
-    order: c.order || 0,
-  };
-}
-
-function formatSubcategory(s: any) {
-  return {
-    id: s.id,
-    name: s.name,
-    slug: s.slug,
-    description: s.description || '',
-    active: s.active ?? true,
-    order: s.order || 0,
-    category: s.category_id ? { id: s.category_id, name: s.category_name } : null,
-  };
-}
-
-function getWhereClause(conditions: string[], params: any[]) {
-  if (conditions.length === 0) return { clause: '', params };
-  return { clause: 'WHERE ' + conditions.join(' AND '), params };
-}
-
-export async function getProducts(params?: Record<string, string>) {
-  let conditions: string[] = [];
-  let values: any[] = [];
-  let idx = 1;
-
-  if (params?.category) { conditions.push(`category = $${idx++}`); values.push(params.category); }
-
-  const sort = 'ORDER BY id ASC';
-  const w = getWhereClause(conditions, values);
-
-  const rows = await query<ProductRow>(`SELECT * FROM products ${w.clause} ${sort}`, w.params);
-  return { data: rows.map(formatProduct) };
-}
-
 export async function getProduct(slug: string) {
   const p = await queryOne<ProductRow>('SELECT * FROM products WHERE slug = $1', [slug]);
   if (!p) throw new Error('Product not found');
@@ -86,46 +44,7 @@ export async function getOnSaleProducts() {
   return rows.map(formatProduct);
 }
 
-export async function getProductsByCategory(category: string) {
-  const rows = await query<ProductRow>('SELECT * FROM products WHERE category = $1', [category]);
-  return rows.map(formatProduct);
-}
-
 export async function getBrands() {
   const rows = await query('SELECT * FROM brands ORDER BY name');
   return rows.map(formatBrand);
-}
-
-export async function getBrand(slug: string) {
-  const row = await queryOne<any>('SELECT * FROM brands WHERE slug = $1', [slug]);
-  return row ? formatBrand(row) : null;
-}
-
-export async function getProductsByBrand(brandId: number) {
-  const rows = await query<ProductRow>('SELECT * FROM products WHERE brand_id = $1', [brandId]);
-  return rows.map(formatProduct);
-}
-
-export async function getCategories() {
-  const rows = await query('SELECT * FROM categories ORDER BY "order"');
-  return rows.map(formatCategory);
-}
-
-export async function getSubcategories() {
-  const rows = await query(
-    `SELECT s.*, c.name as category_name FROM subcategories s
-     LEFT JOIN categories c ON c.id = s.category_id
-     ORDER BY s."order"`
-  );
-  return rows.map(formatSubcategory);
-}
-
-export async function getSubcategoriesByCategory(categoryId: number) {
-  const rows = await query(
-    `SELECT s.*, c.name as category_name FROM subcategories s
-     LEFT JOIN categories c ON c.id = s.category_id
-     WHERE s.category_id = $1 ORDER BY s."order"`,
-    [categoryId]
-  );
-  return rows.map(formatSubcategory);
 }

@@ -5,13 +5,6 @@ import { formatProduct } from './format-product';
 export type CatalogSection = 'all' | 'mujer' | 'hombre';
 export type CategoryWithSubcategories = Category & { subcategories?: Subcategory[] };
 
-export interface CatalogData {
-  products: Product[];
-  brands: Brand[];
-  categories: CategoryWithSubcategories[];
-  error?: string;
-}
-
 function formatBrand(b: any): Brand {
   return {
     id: b.id,
@@ -78,7 +71,14 @@ async function getCategories(): Promise<CategoryWithSubcategories[]> {
   }));
 }
 
-export async function getCatalogData(section: CatalogSection = 'all'): Promise<CatalogData> {
+interface CatalogResult {
+  products: Product[];
+  brands: Brand[];
+  categories: CategoryWithSubcategories[];
+  error?: string;
+}
+
+export async function getCatalogData(section: CatalogSection = 'all'): Promise<CatalogResult> {
   const [productsResult, brandsResult, categoriesResult] = await Promise.allSettled([
     getProducts(section),
     getBrands(),
