@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EMAS Boutique — Mockup & Diseño</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --primary: #c76f4b;
+      --gold: #d4a373;
+      --text: #1c1917;
+      --bg: #faf7f2;
+      --muted: #78716c;
+      --white: #ffffff;
+      --dark: #292524;
+      --green: #25D366;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(250,247,242,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e5e0d8;
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+    }
+    .nav-brand .logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* Hero */
+    .hero {
+      padding: 100px 2rem 80px;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+    .hero h1 .highlight { color: var(--gold); }
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-top: 1rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-actions {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--text);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212,163,115,0.3); }
+    .btn-outline {
+      border: 2px solid #d6d3d1;
+      color: var(--text);
+    }
+    .btn-outline:hover { border-color: var(--text); transform: translateY(-2px); }
+    .btn-green {
+      background: var(--green);
+      color: white;
+    }
+    .btn-green:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,211,102,0.3); }
+
+    /* Section divider */
+    .section-divider {
+      width: 60px;
+      height: 3px;
+      background: var(--gold);
+      margin: 0 auto 1.5rem;
+      border-radius: 2px;
+    }
+
+    .section {
+      padding: 5rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    .section-header h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .section-header p {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Color palette */
+    .palette {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+    .palette-item {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: transform 0.3s;
+    }
+    .palette-item:hover { transform: translateY(-4px); }
+    .palette-swatch { height: 100px; }
+    .palette-info {
+      padding: 0.75rem 1rem;
+      background: white;
+    }
+    .palette-info .name { font-weight: 600; font-size: 0.85rem; }
+    .palette-info .hex { font-size: 0.75rem; color: var(--muted); font-family: monospace; }
+
+    /* Typography */
+    .typo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    @media (max-width: 640px) { .typo-grid { grid-template-columns: 1fr; } }
+    .typo-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .typo-card h3 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .typo-card .sample { margin-top: 0.5rem; }
+    .typo-card .weight-300 { font-weight: 300; }
+    .typo-card .weight-400 { font-weight: 400; }
+    .typo-card .weight-600 { font-weight: 600; }
+    .typo-card .weight-800 { font-weight: 800; }
+    .typo-card .weight-900 { font-weight: 900; }
+
+    /* Mockup cards */
+    .mockup-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .mockup-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .mockup-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    }
+    .mockup-preview {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg);
+    }
+    .mockup-preview-inner {
+      width: 100%;
+      display: block;
+    }
+    .mockup-body { padding: 1.5rem; }
+    .mockup-body h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .mockup-body p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .mockup-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+    .badge-home { background: #fef3c7; color: #92400e; }
+    .badge-catalog { background: #dbeafe; color: #1e40af; }
+    .badge-product { background: #fce7f3; color: #9d174d; }
+    .badge-feature { background: #d1fae5; color: #065f46; }
+    .badge-admin { background: #ede9fe; color: #5b21b6; }
+
+    /* Mini page previews inside mockups */
+    .mini-page {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+    }
+    .mini-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: white;
+      border-bottom: 1px solid #eee;
+    }
+    .mini-header .dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.5rem;
+      font-weight: 800;
+    }
+    .mini-header .lines {
+      display: flex;
+      gap: 12px;
+    }
+    .mini-header .lines span {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+      background: #e5e0d8;
+    }
+    .mini-hero {
+      height: 80px;
+      background: linear-gradient(135deg, rgba(199,111,75,0.3), rgba(28,25,23,0.8));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .mini-hero .bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.3); }
+    .mini-hero .bar.w80 { width: 80px; }
+    .mini-hero .bar.w120 { width: 120px; }
+    .mini-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 12px;
+    }
+    .mini-grid .item {
+      aspect-ratio: 3/4;
+      border-radius: 8px;
+      background: #f5f0e8;
+    }
+    .mini-grid .item:nth-child(1) { background: #e8e0d4; }
+    .mini-grid .item:nth-child(2) { background: #f0e8dc; }
+    .mini-grid .item:nth-child(3) { background: #e5dcc8; }
+    .mini-grid .item:nth-child(4) { background: #f5ede0; }
+    .mini-filter-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      background: white;
+      border-bottom: 1px solid #eee;
+    }
+    .mini-filter-bar .pill {
+      height: 24px;
+      border-radius: 12px;
+      background: #f5f0e8;
+    }
+    .mini-filter-bar .pill.w60 { width: 60px; }
+    .mini-filter-bar .pill.w40 { width: 40px; }
+    .mini-product {
+      display: flex;
+      gap: 12px;
+      padding: 12px;
+      background: white;
+    }
+    .mini-product .img {
+      width: 60px;
+      height: 80px;
+      border-radius: 8px;
+      background: #f0e8dc;
+      flex-shrink: 0;
+    }
+    .mini-product .info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      justify-content: center;
+    }
+    .mini-product .info .line {
+      height: 8px;
+      border-radius: 4px;
+      background: #f0e8dc;
+    }
+    .mini-product .info .line.w80 { width: 80%; }
+    .mini-product .info .line.w60 { width: 60%; }
+    .mini-product .info .line.w40 { width: 40%; }
+    .mini-whatsapp {
+      padding: 12px;
+      display: flex;
+      justify-content: center;
+    }
+    .mini-whatsapp .btn {
+      padding: 8px 20px;
+      border-radius: 20px;
+      background: var(--green);
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 600;
+      border: none;
+    }
+
+    /* Features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .feature-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: transform 0.3s;
+    }
+    .feature-card:hover { transform: translateY(-4px); }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    .feature-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .feature-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+    /* Status / Footer */
+    .status-bar {
+      background: var(--dark);
+      color: white;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .status-bar .url {
+      color: var(--gold);
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .status-bar .url:hover { text-decoration: underline; }
+    .status-badges {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .badge-green { background: rgba(37,211,102,0.15); color: #25D366; }
+    .badge-gold { background: rgba(212,163,115,0.15); color: var(--gold); }
+
+    /* Mockup phone frame */
+    .phone-frame {
+      width: 200px;
+      height: 400px;
+      border-radius: 24px;
+      border: 3px solid #d6d3d1;
+      overflow: hidden;
+      background: white;
+      margin: 0 auto;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+    }
+    .phone-frame .mini-page { border-radius: 0; }
+    .dual-mockup {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .dual-mockup .label {
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-top: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* Section with alternate bg */
+    .section-alt {
+      background: white;
+    }
+    .section-alt .section { padding-top: 4rem; padding-bottom: 4rem; }
+
+    .admin-mini {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      height: 200px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--dark);
+    }
+    .admin-mini .sidebar {
+      background: #292524;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .admin-mini .sidebar .item {
+      height: 10px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.1);
+    }
+    .admin-mini .sidebar .item.active { background: rgba(212,163,115,0.4); }
+    .admin-mini .content {
+      background: var(--bg);
+      padding: 16px;
+    }
+    .admin-mini .content .row {
+      height: 12px;
+      border-radius: 4px;
+      background: #e5e0d8;
+      margin-bottom: 10px;
+    }
+    .admin-mini .content .row.w70 { width: 70%; }
+    .admin-mini .content .row.w50 { width: 50%; }
+    .admin-mini .content .row.w90 { width: 90%; }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hero { padding: 80px 1.5rem 60px; }
+      .section { padding: 3rem 1.5rem; }
+      .mockup-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <div class="logo">EB</div>
+      <span>EMAS Boutique</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#brand">Marca</a></li>
+      <li><a href="#colors">Colores</a></li>
+      <li><a href="#typo">Tipografía</a></li>
+      <li><a href="#pages">Pantallas</a></li>
+      <li><a href="#responsive">Responsive</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#admin">Admin</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-tag animate">Diseño & Desarrollo Web</div>
+    <h1 class="animate delay-1"><span class="highlight">EMAS</span> Boutique</h1>
+    <div class="section-divider animate delay-2"></div>
+    <p class="animate delay-2">Mockup interactivo del sitio web — Tienda online de mercadería importada 100% original. Catálogo digital + pedidos por WhatsApp.</p>
+    <div class="hero-actions animate delay-3">
+      <a href="https://frontend-gioores-projects.vercel.app" target="_blank" class="btn btn-primary">Ver sitio en vivo ↗</a>
+      <a href="#pages" class="btn btn-outline">Ver pantallas</a>
+    </div>
+  </section>
+
+  <!-- Brand -->
+  <section id="brand" class="section">
+    <div class="section-header animate">
+      <h2>La Marca</h2>
+      <p>Identidad visual y tono de la boutique</p>
+    </div>
+    <div class="dual-mockup animate delay-1" style="gap: 3rem;">
+      <div style="text-align: center; max-width: 350px;">
+        <div style="font-size: 5rem; font-weight: 900; letter-spacing: -0.04em; color: var(--gold);">EB</div>
+        <p style="font-size: 1.2rem; font-weight: 700; margin-top: 0.5rem;">EMAS Boutique</p>
+        <p style="font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; font-style: italic;">"Mercadería importada 100% original"</p>
+        <p style="font-size: 0.8rem; color: var(--muted); margin-top: 1rem;">Ubicada en Guatemala. Atención personalizada vía WhatsApp. Envíos a toda la república.</p>
+      </div>
+      <div style="max-width: 350px;">
+        <div style="background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+          <p style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 1rem;">Taglines</p>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div style="padding: 0.75rem 1rem; background: #f5f0e8; border-radius: 12px; font-size: 0.9rem; font-weight: 500;">Elegancia que inspira</div>
+            <div style="padding: 0.75rem 1rem; background: #f5f0e8; border-radius: 12px; font-size: 0.9rem; font-weight: 500;">Mercadería importada 100% original</div>
+            <div style="padding: 0.75rem 1rem; background: #f5f0e8; border-radius: 12px; font-size: 0.9rem; font-weight: 500;">Tu estilo, tu esencia</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Colors -->
+  <section id="colors" class="section section-alt">
+    <div class="section" style="padding-top: 0; padding-bottom: 0;">
+      <div class="section-header animate">
+        <h2>Paleta de Colores</h2>
+        <p>Colores principales que definen la identidad visual</p>
+      </div>
+      <div class="palette animate delay-1">
+        <div class="palette-item">
+          <div class="palette-swatch" style="background: #c76f4b;"></div>
+          <div class="palette-info"><div class="name">Primary</div><div class="hex">#c76f4b</div></div>
+        </div>
+        <div class="palette-item">
+          <div class="palette-swatch" style="background: #d4a373;"></div>
+          <div class="palette-info"><div class="name">Gold / Acento</div><div class="hex">#d4a373</div></div>
+        </div>
+        <div class="palette-item">
+          <div class="palette-swatch" style="background: #1c1917;"></div>
+          <div class="palette-info"><div class="name" style="color: white;">Texto</div><div class="hex" style="color: #a8a29e;">#1c1917</div></div>
+        </div>
+        <div class="palette-item">
+          <div class="palette-swatch" style="background: #faf7f2;"></div>
+          <div class="palette-info"><div class="name">Fondo</div><div class="hex">#faf7f2</div></div>
+        </div>
+        <div class="palette-item">
+          <div class="palette-swatch" style="background: #78716c;"></div>
+          <div class="palette-info"><div class="name" style="color: white;">Texto secundario</div><div class="hex" style="color: #a8a29e;">#78716c</div></div>
+        </div>
+        <div class="palette-item">
+          <div class="palette-swatch" style="background: #292524;"></div>
+          <div class="palette-info"><div class="name" style="color: white;">Dark / Header top</div><div class="hex" style="color: #a8a29e;">#292524</div></div>
+        </div>
+        <div class="palette-item">
+          <div class="palette-swatch" style="background: #25D366;"></div>
+          <div class="palette-info"><div class="name">WhatsApp</div><div class="hex">#25D366</div></div>
+        </div>
+        <div class="palette-item">
+          <div class="palette-swatch" style="background: #ffffff; border: 1px solid #e5e0d8;"></div>
+          <div class="palette-info"><div class="name">Blanco</div><div class="hex">#ffffff</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typography -->
+  <section id="typo" class="section">
+    <div class="section-header animate">
+      <h2>Tipografía</h2>
+      <p>Inter — Sans-serif moderna, limpia y legible</p>
+    </div>
+    <div class="typo-grid animate delay-1">
+      <div class="typo-card">
+        <h3>Títulos / Headings</h3>
+        <div class="sample" style="font-size: 2rem; font-weight: 900;">EMAS Boutique</div>
+        <div class="sample" style="font-size: 1.5rem; font-weight: 800;">Catálogo Mujer</div>
+        <div class="sample" style="font-size: 1.2rem; font-weight: 700;">Productos Relacionados</div>
+      </div>
+      <div class="typo-card">
+        <h3>Pesos disponibles</h3>
+        <div class="sample weight-300" style="font-size: 1.1rem;">Light 300 — Una boutique exclusiva</div>
+        <div class="sample weight-400" style="font-size: 1.1rem;">Regular 400 — Una boutique exclusiva</div>
+        <div class="sample weight-600" style="font-size: 1.1rem;">Semibold 600 — Una boutique exclusiva</div>
+        <div class="sample weight-800" style="font-size: 1.1rem;">Bold 800 — Una boutique exclusiva</div>
+        <div class="sample weight-900" style="font-size: 1.1rem;">Black 900 — Una boutique exclusiva</div>
+      </div>
+      <div class="typo-card">
+        <h3>Cuerpo / Texto</h3>
+        <p style="font-size: 0.9rem; color: var(--muted); line-height: 1.8;">En EMAS Boutique encontrarás mercadería importada 100% original. Trabajamos con las mejores marcas para ofrecerte prendas exclusivas con la mejor calidad.</p>
+        <p style="font-size: 0.8rem; color: var(--muted); margin-top: 1rem; line-height: 1.7;">Los envíos se realizan a toda Guatemala. Aceptamos transferencias y efectivo. Escríbenos a WhatsApp para recibir atención personalizada.</p>
+      </div>
+      <div class="typo-card">
+        <h3>Especificaciones</h3>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem;">
+          <div style="display: flex; justify-content: space-between;"><span>Fuente principal</span><span style="color: var(--muted);">Inter</span></div>
+          <div style="display: flex; justify-content: space-between;"><span>Tamaño base</span><span style="color: var(--muted);">16px</span></div>
+          <div style="display: flex; justify-content: space-between;"><span>Line height base</span><span style="color: var(--muted);">1.6</span></div>
+          <div style="display: flex; justify-content: space-between;"><span>Letter spacing títulos</span><span style="color: var(--muted);">-0.03em</span></div>
+          <div style="display: flex; justify-content: space-between;"><span>Uppercase tracking</span><span style="color: var(--muted);">0.3em — 0.4em</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pages -->
+  <section id="pages" class="section section-alt">
+    <div class="section" style="padding-top: 0; padding-bottom: 0;">
+      <div class="section-header animate">
+        <h2>Pantallas del Sitio</h2>
+        <p>Vistas previas de las páginas principales</p>
+      </div>
+
+      <div class="mockup-grid animate delay-1">
+        <!-- Home -->
+        <div class="mockup-card">
+          <div class="mockup-preview"><div class="mockup-preview-inner">
+            <div class="mini-page">
+              <div class="mini-header">
+                <div class="dot">EB</div>
+                <div class="lines"><span></span><span></span><span></span></div>
+              </div>
+              <div class="mini-hero">
+                <div class="bar w120"></div>
+                <div class="bar w80"></div>
+              </div>
+              <div class="mini-grid">
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+              </div>
+            </div>
+          </div></div>
+          <div class="mockup-body">
+            <div class="mockup-badge badge-home">Inicio</div>
+            <h3>Home Page</h3>
+            <p>Hero con imagen de fondo, gradiente oscuro, animaciones de onda y glow dorado. Botones de catálogo y WhatsApp. Secciones de categorías, productos destacados, estadísticas, testimonios y CTA.</p>
+          </div>
+        </div>
+
+        <!-- Catalog -->
+        <div class="mockup-card">
+          <div class="mockup-preview"><div class="mockup-preview-inner">
+            <div class="mini-page">
+              <div class="mini-header">
+                <div class="dot">EB</div>
+                <div class="lines"><span></span><span></span><span></span></div>
+              </div>
+              <div class="mini-filter-bar">
+                <div class="pill w60"></div>
+                <div class="pill w40"></div>
+              </div>
+              <div class="mini-grid" style="grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px;">
+                <div class="item" style="height: 100px;"></div>
+                <div class="item" style="height: 100px;"></div>
+                <div class="item" style="height: 100px;"></div>
+                <div class="item" style="height: 100px;"></div>
+              </div>
+            </div>
+          </div></div>
+          <div class="mockup-body">
+            <div class="mockup-badge badge-catalog">Catálogo</div>
+            <h3>Catálogo con Filtros</h3>
+            <p>Búsqueda por texto, filtros por categoría, subcategoría, marca, talla, disponibilidad y precio. Sort por precio/fecha/nombre. Drawer de filtros en mobile y barra sticky al hacer scroll.</p>
+          </div>
+        </div>
+
+        <!-- Product -->
+        <div class="mockup-card">
+          <div class="mockup-preview"><div class="mockup-preview-inner">
+            <div class="mini-page">
+              <div class="mini-product">
+                <div class="img"></div>
+                <div class="info">
+                  <div class="line w80"></div>
+                  <div class="line w60"></div>
+                  <div class="line w40"></div>
+                  <div style="display: flex; gap: 6px; margin-top: 6px;">
+                    <div style="width: 20px; height: 20px; border-radius: 50%; background: #dc2626;"></div>
+                    <div style="width: 20px; height: 20px; border-radius: 50%; background: #2563eb;"></div>
+                    <div style="width: 20px; height: 20px; border-radius: 50%; background: #1c1917;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="mini-whatsapp">
+                <div class="btn">Comprar por WhatsApp</div>
+              </div>
+            </div>
+          </div></div>
+          <div class="mockup-body">
+            <div class="mockup-badge badge-product">Producto</div>
+            <h3>Detalle de Producto</h3>
+            <p>Galería de imágenes con zoom al hacer hover (1.8x), círculos de colores disponibles, selector de tallas, precio con oferta, descripción, SKU, badge de disponibilidad y botón de WhatsApp. Barra sticky de WhatsApp en mobile.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Responsive -->
+  <section id="responsive" class="section">
+    <div class="section-header animate">
+      <h2>Diseño Responsive</h2>
+      <p>Adaptado para desktop, tablet y mobile</p>
+    </div>
+    <div class="dual-mockup animate delay-1">
+      <div>
+        <div class="phone-frame">
+          <div class="mini-page">
+            <div class="mini-header" style="padding: 8px 10px;">
+              <div class="dot" style="width: 24px; height: 24px; font-size: 0.4rem;">EB</div>
+              <div style="width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+                <span style="display: block; height: 2px; background: #d6d3d1; border-radius: 1px;"></span>
+                <span style="display: block; height: 2px; background: #d6d3d1; border-radius: 1px;"></span>
+                <span style="display: block; height: 2px; background: #d6d3d1; border-radius: 1px;"></span>
+              </div>
+            </div>
+            <div class="mini-hero" style="height: 100px;"></div>
+            <div class="mini-grid" style="grid-template-columns: 1fr 1fr; gap: 4px; padding: 8px;">
+              <div class="item" style="height: 70px;"></div>
+              <div class="item" style="height: 70px;"></div>
+              <div class="item" style="height: 70px;"></div>
+              <div class="item" style="height: 70px;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="label">Móvil (375px)</div>
+      </div>
+      <div>
+        <div style="width: 340px; height: 240px; border-radius: 12px; border: 2px solid #d6d3d1; overflow: hidden; background: white; box-shadow: 0 8px 40px rgba(0,0,0,0.1);">
+          <div class="mini-page">
+            <div class="mini-header">
+              <div class="dot">EB</div>
+              <div class="lines"><span></span><span></span><span></span></div>
+            </div>
+            <div style="display: flex; height: 130px;">
+              <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; padding: 16px;">
+                <div style="width: 60%; height: 12px; border-radius: 4px; background: #e5e0d8;"></div>
+                <div style="width: 40%; height: 8px; border-radius: 4px; background: #e5e0d8;"></div>
+              </div>
+              <div style="width: 120px; background: #f0e8dc;"></div>
+            </div>
+            <div style="display: flex; gap: 8px; padding: 10px;">
+              <div style="flex: 1; height: 16px; border-radius: 8px; background: #f5f0e8;"></div>
+              <div style="flex: 1; height: 16px; border-radius: 8px; background: #f5f0e8;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="label">Desktop (1200px+)</div>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 2rem;">
+      <div style="display: inline-flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; font-size: 0.85rem; color: var(--muted);">
+        <span>✅ Header sticky con blur</span>
+        <span>✅ Menú hamburguesa con slide-in</span>
+        <span>✅ Grid de productos responsive (1→2→4 cols)</span>
+        <span>✅ Drawer de filtros en mobile</span>
+        <span>✅ Barra WhatsApp sticky en mobile</span>
+        <span>✅ Galería con zoom en desktop</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="section section-alt">
+    <div class="section" style="padding-top: 0; padding-bottom: 0;">
+      <div class="section-header animate">
+        <h2>Funcionalidades Clave</h2>
+        <p>Características que hacen única a la tienda</p>
+      </div>
+      <div class="features-grid animate delay-1">
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #d1fae5; color: #065f46;">🛒</div>
+          <h4>Pedidos por WhatsApp</h4>
+          <p>Sin carrito de compras ni pasarela de pago. El cliente selecciona talle, color y envía un mensaje directo al WhatsApp de la dueña con el producto y la talla pre-cargados.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #dbeafe; color: #1e40af;">🔍</div>
+          <h4>Catálogo con Filtros</h4>
+          <p>Búsqueda en tiempo real por nombre, descripción y tags. Filtros combinables por categoría, subcategoría, marca, talla, precio y disponibilidad.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #fef3c7; color: #92400e;">📸</div>
+          <h4>Galería con Zoom</h4>
+          <p>Múltiples imágenes por producto con zoom estilo lupa (1.8x) al pasar el mouse sobre la imagen. Miniaturas cliqueables para cambiar la vista principal.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #fce7f3; color: #9d174d;">🎨</div>
+          <h4>Colores y Tallas</h4>
+          <p>Círculos de color visuales con 20 colores predefinidos. Botones de talla con selección única. La talla seleccionada se incluye automáticamente en el mensaje de WhatsApp.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #ede9fe; color: #5b21b6;">⚡</div>
+          <h4>Rápido y Moderno</h4>
+          <p>Next.js 16 + React 19 con Server Components. Animaciones CSS suaves (scroll reveal, fade-in, glow, wave). 0 recargas de página en navegación.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #f5f0e8; color: #1c1917;">🛡️</div>
+          <h4>Admin Seguro</h4>
+          <p>Panel privado con login protegido (httpOnly, sameSite:strict), session keepalive, rate limiting, carga de imágenes a Cloudinary, y formularios con slugs automáticos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Admin -->
+  <section id="admin" class="section">
+    <div class="section-header animate">
+      <h2>Panel de Administración</h2>
+      <p>Gestión completa de productos, categorías y marcas</p>
+    </div>
+    <div class="animate delay-1" style="max-width: 600px; margin: 0 auto;">
+      <div class="admin-mini">
+        <div class="sidebar">
+          <div class="item active"></div>
+          <div class="item"></div>
+          <div class="item"></div>
+          <div class="item"></div>
+          <div class="item"></div>
+          <div style="flex: 1;"></div>
+          <div class="item" style="background: rgba(255,255,255,0.05);"></div>
+        </div>
+        <div class="content">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+            <div style="height: 16px; width: 120px; border-radius: 4px; background: #e5e0d8;"></div>
+            <div style="height: 24px; width: 80px; border-radius: 12px; background: var(--primary);"></div>
+          </div>
+          <div class="row w90"></div>
+          <div class="row w70"></div>
+          <div class="row w90"></div>
+          <div class="row w50"></div>
+          <div class="row w90"></div>
+          <div class="row w70"></div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; font-size: 0.85rem; color: var(--muted);">
+      <span>✅ CRUD productos</span>
+      <span>✅ Categorías / Subcategorías</span>
+      <span>✅ Marcas</span>
+      <span>✅ Carga de imágenes a Cloudinary</span>
+      <span>✅ Formularios con validación</span>
+      <span>✅ Sesión persistente</span>
+    </div>
+  </section>
+
+  <!-- Status -->
+  <footer class="status-bar">
+    <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.3em; color: #a8a29e; margin-bottom: 1rem;">Estado del Proyecto</p>
+    <p style="font-size: 0.9rem; color: #d6d3d1; margin-bottom: 0.5rem;">Sitio desplegado y funcionando en:</p>
+    <a href="https://frontend-gioores-projects.vercel.app" target="_blank" class="url">frontend-gioores-projects.vercel.app ↗</a>
+    <div class="status-badges">
+      <span class="status-badge badge-green">● En producción</span>
+      <span class="status-badge badge-gold">● Vercel Hobby (gratis)</span>
+      <span class="status-badge badge-green">● Supabase (gratis)</span>
+      <span class="status-badge badge-gold">● Cloudinary (gratis)</span>
+    </div>
+    <p style="font-size: 0.75rem; color: #78716c; margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">
+      EMAS Boutique &copy; 2026 — Mockup de presentación
+    </p>
+  </footer>
+
+</body>
+</html>
