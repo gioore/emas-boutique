@@ -226,13 +226,13 @@ export default function ImageUpload({ existingImages = [], onImagesChange }: Pro
         onDrop={(event) => { event.preventDefault(); setDragOver(false); void uploadFiles(event.dataTransfer.files); }}
         onClick={() => inputRef.current?.click()}
       >
-        <svg className="w-10 h-10 mx-auto mb-3" style={{ color: '#a8a29e' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-10 h-10 mx-auto mb-3" style={{ color: '#78716c' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
         </svg>
         <p className="text-sm mb-1" style={{ color: '#57534e' }}>
           {uploading && progress ? `${progress.stage} (${progress.current}/${progress.total})` : 'Arrastra imagenes aqui o haz clic para seleccionar'}
         </p>
-        <p className="text-xs" style={{ color: '#a8a29e' }}>JPG, PNG, WebP. Se optimizan automaticamente antes de subir.</p>
+        <p className="text-xs" style={{ color: '#78716c' }}>JPG, PNG, WebP. Se optimizan automáticamente antes de subir.</p>
         <input
           ref={inputRef}
           type="file"

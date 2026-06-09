@@ -78,7 +78,7 @@ export default function ProductBuyClient({ productName, productPrice, sizes, col
                 <button
                   type="button"
                   key={i}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border cursor-default"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border cursor-pointer"
                   style={{
                     backgroundColor: hex,
                     borderColor: light ? '#d6d3d1' : 'transparent',
@@ -106,6 +106,8 @@ export default function ProductBuyClient({ productName, productPrice, sizes, col
                 key={size}
                 onClick={() => setSelectedSize(selectedSize === size ? '' : size)}
                 className="px-5 py-2.5 border rounded-lg text-sm font-medium transition-all duration-200"
+                aria-label={`Talla: ${size}${selectedSize === size ? ' (seleccionada)' : ''}`}
+                aria-pressed={selectedSize === size}
                 style={{
                   borderColor: selectedSize === size ? '#1c1917' : '#d6d3d1',
                   backgroundColor: selectedSize === size ? '#1c1917' : '#ffffff',
@@ -133,7 +135,7 @@ export default function ProductBuyClient({ productName, productPrice, sizes, col
           </svg>
           2. Comprar por WhatsApp
         </a>
-        <p className="text-xs mt-3" style={{ color: '#a8a29e' }}>
+        <p className="text-xs mt-3" style={{ color: '#78716c' }}>
           Haz clic para contactarnos. Incluye producto, precio{selectedSize ? `, talla ${selectedSize}` : ''} y enlace.
         </p>
       </div>

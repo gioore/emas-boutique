@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import SubcategoryForm from '@/components/admin/SubcategoryForm';
 
 interface SubcategoryData {
@@ -21,21 +22,18 @@ export default function EditarSubcategoriaPage() {
   useEffect(() => {
     const loadSubcategory = async () => {
       try {
-        const res = await fetch('/api/admin/subcategories');
+        const res = await fetch(`/api/admin/subcategories/${params.id}`);
         if (res.status === 401) { window.location.href = '/admin/login'; return; }
-        const data = await res.json();
-        const found = (data.data ?? []).find((s: { id: number }) => String(s.id) === params.id);
-        if (found) {
-          setSubcategory({
-            id: found.id,
-            name: found.name,
-            category: found.category_id?.toString() || '',
-            order: found.order,
-            active: found.active,
-          });
-        } else {
-          setError('Subcategoría no encontrada');
-        }
+        const json = await res.json();
+        if (!res.ok) { setError(json.error || 'Error al cargar'); return; }
+        const found = json.data;
+        setSubcategory({
+          id: found.id,
+          name: found.name,
+          category: found.category_id?.toString() || '',
+          order: found.order,
+          active: found.active,
+        });
       } catch {
         setError('Error al cargar subcategoría');
       } finally {
@@ -64,6 +62,10 @@ export default function EditarSubcategoriaPage() {
   return (
     <div>
       <div className="mb-8">
+        <Link href="/admin/subcategorias" className="inline-flex items-center gap-1 text-sm font-medium mb-2 transition-colors" style={{ color: '#78716c' }}>
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+          Volver a Subcategorías
+        </Link>
         <h1 className="text-2xl font-bold" style={{ color: '#1c1917' }}>Editar Subcategoría</h1>
         <p className="mt-1" style={{ color: '#78716c' }}>Modifica los datos de la subcategoría</p>
       </div>

@@ -371,7 +371,7 @@ export default function ProductForm({ initialData, isEditing }: Props) {
           ))}
         </div>
         {form.sizes.length === 0 && (
-          <p className="text-xs mt-1" style={{ color: '#a8a29e' }}>Selecciona al menos una talla</p>
+          <p className="text-xs mt-1" style={{ color: '#78716c' }}>Selecciona al menos una talla</p>
         )}
       </div>
 

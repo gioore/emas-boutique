@@ -42,6 +42,10 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
   try {
     await requireAuth();
     const { id } = await params;
+    const refs = await queryOne('SELECT COUNT(*) as count FROM products WHERE subcategory_id = $1', [id]);
+    if (refs && Number(refs.count) > 0) {
+      return NextResponse.json({ error: `No se puede eliminar: ${refs.count} producto(s) usan esta subcategoría` }, { status: 409 });
+    }
     await execute('DELETE FROM subcategories WHERE id = $1', [id]);
     return NextResponse.json({ data: null });
   } catch (err: any) {

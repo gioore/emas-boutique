@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { TableSkeleton } from '@/components/Skeleton';
 
@@ -18,6 +18,7 @@ export default function AdminSubcategoriesPage() {
   const [error, setError] = useState('');
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [search, setSearch] = useState('');
 
   const loadSubcategories = async () => {
     try {
@@ -52,6 +53,9 @@ export default function AdminSubcategoriesPage() {
       const res = await fetch(`/api/admin/subcategories/${subcategoryId}`, { method: 'DELETE' });
       if (res.ok) {
         setSubcategories((prev) => prev.filter((s) => s.id !== subcategoryId));
+      } else {
+        const body = await res.json();
+        setError(body.error || 'Error al eliminar');
       }
     } catch {
       setError('Error al eliminar');
@@ -60,6 +64,14 @@ export default function AdminSubcategoriesPage() {
       setDeleteId(null);
     }
   };
+
+  const filtered = useMemo(() => {
+    if (!search) return subcategories;
+    const q = search.toLowerCase();
+    return subcategories.filter((s) =>
+      s.name.toLowerCase().includes(q) || (s.category_name || '').toLowerCase().includes(q)
+    );
+  }, [subcategories, search]);
 
   if (loading) {
     return (
@@ -95,8 +107,9 @@ export default function AdminSubcategoriesPage() {
       </div>
 
       {error && (
-        <div className="p-4 rounded-lg text-sm mb-6" style={{ backgroundColor: '#fef2f2', borderColor: '#fecaca', color: '#991b1b' }}>
-          {error}
+        <div className="p-4 rounded-lg text-sm mb-6 flex items-center justify-between" style={{ backgroundColor: '#fef2f2', borderColor: '#fecaca', color: '#991b1b' }}>
+          <span>{error}</span>
+          <button onClick={() => setError('')} className="text-sm font-medium" style={{ color: '#991b1b' }}>X</button>
         </div>
       )}
 
@@ -109,63 +122,81 @@ export default function AdminSubcategoriesPage() {
           </Link>
         </div>
       ) : (
-        <div className="rounded-xl border overflow-hidden" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b" style={{ backgroundColor: '#faf7f2', borderColor: '#e5e0d8' }}>
-                  <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Nombre</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Categoría</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Orden</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Estado</th>
-                  <th className="text-right px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Acciones</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y" style={{ borderColor: '#e5e0d8' }}>
-                {subcategories.map((subcategory) => (
-                  <tr key={subcategory.id} className="transition-colors" style={{ backgroundColor: '#ffffff' }}>
-                    <td className="px-4 py-4">
-                      <span className="text-sm font-medium" style={{ color: '#1c1917' }}>{subcategory.name}</span>
-                    </td>
-                    <td className="px-4 py-4">
-                      <span className="text-sm" style={{ color: '#78716c' }}>{subcategory.category_name || '—'}</span>
-                    </td>
-                    <td className="px-4 py-4">
-                      <span className="text-sm" style={{ color: '#78716c' }}>{subcategory.order ?? '—'}</span>
-                    </td>
-                    <td className="px-4 py-4">
-                      {subcategory.active ? (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f0fdf4', color: '#166534' }}>
-                          Activa
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f5f5f4', color: '#57534e' }}>
-                          Inactiva
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-4 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <Link
-                          href={`/admin/subcategorias/${subcategory.id}/editar`}
-                          className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
-                          style={{ backgroundColor: '#f5f5f4', color: '#44403c' }}
-                        >
-                          Editar
-                        </Link>
-                        <button
-                          onClick={() => setDeleteId(subcategory.id)}
-                          className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
-                          style={{ backgroundColor: '#fef2f2', color: '#dc2626' }}
-                        >
-                          Eliminar
-                        </button>
-                      </div>
-                    </td>
+        <div>
+          <div className="mb-4">
+            <input
+              type="text"
+              placeholder="Buscar subcategorías..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full px-4 py-2.5 rounded-lg border text-sm outline-none transition-colors"
+              style={{ borderColor: '#d6d3d1', color: '#1c1917', backgroundColor: '#ffffff' }}
+            />
+          </div>
+          <div className="rounded-xl border overflow-hidden" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
+            <div className="max-h-[calc(100vh-380px)] overflow-y-auto">
+              <table className="w-full">
+                <thead className="sticky top-0 z-10" style={{ backgroundColor: '#faf7f2' }}>
+                  <tr className="border-b" style={{ borderColor: '#e5e0d8' }}>
+                    <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Nombre</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Categoría</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Orden</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Estado</th>
+                    <th className="text-right px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Acciones</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y" style={{ borderColor: '#e5e0d8' }}>
+                  {filtered.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="px-4 py-12 text-center text-sm" style={{ color: '#78716c' }}>
+                        {search ? 'No hay subcategorías que coincidan con la búsqueda' : 'No hay subcategorías aún'}
+                      </td>
+                    </tr>
+                  ) : filtered.map((subcategory) => (
+                    <tr key={subcategory.id} className="transition-colors hover:bg-[#faf7f2]" style={{ backgroundColor: '#ffffff' }}>
+                      <td className="px-4 py-4">
+                        <span className="text-sm font-medium" style={{ color: '#1c1917' }}>{subcategory.name}</span>
+                      </td>
+                      <td className="px-4 py-4">
+                        <span className="text-sm" style={{ color: '#78716c' }}>{subcategory.category_name || '—'}</span>
+                      </td>
+                      <td className="px-4 py-4">
+                        <span className="text-sm" style={{ color: '#78716c' }}>{subcategory.order ?? '—'}</span>
+                      </td>
+                      <td className="px-4 py-4">
+                        {subcategory.active ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f0fdf4', color: '#166534' }}>
+                            Activa
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f5f5f4', color: '#57534e' }}>
+                            Inactiva
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-4 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <Link
+                            href={`/admin/subcategorias/${subcategory.id}/editar`}
+                            className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
+                            style={{ backgroundColor: '#f5f5f4', color: '#44403c' }}
+                          >
+                            Editar
+                          </Link>
+                          <button
+                            onClick={() => setDeleteId(subcategory.id)}
+                            className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
+                            style={{ backgroundColor: '#fef2f2', color: '#dc2626' }}
+                          >
+                            Eliminar
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
@@ -176,7 +207,7 @@ export default function AdminSubcategoriesPage() {
             <h3 className="text-lg font-semibold mb-2" style={{ color: '#1c1917' }}>¿Eliminar subcategoría?</h3>
             <p className="text-sm mb-6" style={{ color: '#78716c' }}>Esta acción no se puede deshacer.</p>
             <div className="flex gap-3 justify-end">
-              <button onClick={() => setDeleteId(null)} className="px-4 py-2 border font-medium rounded-lg transition-colors text-sm" style={{ borderColor: '#d6d3d1', color: '#44403c' }}>
+              <button onClick={() => setDeleteId(null)} className="px-4 py-2 border font-medium rounded-lg transition-colors text-sm" style={{ backgroundColor: '#ffffff', borderColor: '#d6d3d1', color: '#44403c' }}>
                 Cancelar
               </button>
               <button onClick={() => handleDelete(deleteId!)} disabled={deleting} className="px-4 py-2 font-medium rounded-lg disabled:opacity-50 transition-colors text-sm" style={{ backgroundColor: '#dc2626', color: '#ffffff' }}>

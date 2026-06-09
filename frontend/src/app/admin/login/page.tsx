@@ -24,10 +24,10 @@ export default function AdminLoginPage() {
 
       const data = await res.json();
 
-      if (data.success) {
+      if (res.ok) {
         router.push('/admin');
       } else {
-        setError('Usuario o contraseña incorrectos');
+        setError(data.error || 'Usuario o contraseña incorrectos');
       }
     } catch {
       setError('Error de conexión');
@@ -61,7 +61,7 @@ export default function AdminLoginPage() {
               required
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors"
+              className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors focus:ring-2 focus:ring-[#d4a373]"
               style={{ borderColor: '#d6d3d1', backgroundColor: '#ffffff', color: '#1c1917' }}
               placeholder="admin"
             />
@@ -74,7 +74,7 @@ export default function AdminLoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors"
+              className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors focus:ring-2 focus:ring-[#d4a373]"
               style={{ borderColor: '#d6d3d1', backgroundColor: '#ffffff', color: '#1c1917' }}
             />
           </div>

@@ -20,6 +20,7 @@ export default function CategoryForm({ initialData, isEditing }: Props) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [form, setForm] = useState<CategoryFormData>({
     name: initialData?.name || '',
@@ -33,6 +34,11 @@ export default function CategoryForm({ initialData, isEditing }: Props) {
     setSaving(true);
     setError('');
     setSuccess('');
+    setErrors({});
+
+    const fieldErrors: Record<string, string> = {};
+    if (!form.name.trim()) fieldErrors.name = 'El nombre es requerido';
+    if (Object.keys(fieldErrors).length > 0) { setErrors(fieldErrors); setSaving(false); return; }
 
     const body = {
       data: {
@@ -88,10 +94,11 @@ export default function CategoryForm({ initialData, isEditing }: Props) {
           required
           value={form.name}
           onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
-          className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors"
-          style={{ borderColor: '#d6d3d1', backgroundColor: '#ffffff', color: '#1c1917' }}
+          className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors focus:ring-2 focus:ring-[#d4a373]"
+          style={{ borderColor: errors.name ? '#dc2626' : '#d6d3d1', backgroundColor: '#ffffff', color: '#1c1917' }}
           placeholder="Ej: Carteras, Relojes, Accesorios"
         />
+        {errors.name && <p className="text-xs mt-1" style={{ color: '#dc2626' }}>{errors.name}</p>}
       </div>
 
       <div>
@@ -99,7 +106,7 @@ export default function CategoryForm({ initialData, isEditing }: Props) {
         <textarea
           value={form.description}
           onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
-          className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors resize-none"
+          className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors resize-none focus:ring-2 focus:ring-[#d4a373]"
           style={{ borderColor: '#d6d3d1', backgroundColor: '#ffffff', color: '#1c1917' }}
           rows={3}
           placeholder="Descripción opcional de la categoría"
@@ -112,7 +119,7 @@ export default function CategoryForm({ initialData, isEditing }: Props) {
           type="number"
           value={form.order}
           onChange={(e) => setForm((prev) => ({ ...prev, order: Number(e.target.value) }))}
-          className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors"
+          className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors focus:ring-2 focus:ring-[#d4a373]"
           style={{ borderColor: '#d6d3d1', backgroundColor: '#ffffff', color: '#1c1917' }}
           placeholder="0"
         />
@@ -144,7 +151,7 @@ export default function CategoryForm({ initialData, isEditing }: Props) {
           type="button"
           onClick={() => router.push('/admin/categorias')}
           className="px-8 py-3 border font-medium rounded-lg transition-colors"
-          style={{ borderColor: '#d6d3d1', color: '#44403c' }}
+          style={{ backgroundColor: '#ffffff', borderColor: '#d6d3d1', color: '#44403c' }}
         >
           Cancelar
         </button>

@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
     const clientKey = getClientKey(request);
     if (isRateLimited(clientKey)) {
       return NextResponse.json(
-        { success: false, error: 'Demasiados intentos. Intenta mas tarde.' },
+        { error: 'Demasiados intentos. Intenta más tarde.' },
         { status: 429 }
       );
     }
@@ -61,18 +61,18 @@ export async function POST(request: NextRequest) {
       await setSessionCookie(token);
       clearAttempts(clientKey);
 
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ data: { username } });
     }
 
     recordFailedAttempt(clientKey);
 
     return NextResponse.json(
-      { success: false, error: 'Credenciales inválidas' },
+      { error: 'Credenciales inválidas' },
       { status: 401 }
     );
   } catch {
     return NextResponse.json(
-      { success: false, error: 'Error del servidor' },
+      { error: 'Error del servidor' },
       { status: 500 }
     );
   }

@@ -31,7 +31,7 @@ export default function Header() {
       {/* Top bar */}
       <div style={{ backgroundColor: '#292524' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center h-8">
-          <span className="text-[11px] tracking-wider font-medium" style={{ color: '#a8a29e' }}>
+          <span className="text-[11px] tracking-wider font-medium" style={{ color: BRAND_COLORS.textMuted }}>
             Envíos a toda Guatemala{' '}
               <svg className="inline-block w-4 h-3 align-baseline" viewBox="0 0 24 18">
                 <rect width="24" height="18" fill="#4997D0"/>

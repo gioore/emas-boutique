@@ -143,8 +143,8 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {mode === 'all' && (
         <div>
-          <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Categoria</label>
-          <select value={filters.category} onChange={(event) => { updateFilter('category', event.target.value); updateFilter('subcategory', ''); }} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+          <label htmlFor="filter-category" className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Categoria</label>
+          <select id="filter-category" value={filters.category} onChange={(event) => { updateFilter('category', event.target.value); updateFilter('subcategory', ''); }} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
             <option value="">Todas</option>
             {categories.filter((category) => category.active !== false).map((category) => (
               <option key={category.id} value={String(category.id)}>{category.name}</option>
@@ -153,8 +153,8 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
         </div>
       )}
       <div>
-        <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Subcategoria</label>
-        <select value={filters.subcategory} onChange={(event) => updateFilter('subcategory', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+        <label htmlFor="filter-subcategory" className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Subcategoria</label>
+        <select id="filter-subcategory" value={filters.subcategory} onChange={(event) => updateFilter('subcategory', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
           <option value="">Todas</option>
           {filteredSubcategories.map((subcategory) => (
             <option key={subcategory} value={subcategory}>{subcategory}</option>
@@ -162,8 +162,8 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
         </select>
       </div>
       <div>
-        <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Marca</label>
-        <select value={filters.brand} onChange={(event) => updateFilter('brand', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+        <label htmlFor="filter-brand" className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Marca</label>
+        <select id="filter-brand" value={filters.brand} onChange={(event) => updateFilter('brand', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
           <option value="">Todas</option>
           {brands.filter((brand) => brand.active !== false).map((brand) => (
             <option key={brand.id} value={String(brand.id)}>{brand.name}</option>
@@ -171,8 +171,8 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
         </select>
       </div>
       <div>
-        <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Disponibilidad</label>
-        <select value={filters.availability} onChange={(event) => updateFilter('availability', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+        <label htmlFor="filter-availability" className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Disponibilidad</label>
+        <select id="filter-availability" value={filters.availability} onChange={(event) => updateFilter('availability', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
           <option value="">Todas</option>
           <option value="available">Disponible</option>
           <option value="low_stock">Ultimas unidades</option>
@@ -181,8 +181,8 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
         </select>
       </div>
       <div>
-        <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Talla</label>
-        <select value={filters.size} onChange={(event) => updateFilter('size', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+        <label htmlFor="filter-size" className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Talla</label>
+        <select id="filter-size" value={filters.size} onChange={(event) => updateFilter('size', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
           <option value="">Todas</option>
           {SIZE_OPTIONS.map((size) => (
             <option key={size} value={size}>{size}</option>
@@ -190,12 +190,12 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
         </select>
       </div>
       <div>
-        <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Precio minimo</label>
-        <input type="number" min="0" placeholder="Q0" value={filters.minPrice} onChange={(event) => updateFilter('minPrice', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }} />
+        <label htmlFor="filter-minPrice" className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Precio mínimo</label>
+        <input id="filter-minPrice" type="number" min="0" placeholder="Q0" value={filters.minPrice} onChange={(event) => updateFilter('minPrice', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }} />
       </div>
       <div>
-        <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Precio maximo</label>
-        <input type="number" min="0" placeholder="Q1000" value={filters.maxPrice} onChange={(event) => updateFilter('maxPrice', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }} />
+        <label htmlFor="filter-maxPrice" className="block text-xs font-medium mb-1.5 uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>Precio máximo</label>
+        <input id="filter-maxPrice" type="number" min="0" placeholder="Q1000" value={filters.maxPrice} onChange={(event) => updateFilter('maxPrice', event.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm outline-none" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }} />
       </div>
       <div className="flex items-end">
         <button onClick={clearFilters} className="px-4 py-2 border rounded-lg text-sm font-medium transition-colors w-full" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.textMuted }}>
@@ -250,7 +250,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
               <option value="name-asc">A-Z</option>
               <option value="name-desc">Z-A</option>
             </select>
-            <button onClick={() => setShowFilters(true)} className="relative px-4 py-3 border rounded-xl text-sm font-medium transition-colors flex items-center gap-2" style={{ borderColor: '#e5e0d8', backgroundColor: hasActiveFilters ? BRAND_COLORS.primary : BRAND_COLORS.white, color: hasActiveFilters ? BRAND_COLORS.white : BRAND_COLORS.text }}>
+            <button onClick={() => setShowFilters(true)} className="relative px-4 py-3 border rounded-xl text-sm font-medium transition-colors flex items-center gap-2" style={{ borderColor: '#e5e0d8', backgroundColor: hasActiveFilters ? BRAND_COLORS.primary : BRAND_COLORS.white, color: hasActiveFilters ? BRAND_COLORS.white : BRAND_COLORS.text }} aria-label="Abrir filtros">
               Filtros
               {activeFilterCount > 0 && (
                 <span className="inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold" style={{ backgroundColor: BRAND_COLORS.gold, color: '#1c1917' }}>
@@ -276,7 +276,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
                   <option value="name-asc">A-Z</option>
                   <option value="name-desc">Z-A</option>
                 </select>
-                <button onClick={() => setShowFilters(true)} className="px-3 py-2 border rounded-lg text-xs font-medium" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }}>
+                <button onClick={() => setShowFilters(true)} className="px-3 py-2 border rounded-lg text-xs font-medium" style={{ borderColor: '#e5e0d8', color: BRAND_COLORS.text }} aria-label="Abrir filtros">
                   Filtros{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
                 </button>
               </div>
@@ -290,7 +290,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
             <div className="mb-8 p-6 rounded-xl border animate-scale-in" style={{ backgroundColor: BRAND_COLORS.white, borderColor: '#e5e0d8' }}>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-sm font-semibold uppercase tracking-wider" style={{ color: BRAND_COLORS.text }}>Filtros</h3>
-                <button onClick={() => setShowFilters(false)} className="text-sm" style={{ color: BRAND_COLORS.textMuted }}>Cerrar</button>
+                <button onClick={() => setShowFilters(false)} className="text-sm" style={{ color: BRAND_COLORS.textMuted }} aria-label="Cerrar filtros">Cerrar</button>
               </div>
               <FilterContent />
             </div>
@@ -308,7 +308,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-sm font-semibold uppercase tracking-wider" style={{ color: BRAND_COLORS.text }}>Filtros</h3>
-                  <button onClick={() => setShowFilters(false)} className="p-2 rounded-lg hover:bg-[#e5e0d8] transition-colors">
+                  <button onClick={() => setShowFilters(false)} className="p-2 rounded-lg hover:bg-[#e5e0d8] transition-colors" aria-label="Cerrar filtros">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: BRAND_COLORS.text }}>
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -333,7 +333,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
         ) : (
           <div className="text-center py-20">
             <p className="text-lg" style={{ color: BRAND_COLORS.textMuted }}>No se encontraron productos.</p>
-            <p className="text-sm mt-2" style={{ color: '#a8a29e' }}>Intenta ajustar los filtros o buscar con otros terminos.</p>
+            <p className="text-sm mt-2" style={{ color: '#78716c' }}>Intenta ajustar los filtros o buscar con otros términos.</p>
             {hasActiveFilters && (
               <button onClick={clearFilters} className="mt-4 px-6 py-2.5 text-sm font-medium rounded-lg transition-colors" style={{ backgroundColor: BRAND_COLORS.primary, color: BRAND_COLORS.white }}>
                 Limpiar filtros

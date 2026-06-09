@@ -230,7 +230,7 @@ export default function AdminDashboard() {
                             {product.name.length > 30 ? product.name.slice(0, 30) + '...' : product.name}
                           </span>
                           {product.sku && (
-                            <span className="text-xs" style={{ color: '#a8a29e' }}>{product.sku}</span>
+                            <span className="text-xs" style={{ color: '#78716c' }}>{product.sku}</span>
                           )}
                         </div>
                       </div>
@@ -242,13 +242,13 @@ export default function AdminDashboard() {
                     </td>
                     <td className="px-4 py-4 hidden sm:table-cell">
                       <span className="text-sm capitalize" style={{ color: '#57534e' }}>{product.cat_name || product.category}</span>
-                      <span className="text-xs ml-1" style={{ color: '#a8a29e' }}>/ {product.subcat_name || product.subcategory}</span>
+                      <span className="text-xs ml-1" style={{ color: '#78716c' }}>/ {product.subcat_name || product.subcategory}</span>
                     </td>
                     <td className="px-4 py-4">
                       <div>
                         <span className="text-sm font-medium" style={{ color: '#1c1917' }}>Q{product.price.toFixed(2)}</span>
                         {product.on_sale && product.old_price && (
-                          <span className="text-xs line-through ml-1" style={{ color: '#a8a29e' }}>Q{Number(product.old_price).toFixed(2)}</span>
+                          <span className="text-xs line-through ml-1" style={{ color: '#78716c' }}>Q{Number(product.old_price).toFixed(2)}</span>
                         )}
                       </div>
                     </td>

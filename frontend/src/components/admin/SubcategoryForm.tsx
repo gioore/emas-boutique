@@ -25,6 +25,7 @@ export default function SubcategoryForm({ initialData, isEditing }: Props) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [categories, setCategories] = useState<CategoryOption[]>([]);
 
   const [form, setForm] = useState<SubcategoryFormData>({
@@ -55,6 +56,12 @@ export default function SubcategoryForm({ initialData, isEditing }: Props) {
     setSaving(true);
     setError('');
     setSuccess('');
+    setErrors({});
+
+    const fieldErrors: Record<string, string> = {};
+    if (!form.name.trim()) fieldErrors.name = 'El nombre es requerido';
+    if (!form.category) fieldErrors.category = 'Debes seleccionar una categoría';
+    if (Object.keys(fieldErrors).length > 0) { setErrors(fieldErrors); setSaving(false); return; }
 
     const body = {
       data: {
@@ -110,10 +117,11 @@ export default function SubcategoryForm({ initialData, isEditing }: Props) {
           required
           value={form.name}
           onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
-          className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors"
-          style={{ borderColor: '#d6d3d1', backgroundColor: '#ffffff', color: '#1c1917' }}
+          className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors focus:ring-2 focus:ring-[#d4a373]"
+          style={{ borderColor: errors.name ? '#dc2626' : '#d6d3d1', backgroundColor: '#ffffff', color: '#1c1917' }}
           placeholder="Ej: Carteras de Cuero, Relojes Deportivos"
         />
+        {errors.name && <p className="text-xs mt-1" style={{ color: '#dc2626' }}>{errors.name}</p>}
       </div>
 
       <div>
@@ -122,14 +130,15 @@ export default function SubcategoryForm({ initialData, isEditing }: Props) {
           required
           value={form.category}
           onChange={(e) => setForm((prev) => ({ ...prev, category: e.target.value }))}
-          className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors"
-          style={{ borderColor: '#d6d3d1', backgroundColor: '#ffffff', color: '#1c1917' }}
+          className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors focus:ring-2 focus:ring-[#d4a373]"
+          style={{ borderColor: errors.category ? '#dc2626' : '#d6d3d1', backgroundColor: '#ffffff', color: '#1c1917' }}
         >
           <option value="">Selecciona una categoría</option>
           {categories.map((cat) => (
             <option key={cat.id} value={cat.id}>{cat.name}</option>
           ))}
         </select>
+        {errors.category && <p className="text-xs mt-1" style={{ color: '#dc2626' }}>{errors.category}</p>}
       </div>
 
       <div>
@@ -138,7 +147,7 @@ export default function SubcategoryForm({ initialData, isEditing }: Props) {
           type="number"
           value={form.order}
           onChange={(e) => setForm((prev) => ({ ...prev, order: Number(e.target.value) }))}
-          className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors"
+          className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors focus:ring-2 focus:ring-[#d4a373]"
           style={{ borderColor: '#d6d3d1', backgroundColor: '#ffffff', color: '#1c1917' }}
           placeholder="0"
         />
@@ -170,7 +179,7 @@ export default function SubcategoryForm({ initialData, isEditing }: Props) {
           type="button"
           onClick={() => router.push('/admin/subcategorias')}
           className="px-8 py-3 border font-medium rounded-lg transition-colors"
-          style={{ borderColor: '#d6d3d1', color: '#44403c' }}
+          style={{ backgroundColor: '#ffffff', borderColor: '#d6d3d1', color: '#44403c' }}
         >
           Cancelar
         </button>

@@ -11,6 +11,7 @@ const links = [
   { href: '/admin/subcategorias', label: 'Subcategorías', icon: 'subcategories' },
   { href: '/admin/marcas', label: 'Marcas', icon: 'brands' },
   { href: '/admin/productos/nuevo', label: 'Nuevo Producto', icon: 'add' },
+  { href: '/admin/configuracion', label: 'Configuración', icon: 'settings' },
 ];
 
 export default function AdminSidebar() {
@@ -60,7 +61,7 @@ export default function AdminSidebar() {
             <Link href="/admin" className="text-sm font-bold tracking-tight block">
               EMAS Admin
             </Link>
-            <span className="text-xs" style={{ color: '#a8a29e' }}>Panel de control</span>
+            <span className="text-xs" style={{ color: '#78716c' }}>Panel de control</span>
           </div>
         </div>
 
@@ -77,7 +78,7 @@ export default function AdminSidebar() {
                     ? 'text-white'
                     : 'hover:text-white hover:bg-white/5'
                 }`}
-                style={isActive ? { backgroundColor: 'rgba(255,255,255,0.1)', color: '#ffffff' } : { color: '#a8a29e' }}
+                style={isActive ? { backgroundColor: 'rgba(255,255,255,0.1)', color: '#ffffff' } : { color: '#78716c' }}
               >
                 <SidebarIcon name={link.icon} />
                 {link.label}
@@ -91,7 +92,7 @@ export default function AdminSidebar() {
             href="/"
             onClick={() => setMenuOpen(false)}
             className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors"
-            style={{ color: '#a8a29e' }}
+            style={{ color: '#78716c' }}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -101,7 +102,7 @@ export default function AdminSidebar() {
           <button
             onClick={handleLogout}
             className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors w-full"
-            style={{ color: '#ef4444' }}
+            style={{ color: '#dc2626' }}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

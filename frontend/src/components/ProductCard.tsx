@@ -72,7 +72,7 @@ export default function ProductCard({ product }: Props) {
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
           {product.onSale && (
-            <span className="px-2.5 py-1 text-xs font-bold rounded-full" style={{ backgroundColor: '#dc2626', color: '#ffffff' }}>
+            <span className="px-2.5 py-1 text-xs font-bold rounded-full" style={{ backgroundColor: BRAND_COLORS.terracotta, color: '#ffffff' }}>
               OFERTA
             </span>
           )}
@@ -100,7 +100,7 @@ export default function ProductCard({ product }: Props) {
             {product.brand.name}
           </span>
         )}
-        <span className="text-xs uppercase tracking-wider font-medium mt-1" style={{ color: '#a8a29e' }}>
+        <span className="text-xs uppercase tracking-wider font-medium mt-1" style={{ color: BRAND_COLORS.textMuted }}>
           {product.subcat?.name || product.subcategory}
         </span>
         <h3
@@ -126,10 +126,10 @@ export default function ProductCard({ product }: Props) {
         <div className="mt-auto pt-3 flex items-center gap-2">
           {product.onSale && product.oldPrice ? (
             <>
-              <p className="text-base font-bold" style={{ color: '#dc2626' }}>
+              <p className="text-base font-bold" style={{ color: '#991b1b' }}>
                 Q{product.price.toFixed(2)}
               </p>
-              <p className="text-sm line-through" style={{ color: '#a8a29e' }}>
+              <p className="text-sm line-through" style={{ color: BRAND_COLORS.textMuted }}>
                 Q{product.oldPrice.toFixed(2)}
               </p>
             </>

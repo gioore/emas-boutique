@@ -1,5 +1,11 @@
 export function formatProduct(p: any): any {
-  const images = typeof p.images === 'string' ? JSON.parse(p.images) : (p.images || []);
+  if (!p) return null;
+  let images: any[] = [];
+  if (typeof p.images === 'string') {
+    try { images = JSON.parse(p.images); } catch { images = []; }
+  } else if (Array.isArray(p.images)) {
+    images = p.images;
+  }
   const cat = p.cat_id
     ? { id: p.cat_id, name: p.cat_name, slug: p.cat_slug }
     : p.category_id

@@ -1,5 +1,9 @@
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_VERCEL_URL
-  ? `https://${(process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_VERCEL_URL)}`
+function normalizeUrl(url: string): string {
+  return url.replace(/^https?:\/\//, '');
+}
+
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_VERCEL_URL)
+  ? `https://${normalizeUrl(process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_VERCEL_URL || '')}`
   : (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://emasboutique.com');
 
 export const SITE_CONFIG = {
@@ -64,8 +68,8 @@ export const TESTIMONIALS = [
 ];
 
 export const BRAND_COLORS = {
-  primary: '#18181b',
-  secondary: '#d4a373',
+  primary: '#d4a373',
+  secondary: '#18181b',
   accent: '#c76f4b',
   background: '#faf7f2',
   backgroundAlt: '#f5f0e8',
@@ -75,4 +79,5 @@ export const BRAND_COLORS = {
   black: '#0c0a09',
   gold: '#d4a373',
   terracotta: '#c76f4b',
+  border: '#e5e0d8',
 };

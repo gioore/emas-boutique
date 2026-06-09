@@ -32,10 +32,10 @@ const AVAILABILITY_LABELS: Record<string, string> = {
 };
 
 const AVAILABILITY_COLORS: Record<string, string> = {
-  available: '#166534',
-  low_stock: '#92400e',
+  available: '#4a7c59',
+  low_stock: '#a16244',
   out_of_stock: '#991b1b',
-  pre_order: '#1e40af',
+  pre_order: '#6b6b8a',
 };
 
 interface Props {
@@ -173,13 +173,13 @@ export default async function ProductoPage({ params }: Props) {
             <div className="flex items-center gap-3 mt-6">
               {product.onSale && product.oldPrice ? (
                 <>
-                  <p className="text-3xl font-bold" style={{ color: '#dc2626' }}>
+                  <p className="text-3xl font-bold" style={{ color: '#991b1b' }}>
                     Q{product.price.toFixed(2)}
                   </p>
-                  <p className="text-xl line-through" style={{ color: '#a8a29e' }}>
+                  <p className="text-xl line-through" style={{ color: BRAND_COLORS.textMuted }}>
                     Q{product.oldPrice.toFixed(2)}
                   </p>
-                  <span className="px-2.5 py-1 text-xs font-bold rounded-full" style={{ backgroundColor: '#fef2f2', color: '#dc2626' }}>
+                  <span className="px-2.5 py-1 text-xs font-bold rounded-full" style={{ backgroundColor: '#f5f0e8', color: '#991b1b' }}>
                     -{Math.round((1 - product.price / product.oldPrice) * 100)}%
                   </span>
                 </>
@@ -209,7 +209,7 @@ export default async function ProductoPage({ params }: Props) {
             )}
 
             {product.sku && (
-              <p className="text-xs mt-2" style={{ color: '#a8a29e' }}>
+              <p className="text-xs mt-2" style={{ color: BRAND_COLORS.textMuted }}>
                 SKU: {product.sku}
               </p>
             )}

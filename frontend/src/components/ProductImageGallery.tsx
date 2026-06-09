@@ -68,7 +68,7 @@ export default function ProductImageGallery({ images, productName, onSale, newAr
         )}
         <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
           {onSale && (
-            <span className="px-3 py-1 text-xs font-bold rounded-full" style={{ backgroundColor: '#dc2626', color: '#ffffff' }}>
+            <span className="px-3 py-1 text-xs font-bold rounded-full" style={{ backgroundColor: BRAND_COLORS.terracotta, color: '#ffffff' }}>
               OFERTA
             </span>
           )}
@@ -96,6 +96,7 @@ export default function ProductImageGallery({ images, productName, onSale, newAr
                 borderColor: i === selectedIndex ? BRAND_COLORS.primary : '#e5e0d8',
                 opacity: i === selectedIndex ? 1 : 0.6,
               }}
+              aria-label={`Ver imagen ${i + 1} de ${images.length}`}
             >
               {img.url && (
                 <Image
