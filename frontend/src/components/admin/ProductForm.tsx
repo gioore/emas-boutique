@@ -3,9 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import ImageUpload from './ImageUpload';
-
-const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', 'Única'];
-const SHOE_SIZE_OPTIONS = ['35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45'];
+import { SIZE_OPTIONS, SHOE_SIZE_OPTIONS } from '@/lib/constants';
 
 interface Brand {
   id: number;
@@ -41,7 +39,7 @@ interface ProductFormData {
   onSale: boolean;
   colors: string;
   tags: string;
-  images: { id: number; url: string }[];
+  images: { id: number; url: string; public_id?: string }[];
 }
 
 interface Props {

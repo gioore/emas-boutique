@@ -2,32 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidateTag } from 'next/cache';
 import { requireAuth } from '@/lib/admin-auth-server';
 import { queryOne, execute } from '@/lib/db';
-
-function validateProductBody(data: Record<string, unknown>, isUpdate = false): string | null {
-  if (!isUpdate || data.name !== undefined) {
-    if (!data.name || typeof data.name !== 'string' || !data.name.trim()) return 'El nombre del producto es requerido';
-  }
-  if (data.price !== undefined && data.price !== null) {
-    const price = Number(data.price);
-    if (isNaN(price) || price < 0) return 'El precio debe ser un número válido mayor o igual a 0';
-  }
-  if (data.sizes !== undefined && (!Array.isArray(data.sizes) || data.sizes.length === 0)) return 'Debes seleccionar al menos una talla';
-  if (data.availability !== undefined && !['available', 'low_stock', 'out_of_stock', 'pre_order'].includes(data.availability as string)) return 'Disponibilidad inválida';
-  return null;
-}
-
-async function ensureUniqueSlug(slug: string, excludeId?: number): Promise<string> {
-  let candidate = slug;
-  let counter = 0;
-  while (true) {
-    const existing = excludeId
-      ? await queryOne('SELECT id FROM products WHERE slug = $1 AND id != $2', [candidate, excludeId])
-      : await queryOne('SELECT id FROM products WHERE slug = $1', [candidate]);
-    if (!existing) return candidate;
-    counter++;
-    candidate = `${slug}-${counter}`;
-  }
-}
+import { validateProductBody, ensureUniqueSlug } from '@/lib/product-utils';
+import { createHash } from 'crypto';
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -86,10 +62,39 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   }
 }
 
+const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || '';
+const API_KEY = process.env.CLOUDINARY_API_KEY || '';
+const API_SECRET = process.env.CLOUDINARY_API_SECRET || '';
+
+async function deleteCloudinaryImage(publicId: string): Promise<void> {
+  if (!CLOUD_NAME || !API_KEY || !API_SECRET) return;
+  const timestamp = Math.floor(Date.now() / 1000);
+  const signature = createHash('sha1')
+    .update(`public_id=${publicId}&timestamp=${timestamp}${API_SECRET}`)
+    .digest('hex');
+  try {
+    await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/destroy`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ public_id: publicId, api_key: API_KEY, timestamp: String(timestamp), signature }),
+    });
+  } catch {}
+}
+
 export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await requireAuth();
     const { id } = await params;
+
+    const row = await queryOne<{ images: string }>('SELECT images FROM products WHERE id = $1', [id]);
+    if (row?.images) {
+      const images = JSON.parse(row.images);
+      if (Array.isArray(images)) {
+        const publicIds = images.map((img: any) => img.public_id).filter(Boolean);
+        await Promise.all(publicIds.map(deleteCloudinaryImage));
+      }
+    }
+
     await execute('DELETE FROM products WHERE id = $1', [id]);
     revalidateTag('catalog', 'max');
     return NextResponse.json({ data: null });

@@ -173,7 +173,7 @@ export default function ImageUpload({ existingImages = [], onImagesChange }: Pro
 
       const uploaded = (Array.isArray(data) ? data : [data])
         .filter((item): item is { id: number; url: string } => typeof item?.id === 'number' && typeof item?.url === 'string')
-        .map((item) => ({ id: item.id, url: item.url }));
+        .map((item) => ({ id: item.id, url: item.url, public_id: (item as any).public_id }));
 
       updateImages((current) => {
         const previewUrls = new Set(previews.map((preview) => preview.url));

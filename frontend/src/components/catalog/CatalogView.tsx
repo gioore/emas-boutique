@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProductCard from '@/components/ProductCard';
 import { BRAND_COLORS, SITE_CONFIG } from '@/lib/config';
+import { SIZE_OPTIONS } from '@/lib/constants';
 import type { CategoryWithSubcategories, CatalogSection } from '@/lib/catalog';
 import type { Brand, Product, Subcategory } from '@/types/product';
 
@@ -29,8 +30,6 @@ interface Props {
   error?: string;
 }
 
-const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', 'Única', 'Unica', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45'];
-
 function normalize(value?: string | null): string {
   return (value || '').toLowerCase();
 }
@@ -40,26 +39,21 @@ function getCategoryKey(product: Product): string {
 }
 
 function getSubcategoriesForMode(categories: CategoryWithSubcategories[], mode: CatalogSection): string[] {
-  if (mode === 'all') {
-    const names = new Set<string>();
-    for (const category of categories) {
-      for (const subcategory of category.subcategories || []) {
-        if (subcategory.active !== false && subcategory.name) names.add(subcategory.name);
-      }
-    }
-    return [...names];
-  }
-  const category = categories.find((item) => normalize(item.slug || item.name) === mode);
-  return (category?.subcategories || [])
-    .filter((subcategory) => subcategory.active !== false)
-    .map((subcategory) => subcategory.name)
-    .filter((name): name is string => Boolean(name));
+  return mode !== 'all'
+    ? categories
+        .filter((category) => category.name?.toLowerCase() === mode)
+        .flatMap((category) => (category.subcategories || []).map((subcategory) => subcategory.name))
+        .filter((name): name is string => Boolean(name))
+    : categories.flatMap((category) => (category.subcategories || []).map((subcategory) => subcategory.name)).filter((name): name is string => Boolean(name));
 }
+
+const PAGE_SIZE = 20;
 
 export default function CatalogView({ mode, title, subtitle, products, brands, categories, error }: Props) {
   const searchParams = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
   const [sticky, setSticky] = useState(false);
+  const [page, setPage] = useState(1);
   const sortBarRef = useRef<HTMLDivElement>(null);
 
   const [filters, setFilters] = useState<Filters>({
@@ -130,13 +124,20 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
 
   const hasActiveFilters = Object.entries(filters).some(([key, value]) => key !== 'sort' && value);
   const activeFilterCount = Object.entries(filters).filter(([key, value]) => key !== 'sort' && value).length;
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const paginated = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  const goToPage = (p: number) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
 
   const updateFilter = (key: keyof Filters, value: string) => {
     setFilters((current) => ({ ...current, [key]: value }));
+    setPage(1);
   };
 
   const clearFilters = () => {
     setFilters({ category: '', subcategory: '', brand: '', size: '', availability: '', minPrice: '', maxPrice: '', sort: 'newest', search: '' });
+    setPage(1);
   };
 
   const FilterContent = () => (
@@ -327,9 +328,32 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
         </div>
 
         {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
-            {filtered.map((product) => <ProductCard key={product.id} product={product} />)}
-          </div>
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+              {paginated.map((product) => <ProductCard key={product.id} product={product} />)}
+            </div>
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-10">
+                <button onClick={() => goToPage(safePage - 1)} disabled={safePage <= 1}
+                  className="px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-30"
+                  style={{ backgroundColor: '#f5f0e8', color: '#44403c' }}>
+                  Anterior
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                  <button key={p} onClick={() => goToPage(p)}
+                    className="w-9 h-9 rounded-lg text-sm font-medium transition-colors"
+                    style={{ backgroundColor: p === safePage ? '#d4a373' : '#f5f0e8', color: p === safePage ? '#ffffff' : '#44403c' }}>
+                    {p}
+                  </button>
+                ))}
+                <button onClick={() => goToPage(safePage + 1)} disabled={safePage >= totalPages}
+                  className="px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-30"
+                  style={{ backgroundColor: '#f5f0e8', color: '#44403c' }}>
+                  Siguiente
+                </button>
+              </div>
+            )}
+          </> 
         ) : (
           <div className="text-center py-20">
             <p className="text-lg" style={{ color: BRAND_COLORS.textMuted }}>No se encontraron productos.</p>

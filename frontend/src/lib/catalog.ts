@@ -48,7 +48,6 @@ async function getProducts(section: CatalogSection): Promise<Product[]> {
     LEFT JOIN brands b ON b.id = p.brand_id
     ${where}
     ORDER BY p.created_at DESC
-    LIMIT 100
   `, params);
 
   return rows.map(formatProduct);
