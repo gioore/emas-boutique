@@ -323,7 +323,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
 
         <div className="flex items-center justify-between mb-6">
           <p className="text-sm" style={{ color: BRAND_COLORS.textMuted }}>
-            {filtered.length} producto{filtered.length !== 1 ? 's' : ''}{hasActiveFilters && ' encontrados'}
+            Página {safePage} — {paginated.length} de {filtered.length} producto{filtered.length !== 1 ? 's' : ''}{hasActiveFilters && ' encontrados'}
           </p>
         </div>
 
