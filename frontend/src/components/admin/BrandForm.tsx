@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 interface BrandFormData {
   name: string;
   slug: string;
-  logo_url: string;
   active: boolean;
 }
 
@@ -25,7 +24,6 @@ export default function BrandForm({ initialData, isEditing }: Props) {
   const [form, setForm] = useState<BrandFormData>({
     name: initialData?.name || '',
     slug: initialData?.slug || '',
-    logo_url: initialData?.logo_url || '',
     active: initialData?.active ?? true,
   });
 
@@ -44,7 +42,6 @@ export default function BrandForm({ initialData, isEditing }: Props) {
       data: {
         name: form.name,
         slug: form.slug || form.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
-        logo_url: form.logo_url || null,
         active: form.active,
       },
     };
@@ -112,23 +109,6 @@ export default function BrandForm({ initialData, isEditing }: Props) {
           placeholder="Ej: coach, nike, michael-kors"
         />
         <p className="text-xs mt-1" style={{ color: '#78716c' }}>Identificador único para la URL. Se genera automáticamente del nombre.</p>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1" style={{ color: '#44403c' }}>URL del logo</label>
-        <input
-          type="text"
-          value={form.logo_url}
-          onChange={(e) => setForm((prev) => ({ ...prev, logo_url: e.target.value }))}
-          className="w-full px-4 py-2.5 border rounded-lg outline-none transition-colors focus:ring-2 focus:ring-[#d4a373]"
-          style={{ borderColor: '#d6d3d1', backgroundColor: '#ffffff', color: '#1c1917' }}
-          placeholder="https://ejemplo.com/logo.png"
-        />
-        {form.logo_url && (
-          <div className="mt-2">
-            <img src={form.logo_url} alt="Vista previa del logo" className="w-16 h-16 rounded-lg object-cover border" style={{ borderColor: '#e5e0d8' }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-          </div>
-        )}
       </div>
 
       <div className="flex items-center">
