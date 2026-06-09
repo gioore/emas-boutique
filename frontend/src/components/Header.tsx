@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { SITE_CONFIG, BRAND_COLORS } from '@/lib/config';
 
@@ -12,23 +12,87 @@ const navLinks = [
   { href: '/hombre', label: 'Hombre' },
 ];
 
+interface Subcategory {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  subcategories: Subcategory[];
+}
+
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [megaOpen, setMegaOpen] = useState<string | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
   const pathname = usePathname();
+  const megaTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
     document.body.classList.toggle('overflow-hidden', menuOpen);
     return () => { document.body.classList.remove('overflow-hidden'); };
   }, [menuOpen]);
 
+  useEffect(() => {
+    fetch('/api/public/categories')
+      .then((r) => r.json())
+      .then((json) => { if (json.data) setCategories(json.data); })
+      .catch(() => {});
+  }, []);
+
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
     return pathname.startsWith(href);
   };
 
+  const handleMegaEnter = (slug: string) => {
+    clearTimeout(megaTimer.current);
+    setMegaOpen(slug);
+  };
+
+  const handleMegaLeave = () => {
+    megaTimer.current = setTimeout(() => setMegaOpen(null), 150);
+  };
+
+  const mujerCats = categories.filter((c) => c.slug === 'mujer');
+  const hombreCats = categories.filter((c) => c.slug === 'hombre');
+
+  const renderMegaMenu = (cat: Category | undefined) => {
+    if (!cat || cat.subcategories.length === 0) return null;
+    return (
+      <div
+        className="absolute top-full left-0 w-64 p-5 rounded-b-xl shadow-xl border-t z-50"
+        style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}
+        onMouseEnter={() => handleMegaEnter(cat.slug || '')}
+        onMouseLeave={handleMegaLeave}
+      >
+        <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: BRAND_COLORS.textMuted }}>
+          {cat.description || cat.name}
+        </p>
+        <div className="flex flex-col gap-1.5">
+          {cat.subcategories.map((sub) => (
+            <Link
+              key={sub.id}
+              href={`/${cat.slug}?subcategoria=${encodeURIComponent(sub.name)}`}
+              className="px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+              style={{ color: BRAND_COLORS.text }}
+              onClick={() => { setMenuOpen(false); setMegaOpen(null); }}
+            >
+              {sub.name}
+            </Link>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
-      {/* Top bar */}
       <div style={{ backgroundColor: '#292524' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center h-8">
           <span className="text-[11px] tracking-wider font-medium" style={{ color: BRAND_COLORS.textMuted }}>
@@ -58,18 +122,28 @@ export default function Header() {
             </Link>
 
             <nav className="hidden md:flex items-center gap-8">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm font-medium transition-colors animate-underline-center py-1"
-                  style={{
-                    color: isActive(link.href) ? BRAND_COLORS.text : BRAND_COLORS.textMuted,
-                  }}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const hasMega = (link.href === '/mujer' || link.href === '/hombre');
+                return (
+                  <div
+                    key={link.href}
+                    className="relative"
+                    onMouseEnter={() => hasMega && handleMegaEnter(link.href.slice(1))}
+                    onMouseLeave={handleMegaLeave}
+                  >
+                    <Link
+                      href={link.href}
+                      className="text-sm font-medium transition-colors animate-underline-center py-1 block"
+                      style={{ color: isActive(link.href) ? BRAND_COLORS.text : BRAND_COLORS.textMuted }}
+                    >
+                      {link.label}
+                    </Link>
+                    {hasMega && megaOpen === link.href.slice(1) && renderMegaMenu(
+                      categories.find((c) => c.slug === link.href.slice(1))
+                    )}
+                  </div>
+                );
+              })}
               <a
                 href={`https://wa.me/${SITE_CONFIG.whatsapp}`}
                 target="_blank"
@@ -101,21 +175,12 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile drawer overlay */}
       {menuOpen && (
-        <div
-          className="fixed inset-0 z-40 md:hidden"
-          style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
-          onClick={() => setMenuOpen(false)}
-        />
+        <div className="fixed inset-0 z-40 md:hidden" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} onClick={() => setMenuOpen(false)} />
       )}
 
-      {/* Mobile drawer */}
       {menuOpen && (
-        <div
-          className="fixed top-0 left-0 h-full w-72 z-40 md:hidden shadow-2xl animate-slide-in-left"
-          style={{ backgroundColor: BRAND_COLORS.background }}
-        >
+        <div className="fixed top-0 left-0 h-full w-72 z-40 md:hidden shadow-2xl animate-slide-in-left" style={{ backgroundColor: BRAND_COLORS.background }}>
           <div className="flex flex-col pt-20 px-6 h-full">
             <div className="flex items-center gap-3 mb-10 border-b pb-6" style={{ borderColor: '#e5e0d8' }}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: BRAND_COLORS.primary, color: BRAND_COLORS.white }}>
@@ -127,24 +192,43 @@ export default function Header() {
               </div>
             </div>
 
-            <nav className="flex flex-col gap-2">
+            <nav className="flex flex-col gap-2 overflow-y-auto flex-1">
               {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="px-4 py-3 rounded-xl text-sm font-medium transition-all"
-                  style={{
-                    backgroundColor: isActive(link.href) ? 'rgba(212,163,115,0.15)' : 'transparent',
-                    color: isActive(link.href) ? BRAND_COLORS.primary : BRAND_COLORS.textMuted,
-                  }}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {link.label}
-                </Link>
+                <div key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="px-4 py-3 rounded-xl text-sm font-medium transition-all block"
+                    style={{
+                      backgroundColor: isActive(link.href) ? 'rgba(212,163,115,0.15)' : 'transparent',
+                      color: isActive(link.href) ? BRAND_COLORS.primary : BRAND_COLORS.textMuted,
+                    }}
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                  {(link.href === '/mujer' || link.href === '/hombre') && (
+                    <div className="ml-4 mt-1 mb-2 flex flex-col gap-1">
+                      {categories
+                        .filter((c) => c.slug === link.href.slice(1))
+                        .flatMap((c) => c.subcategories)
+                        .map((sub) => (
+                          <Link
+                            key={sub.id}
+                            href={`/${link.href.slice(1)}?subcategoria=${encodeURIComponent(sub.name)}`}
+                            className="px-4 py-2 rounded-lg text-xs font-medium transition-colors"
+                            style={{ color: BRAND_COLORS.textMuted }}
+                            onClick={() => setMenuOpen(false)}
+                          >
+                            {sub.name}
+                          </Link>
+                        ))}
+                    </div>
+                  )}
+                </div>
               ))}
             </nav>
 
-            <div className="mt-auto pt-6 border-t" style={{ borderColor: '#e5e0d8' }}>
+            <div className="pt-6 border-t" style={{ borderColor: '#e5e0d8' }}>
               <a
                 href={`https://wa.me/${SITE_CONFIG.whatsapp}`}
                 target="_blank"
