@@ -59,7 +59,7 @@ export default function Hero() {
         <div className="animate-fade-in-down">
           <div className="w-16 h-0.5 mx-auto mb-6 animate-glow-gold" style={{ backgroundColor: '#d4a373' }} />
           <span className="text-xs uppercase tracking-[0.4em] mb-6 font-medium block" style={{ color: '#d4a373' }}>
-            Colección 2026
+            Colección {new Date().getFullYear()}
           </span>
         </div>
 

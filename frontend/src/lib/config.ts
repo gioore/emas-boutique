@@ -9,7 +9,7 @@ export const SITE_CONFIG = {
   instagram: 'emasboutique_',
   whatsapp: '50247633183',
   whatsappDisplay: '+502 4763-3183',
-  email: '',
+  email: 'info@emasboutique.com',
   heroTitle: 'Tu estilo importado',
   heroSubtitle: 'Mercadería 100% original',
   heroDescription: 'Vestidos, blusas, pantalones, bolsos y accesorios importados. Envíos a toda Guatemala.',

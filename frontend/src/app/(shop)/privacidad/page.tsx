@@ -91,7 +91,7 @@ export default function PrivacidadPage() {
 
           <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
           <p className="text-sm" style={{ color: BRAND_COLORS.textMuted }}>
-            Última actualización: Junio 2025.
+            Última actualización: {new Date().toLocaleDateString('es-GT', { month: 'long', year: 'numeric' })}.
           </p>
         </div>
       </div>

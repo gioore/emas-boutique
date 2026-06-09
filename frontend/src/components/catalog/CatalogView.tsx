@@ -327,7 +327,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
         </div>
 
         {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
             {filtered.map((product) => <ProductCard key={product.id} product={product} />)}
           </div>
         ) : (
