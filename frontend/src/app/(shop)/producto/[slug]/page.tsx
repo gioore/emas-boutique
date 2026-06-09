@@ -103,7 +103,7 @@ export default async function ProductoPage({ params }: Props) {
   const colors: string[] = Array.isArray(product.colors) ? product.colors : [];
 
   return (
-    <div className="min-h-screen pb-24 sm:pb-0" style={{ backgroundColor: BRAND_COLORS.white }}>
+    <div className="min-h-screen" style={{ backgroundColor: BRAND_COLORS.white }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
