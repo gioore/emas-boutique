@@ -5,6 +5,15 @@ const WINDOW_MS = 15 * 60 * 1000;
 const MAX_ATTEMPTS = 8;
 const attempts = new Map<string, { count: number; resetAt: number }>();
 
+function cleanupExpired(): void {
+  const now = Date.now();
+  for (const [key, value] of attempts) {
+    if (value.resetAt < now) attempts.delete(key);
+  }
+}
+
+setInterval(cleanupExpired, WINDOW_MS);
+
 function getClientKey(request: NextRequest): string {
   const forwardedFor = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
   return forwardedFor || request.headers.get('x-real-ip') || 'unknown';

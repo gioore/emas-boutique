@@ -33,10 +33,11 @@ export default function EditarProductoPage() {
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        const res = await fetch('/api/admin/products');
+        const res = await fetch(`/api/admin/products/${params.id}`);
         if (res.status === 401) { window.location.href = '/admin/login'; return; }
+        if (res.status === 404) { setError('Producto no encontrado'); setLoading(false); return; }
         const data = await res.json();
-        const found = (data.data ?? []).find((p: { id: number }) => String(p.id) === params.id);
+        const found = data.data;
         if (found) {
           setProduct({
             id: found.id,

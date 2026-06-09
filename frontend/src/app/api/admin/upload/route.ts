@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/admin-auth-server';
 import { createHash } from 'crypto';
 
-const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dt9ad6ovb';
-const API_KEY = process.env.CLOUDINARY_API_KEY || '616424281177613';
-const API_SECRET = process.env.CLOUDINARY_API_SECRET || 'sIS29BJ4kDQGxGUN67lnJGYiu8o';
+const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || '';
+const API_KEY = process.env.CLOUDINARY_API_KEY || '';
+const API_SECRET = process.env.CLOUDINARY_API_SECRET || '';
 
 const MAX_FILES = 8;
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -22,6 +22,10 @@ function signParams(params: Record<string, string>): string {
 export async function POST(request: NextRequest) {
   try {
     await requireAuth();
+
+    if (!CLOUD_NAME || !API_KEY || !API_SECRET) {
+      return NextResponse.json({ error: 'Cloudinary no configurado' }, { status: 500 });
+    }
 
     const incomingFormData = await request.formData();
     const files = incomingFormData.getAll('files').filter(isFile);

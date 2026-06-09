@@ -29,6 +29,27 @@ async function ensureUniqueSlug(slug: string, excludeId?: number): Promise<strin
   }
 }
 
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    await requireAuth();
+    const { id } = await params;
+    const row = await queryOne(`
+      SELECT p.*, b.name as brand_name, c.name as cat_name, sc.name as subcat_name
+      FROM products p
+      LEFT JOIN brands b ON b.id = p.brand_id
+      LEFT JOIN categories c ON c.id = p.category_id
+      LEFT JOIN subcategories sc ON sc.id = p.subcategory_id
+      WHERE p.id = $1
+    `, [id]);
+    if (!row) return NextResponse.json({ error: 'Producto no encontrado' }, { status: 404 });
+    const mapped = { ...row, price: Number(row.price), old_price: row.old_price ? Number(row.old_price) : null };
+    return NextResponse.json({ data: mapped });
+  } catch (err: any) {
+    if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
+
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await requireAuth();

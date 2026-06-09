@@ -4,12 +4,24 @@ import { notFound } from 'next/navigation';
 import { getProduct } from '@/lib/queries';
 import { getImageUrl } from '@/lib/images';
 import { query } from '@/lib/db';
-import { SITE_CONFIG, BRAND_COLORS } from '@/lib/config';
+import { SITE_CONFIG, SITE_URL, BRAND_COLORS } from '@/lib/config';
 import ProductCard from '@/components/ProductCard';
 import ShareButton from '@/components/ShareButton';
 import ProductBuyClient from '@/components/ProductBuyClient';
 import ProductImageGallery from '@/components/ProductImageGallery';
 import type { Product } from '@/types/product';
+
+function sanitizeHtml(html: string): string {
+  return html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
+    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '')
+    .replace(/ on\w+="[^"]*"/gi, '')
+    .replace(/ on\w+='[^']*'/gi, '')
+    .replace(/href="javascript:[^"]*"/gi, 'href="#"')
+    .replace(/href='javascript:[^']*'/gi, "href='#'");
+}
 
 const AVAILABILITY_LABELS: Record<string, string> = {
   available: 'Disponible',
@@ -41,7 +53,7 @@ export async function generateMetadata({ params }: Props) {
       openGraph: {
         title: `${product.name} - ${SITE_CONFIG.name}`,
         description,
-        url: `https://emasboutique.com/producto/${slug}`,
+        url: `${SITE_URL}/producto/${slug}`,
         images: images.length > 0 ? [{ url: images[0], width: 1200, height: 1600, alt: product.name }] : [],
         locale: 'es_GT',
         siteName: SITE_CONFIG.name,
@@ -57,7 +69,15 @@ async function fetchRelated(product: Product): Promise<Product[]> {
   if (!product.subcat?.id) return [];
   try {
     const rows = await query(
-      `SELECT * FROM products WHERE subcategory_id = $1 AND id != $2 ORDER BY created_at DESC LIMIT 4`,
+      `SELECT p.*, b.id as brand_id, b.name as brand_name, b.slug as brand_slug,
+        c.id as cat_id, c.name as cat_name, c.slug as cat_slug,
+        sc.id as subcat_id, sc.name as subcat_name, sc.slug as subcat_slug
+       FROM products p
+       LEFT JOIN brands b ON b.id = p.brand_id
+       LEFT JOIN categories c ON c.id = p.category_id
+       LEFT JOIN subcategories sc ON sc.id = p.subcategory_id
+       WHERE p.subcategory_id = $1 AND p.id != $2
+       ORDER BY p.created_at DESC LIMIT 4`,
       [product.subcat.id, product.id]
     );
     return rows.map(formatProduct) as Product[];
@@ -78,6 +98,10 @@ function formatProduct(p: any): any {
     newArrival: !!p.new_arrival, onSale: !!p.on_sale,
     colors: p.colors || [], tags: p.tags || [],
     createdAt: p.created_at, updatedAt: p.updated_at,
+    category_id: p.category_id, subcategory_id: p.subcategory_id, brand_id: p.brand_id,
+    cat: p.cat_id ? { id: p.cat_id, name: p.cat_name, slug: p.cat_slug } : null,
+    subcat: p.subcat_id ? { id: p.subcat_id, name: p.subcat_name, slug: p.subcat_slug } : null,
+    brand: p.brand_id ? { id: p.brand_id, name: p.brand_name, slug: p.brand_slug } : null,
   };
 }
 
@@ -217,7 +241,7 @@ export default async function ProductoPage({ params }: Props) {
                 <div
                   className="text-sm leading-relaxed prose prose-sm max-w-none"
                   style={{ color: BRAND_COLORS.textMuted }}
-                  dangerouslySetInnerHTML={{ __html: product.description }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.description) }}
                 />
               </div>
             )}

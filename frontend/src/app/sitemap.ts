@@ -1,7 +1,6 @@
 import { MetadataRoute } from 'next';
 import { query } from '@/lib/db';
-
-const BASE_URL = 'https://emasboutique.com';
+import { SITE_URL as BASE_URL } from '@/lib/config';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [

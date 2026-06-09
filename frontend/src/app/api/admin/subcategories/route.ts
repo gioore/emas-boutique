@@ -26,7 +26,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Debes seleccionar una categoría' }, { status: 400 });
     }
 
-    const slug = data.slug || data.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    let slug = data.slug || data.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    const existing = await queryOne('SELECT id FROM subcategories WHERE slug = $1', [slug]);
+    if (existing) {
+      const count = await queryOne('SELECT COUNT(*) as n FROM subcategories WHERE slug LIKE $1', [`${slug}-%`]);
+      slug = `${slug}-${(count?.n ?? 0) + 1}`;
+    }
     const result = await queryOne(
       'INSERT INTO subcategories (name, slug, description, active, "order", category_id) VALUES ($1,$2,$3,$4,$5,$6) RETURNING id',
       [data.name.trim(), slug, data.description || '', data.active ?? true, data.order ?? 0, data.category_id]
