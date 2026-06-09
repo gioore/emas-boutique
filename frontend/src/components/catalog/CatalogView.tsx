@@ -298,27 +298,27 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
         </div>
 
         {/* Mobile slide-in drawer */}
-        <div className="lg:hidden">
-          {showFilters && (
+        {showFilters && (
+          <div className="lg:hidden">
             <div className="fixed inset-0 z-50" onClick={() => setShowFilters(false)} style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} />
-          )}
-          <div
-            className={`fixed top-0 left-0 h-full w-80 z-50 overflow-y-auto shadow-2xl lg:hidden ${showFilters ? 'animate-slide-in-left' : ''}`}
-            style={{ backgroundColor: BRAND_COLORS.background, display: showFilters ? 'block' : 'none' }}
-          >
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-sm font-semibold uppercase tracking-wider" style={{ color: BRAND_COLORS.text }}>Filtros</h3>
-                <button onClick={() => setShowFilters(false)} className="p-2 rounded-lg hover:bg-[#e5e0d8] transition-colors">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: BRAND_COLORS.text }}>
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+            <div
+              className="fixed top-0 left-0 h-full w-80 z-50 overflow-y-auto shadow-2xl animate-slide-in-left"
+              style={{ backgroundColor: BRAND_COLORS.background }}
+            >
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-sm font-semibold uppercase tracking-wider" style={{ color: BRAND_COLORS.text }}>Filtros</h3>
+                  <button onClick={() => setShowFilters(false)} className="p-2 rounded-lg hover:bg-[#e5e0d8] transition-colors">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: BRAND_COLORS.text }}>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                <FilterContent />
               </div>
-              <FilterContent />
             </div>
           </div>
-        </div>
+        )}
 
         <div className="flex items-center justify-between mb-6">
           <p className="text-sm" style={{ color: BRAND_COLORS.textMuted }}>
