@@ -14,15 +14,17 @@ export default function ProductCard({ product }: Props) {
   const imageUrl = product.images?.[0] ? getImageUrl(product.images[0]) : '/placeholder.svg';
 
   return (
-    <div className="group relative flex flex-col bg-white rounded-2xl overflow-hidden transition-all duration-500"
+    <Link
+      href={`/producto/${product.slug}`}
+      scroll={false}
+      className="group relative flex flex-col bg-white rounded-2xl overflow-hidden transition-all duration-500"
       style={{
         boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
         border: '1px solid #e5e0d8',
       }}
     >
-      <Link
-        href={`/producto/${product.slug}`}
-        className="aspect-[3/4] relative overflow-hidden block"
+      <div
+        className="aspect-[3/4] relative overflow-hidden"
         style={{ backgroundColor: '#f5f0e8' }}
       >
         {product.images?.[0] ? (
@@ -45,6 +47,7 @@ export default function ProductCard({ product }: Props) {
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center z-10"
           style={{ backgroundColor: 'rgba(28,25,23,0.6)' }}
+          onClick={(e) => e.stopPropagation()}
         >
           <div className="flex flex-col gap-3 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
             <span
@@ -89,9 +92,9 @@ export default function ProductCard({ product }: Props) {
             </span>
           )}
         </div>
-      </Link>
+      </div>
 
-      <Link href={`/producto/${product.slug}`} className="p-5 flex flex-col flex-1">
+      <div className="p-5 flex flex-col flex-1" onClick={(e) => e.stopPropagation()}>
         {product.brand && (
           <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: BRAND_COLORS.textMuted }}>
             {product.brand.name}
@@ -136,7 +139,7 @@ export default function ProductCard({ product }: Props) {
             </p>
           )}
         </div>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }
