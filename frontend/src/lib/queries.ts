@@ -1,43 +1,16 @@
 import { query, queryOne } from './db';
+import { formatProduct } from './format-product';
 
 interface ProductRow {
   id: number; name: string; slug: string; price: number; old_price: number | null;
   category: string | null; subcategory: string | null;
   category_id: number | null; subcategory_id: number | null;
+  brand_id: number | null; brand_name: string | null; brand_slug: string | null;
   description: string | null; sizes: string[] | null; images: any;
-  featured: boolean; brand_id: number | null; brand_name: string | null; brand_slug: string | null;
-  sku: string | null;
+  featured: boolean; sku: string | null;
   availability: string | null; new_arrival: boolean; on_sale: boolean;
   colors: string[] | null; tags: string[] | null;
   created_at: string; updated_at: string;
-}
-
-function formatProduct(p: ProductRow) {
-  const images = (typeof p.images === 'string' ? JSON.parse(p.images) : p.images || []);
-  return {
-    id: p.id,
-    name: p.name,
-    slug: p.slug,
-    price: Number(p.price),
-    oldPrice: p.old_price ? Number(p.old_price) : null,
-    category: p.category || '',
-    subcategory: p.subcategory || '',
-    cat: p.category_id ? { id: p.category_id, name: p.category || '', slug: (p.category || '').toLowerCase() } : null,
-    subcat: p.subcategory_id ? { id: p.subcategory_id, name: p.subcategory || '', slug: (p.subcategory || '').toLowerCase().replace(/\s+/g, '-') } : null,
-    description: p.description || '',
-    sizes: p.sizes || [],
-    images,
-    featured: !!p.featured,
-    brand: p.brand_id ? { id: p.brand_id, name: p.brand_name || '', slug: p.brand_slug || '' } : null,
-    sku: p.sku || null,
-    availability: (p.availability as 'available' | 'low_stock' | 'out_of_stock' | 'pre_order') || 'available',
-    newArrival: !!p.new_arrival,
-    onSale: !!p.on_sale,
-    colors: p.colors || [],
-    tags: p.tags || [],
-    createdAt: p.created_at,
-    updatedAt: p.updated_at,
-  };
 }
 
 function formatBrand(b: any) {

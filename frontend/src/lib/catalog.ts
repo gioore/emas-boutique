@@ -1,5 +1,6 @@
 import type { Brand, Category, Product, Subcategory } from '@/types/product';
 import { query } from './db';
+import { formatProduct } from './format-product';
 
 export type CatalogSection = 'all' | 'mujer' | 'hombre';
 export type CategoryWithSubcategories = Category & { subcategories?: Subcategory[] };
@@ -9,33 +10,6 @@ export interface CatalogData {
   brands: Brand[];
   categories: CategoryWithSubcategories[];
   error?: string;
-}
-
-function formatProduct(p: any): Product {
-  return {
-    id: p.id,
-    name: p.name,
-    slug: p.slug,
-    price: Number(p.price),
-    oldPrice: p.old_price ? Number(p.old_price) : null,
-    category: p.category || '',
-    subcategory: p.subcategory || '',
-    cat: p.cat_id ? { id: p.cat_id, name: p.cat_name, slug: p.cat_slug } : null,
-    subcat: p.subcat_id ? { id: p.subcat_id, name: p.subcat_name, slug: p.subcat_slug } : null,
-    description: p.description || '',
-    sizes: p.sizes || [],
-    images: typeof p.images === 'string' ? JSON.parse(p.images) : (p.images || []),
-    featured: !!p.featured,
-    brand: p.brand_id ? { id: p.brand_id, name: p.brand_name, slug: p.brand_slug } : null,
-    sku: p.sku || null,
-    availability: p.availability || 'available',
-    newArrival: !!p.new_arrival,
-    onSale: !!p.on_sale,
-    colors: p.colors || [],
-    tags: p.tags || [],
-    createdAt: p.created_at,
-    updatedAt: p.updated_at,
-  } as Product;
 }
 
 function formatBrand(b: any): Brand {

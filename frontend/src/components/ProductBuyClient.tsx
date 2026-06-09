@@ -36,6 +36,8 @@ const COLOR_MAP: Record<string, string> = {
 
 function getColorHex(color: string): string {
   const cleaned = color.toLowerCase().trim();
+  if (cleaned.startsWith('#')) return cleaned;
+  if (cleaned.startsWith('0x')) return '#' + cleaned.slice(2);
   return COLOR_MAP[cleaned] || '#d6d3d1';
 }
 

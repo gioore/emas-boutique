@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getProduct } from '@/lib/queries';
 import { getImageUrl } from '@/lib/images';
 import { query } from '@/lib/db';
+import { formatProduct } from '@/lib/format-product';
 import { SITE_CONFIG, SITE_URL, BRAND_COLORS } from '@/lib/config';
 import ProductCard from '@/components/ProductCard';
 import ShareButton from '@/components/ShareButton';
@@ -84,25 +85,6 @@ async function fetchRelated(product: Product): Promise<Product[]> {
   } catch {
     return [];
   }
-}
-
-function formatProduct(p: any): any {
-  return {
-    id: p.id, name: p.name, slug: p.slug, price: Number(p.price),
-    oldPrice: p.old_price ? Number(p.old_price) : null,
-    category: p.category || '', subcategory: p.subcategory || '',
-    description: p.description || '', sizes: p.sizes || [],
-    images: typeof p.images === 'string' ? JSON.parse(p.images) : (p.images || []),
-    featured: !!p.featured, sku: p.sku || null,
-    availability: p.availability || 'available',
-    newArrival: !!p.new_arrival, onSale: !!p.on_sale,
-    colors: p.colors || [], tags: p.tags || [],
-    createdAt: p.created_at, updatedAt: p.updated_at,
-    category_id: p.category_id, subcategory_id: p.subcategory_id, brand_id: p.brand_id,
-    cat: p.cat_id ? { id: p.cat_id, name: p.cat_name, slug: p.cat_slug } : null,
-    subcat: p.subcat_id ? { id: p.subcat_id, name: p.subcat_name, slug: p.subcat_slug } : null,
-    brand: p.brand_id ? { id: p.brand_id, name: p.brand_name, slug: p.brand_slug } : null,
-  };
 }
 
 export default async function ProductoPage({ params }: Props) {
