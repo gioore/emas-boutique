@@ -10,8 +10,8 @@ const IMAGE_QUALITY = 0.82;
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 interface Props {
-  existingImages?: { id: number; url: string; alternativeText?: string | null }[];
-  onImagesChange: (images: { id: number; url: string }[]) => void;
+  existingImages?: { id: number; url: string; alternativeText?: string | null; public_id?: string }[];
+  onImagesChange: (images: { id: number; url: string; public_id?: string }[]) => void;
 }
 
 interface UploadImage {

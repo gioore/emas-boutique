@@ -33,13 +33,27 @@ const COLOR_MAP: Record<string, string> = {
   coral: '#f43f5e',
   lavanda: '#c084fc',
   oliva: '#4d7c0f',
+  terracota: '#c76f4b',
 };
+
+const HEX_TO_NAME = Object.fromEntries(
+  Object.entries(COLOR_MAP).map(([name, hex]) => [hex.toLowerCase(), name])
+);
 
 function getColorHex(color: string): string {
   const cleaned = color.toLowerCase().trim();
   if (cleaned.startsWith('#')) return cleaned;
   if (cleaned.startsWith('0x')) return '#' + cleaned.slice(2);
   return COLOR_MAP[cleaned] || '#d6d3d1';
+}
+
+function getColorLabel(color: string): string {
+  const cleaned = color.toLowerCase().trim();
+  if (cleaned.startsWith('#') || cleaned.startsWith('0x')) {
+    const hex = cleaned.startsWith('0x') ? '#' + cleaned.slice(2) : cleaned;
+    return HEX_TO_NAME[hex] || color;
+  }
+  return color;
 }
 
 function isLightColor(hex: string): boolean {
@@ -88,7 +102,7 @@ export default function ProductBuyClient({ productName, productPrice, sizes, col
                   aria-label={`Color: ${color}`}
                 >
                   <span className="w-2 h-2 rounded-full" style={{ backgroundColor: hex, border: light ? '1px solid #d6d3d1' : '1px solid rgba(255,255,255,0.3)' }} />
-                  {color}
+                  {getColorLabel(color)}
                 </button>
               );
             })}

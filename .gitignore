@@ -29,3 +29,4 @@ backend/exports/
 *.swp
 *.swo
 .vercel
+.env*

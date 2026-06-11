@@ -21,7 +21,7 @@ interface EditProduct {
   availability: string;
   sku: string;
   oldPrice: string;
-  images: { id: number; url: string }[];
+  images: { id: number; url: string; public_id?: string }[];
 }
 
 export default function EditarProductoPage() {

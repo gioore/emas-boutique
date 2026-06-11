@@ -11,7 +11,6 @@ const links = [
   { href: '/admin/subcategorias', label: 'Subcategorías', icon: 'subcategories' },
   { href: '/admin/marcas', label: 'Marcas', icon: 'brands' },
   { href: '/admin/productos/nuevo', label: 'Nuevo Producto', icon: 'add' },
-  { href: '/admin/configuracion', label: 'Configuración', icon: 'settings' },
 ];
 
 export default function AdminSidebar() {

@@ -81,52 +81,52 @@ await query("SELECT setval('subcategories_id_seq', (SELECT MAX(id) FROM subcateg
 console.log('👗 Inserting sample products...');
 const products = [
   // Mujer - Vestidos
-  { name: 'Vestido Floral Primavera', slug: 'vestido-floral-primavera', price: 450, oldPrice: null, cat: 1, subcat: 1, brand: 1, sizes: ['S','M','L','XL'], availability: 'available', featured: true, newArrival: true, onSale: false, colors: ['#d4a373','#4a7c59','#1c1917'] },
-  { name: 'Vestido Negro Elegancia', slug: 'vestido-negro-elegancia', price: 520, oldPrice: 650, cat: 1, subcat: 1, brand: 6, sizes: ['XS','S','M','L'], availability: 'available', featured: true, newArrival: false, onSale: true, colors: ['#1c1917'] },
-  { name: 'Vestido Casual Verano', slug: 'vestido-casual-verano', price: 320, oldPrice: null, cat: 1, subcat: 1, brand: 2, sizes: ['S','M','L','XL'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['#e5e0d8','#d4a373'] },
-  { name: 'Vestido Largo Noche', slug: 'vestido-largo-noche', price: 680, oldPrice: null, cat: 1, subcat: 1, brand: 7, sizes: ['S','M','L'], availability: 'low_stock', featured: true, newArrival: false, onSale: false, colors: ['#1c1917','#991b1b'] },
-  { name: 'Vestido Estampado Bohemio', slug: 'vestido-estampado-bohemio', price: 380, oldPrice: null, cat: 1, subcat: 1, brand: 6, sizes: ['M','L','XL'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['#d4a373','#c76f4b'] },
+  { name: 'Vestido Floral Primavera', slug: 'vestido-floral-primavera', price: 450, oldPrice: null, cat: 1, subcat: 1, brand: 1, sizes: ['S','M','L','XL'], availability: 'available', featured: true, newArrival: true, onSale: false, colors: ['Dorado','Verde','Negro'] },
+  { name: 'Vestido Negro Elegancia', slug: 'vestido-negro-elegancia', price: 520, oldPrice: 650, cat: 1, subcat: 1, brand: 6, sizes: ['XS','S','M','L'], availability: 'available', featured: true, newArrival: false, onSale: true, colors: ['Negro'] },
+  { name: 'Vestido Casual Verano', slug: 'vestido-casual-verano', price: 320, oldPrice: null, cat: 1, subcat: 1, brand: 2, sizes: ['S','M','L','XL'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['Beige','Dorado'] },
+  { name: 'Vestido Largo Noche', slug: 'vestido-largo-noche', price: 680, oldPrice: null, cat: 1, subcat: 1, brand: 7, sizes: ['S','M','L'], availability: 'low_stock', featured: true, newArrival: false, onSale: false, colors: ['Negro','Vino'] },
+  { name: 'Vestido Estampado Bohemio', slug: 'vestido-estampado-bohemio', price: 380, oldPrice: null, cat: 1, subcat: 1, brand: 6, sizes: ['M','L','XL'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['Dorado','Terracota'] },
   
   // Mujer - Blusas
-  { name: 'Blusa Blanca Clásica', slug: 'blusa-blanca-clasica', price: 220, oldPrice: null, cat: 1, subcat: 2, brand: 2, sizes: ['S','M','L','XL','2XL'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['#ffffff'] },
-  { name: 'Blusa Seda Estampada', slug: 'blusa-seda-estampada', price: 350, oldPrice: 420, cat: 1, subcat: 2, brand: 1, sizes: ['S','M','L'], availability: 'available', featured: true, newArrival: true, onSale: true, colors: ['#d4a373','#c76f4b','#e5e0d8'] },
-  { name: 'Blusa Mangas Larga', slug: 'blusa-mangas-larga', price: 260, oldPrice: null, cat: 1, subcat: 2, brand: 7, sizes: ['XS','S','M','L'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['#4a7c59','#1c1917'] },
+  { name: 'Blusa Blanca Clásica', slug: 'blusa-blanca-clasica', price: 220, oldPrice: null, cat: 1, subcat: 2, brand: 2, sizes: ['S','M','L','XL','2XL'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['Blanco'] },
+  { name: 'Blusa Seda Estampada', slug: 'blusa-seda-estampada', price: 350, oldPrice: 420, cat: 1, subcat: 2, brand: 1, sizes: ['S','M','L'], availability: 'available', featured: true, newArrival: true, onSale: true, colors: ['Dorado','Terracota','Beige'] },
+  { name: 'Blusa Mangas Larga', slug: 'blusa-mangas-larga', price: 260, oldPrice: null, cat: 1, subcat: 2, brand: 7, sizes: ['XS','S','M','L'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['Verde','Negro'] },
 
   // Mujer - Pantalones
-  { name: 'Pantalón Ajustado Negro', slug: 'pantalon-ajustado-negro', price: 340, oldPrice: null, cat: 1, subcat: 3, brand: 3, sizes: ['S','M','L','XL'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['#1c1917'] },
-  { name: 'Pantalón Palazzo Floral', slug: 'pantalon-palazzo-floral', price: 420, oldPrice: 520, cat: 1, subcat: 3, brand: 6, sizes: ['S','M','L'], availability: 'low_stock', featured: true, newArrival: true, onSale: true, colors: ['#d4a373','#ffffff'] },
+  { name: 'Pantalón Ajustado Negro', slug: 'pantalon-ajustado-negro', price: 340, oldPrice: null, cat: 1, subcat: 3, brand: 3, sizes: ['S','M','L','XL'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['Negro'] },
+  { name: 'Pantalón Palazzo Floral', slug: 'pantalon-palazzo-floral', price: 420, oldPrice: 520, cat: 1, subcat: 3, brand: 6, sizes: ['S','M','L'], availability: 'low_stock', featured: true, newArrival: true, onSale: true, colors: ['Dorado','Blanco'] },
 
   // Mujer - Faldas
-  { name: 'Falda Plisada Larga', slug: 'falda-plisada-larga', price: 290, oldPrice: null, cat: 1, subcat: 4, brand: 2, sizes: ['S','M','L'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['#1c1917','#4a7c59'] },
-  { name: 'Falda Corta Cuero', slug: 'falda-corta-cuero', price: 380, oldPrice: null, cat: 1, subcat: 4, brand: 7, sizes: ['XS','S','M'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['#1c1917'] },
+  { name: 'Falda Plisada Larga', slug: 'falda-plisada-larga', price: 290, oldPrice: null, cat: 1, subcat: 4, brand: 2, sizes: ['S','M','L'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['Negro','Verde'] },
+  { name: 'Falda Corta Cuero', slug: 'falda-corta-cuero', price: 380, oldPrice: null, cat: 1, subcat: 4, brand: 7, sizes: ['XS','S','M'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['Negro'] },
 
   // Mujer - Accesorios
-  { name: 'Bolso Tote Cuero', slug: 'bolso-tote-cuero', price: 580, oldPrice: null, cat: 1, subcat: 6, brand: 1, sizes: ['Única'], availability: 'available', featured: true, newArrival: false, onSale: false, colors: ['#1c1917','#d4a373'] },
-  { name: 'Collar Dorado', slug: 'collar-dorado', price: 180, oldPrice: null, cat: 1, subcat: 6, brand: 6, sizes: ['Única'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['#d4a373'] },
-  { name: 'Bufanda Suave', slug: 'bufanda-suave', price: 140, oldPrice: null, cat: 1, subcat: 6, brand: 2, sizes: ['Única'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['#d4a373','#4a7c59','#c76f4b'] },
+  { name: 'Bolso Tote Cuero', slug: 'bolso-tote-cuero', price: 580, oldPrice: null, cat: 1, subcat: 6, brand: 1, sizes: ['Única'], availability: 'available', featured: true, newArrival: false, onSale: false, colors: ['Negro','Dorado'] },
+  { name: 'Collar Dorado', slug: 'collar-dorado', price: 180, oldPrice: null, cat: 1, subcat: 6, brand: 6, sizes: ['Única'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['Dorado'] },
+  { name: 'Bufanda Suave', slug: 'bufanda-suave', price: 140, oldPrice: null, cat: 1, subcat: 6, brand: 2, sizes: ['Única'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['Dorado','Verde','Terracota'] },
 
   // Hombre - Camisas
-  { name: 'Camisa Formal Blanca', slug: 'camisa-formal-blanca', price: 320, oldPrice: null, cat: 2, subcat: 8, brand: 7, sizes: ['S','M','L','XL','2XL'], availability: 'available', featured: true, newArrival: false, onSale: false, colors: ['#ffffff'] },
-  { name: 'Camisa Casual Cuadros', slug: 'camisa-casual-cuadros', price: 280, oldPrice: 350, cat: 2, subcat: 8, brand: 2, sizes: ['M','L','XL'], availability: 'available', featured: false, newArrival: true, onSale: true, colors: ['#c76f4b','#4a7c59'] },
-  { name: 'Camisa Lino Natural', slug: 'camisa-lino-natural', price: 360, oldPrice: null, cat: 2, subcat: 8, brand: 1, sizes: ['M','L','XL'], availability: 'low_stock', featured: false, newArrival: true, onSale: false, colors: ['#e5e0d8'] },
+  { name: 'Camisa Formal Blanca', slug: 'camisa-formal-blanca', price: 320, oldPrice: null, cat: 2, subcat: 8, brand: 7, sizes: ['S','M','L','XL','2XL'], availability: 'available', featured: true, newArrival: false, onSale: false, colors: ['Blanco'] },
+  { name: 'Camisa Casual Cuadros', slug: 'camisa-casual-cuadros', price: 280, oldPrice: 350, cat: 2, subcat: 8, brand: 2, sizes: ['M','L','XL'], availability: 'available', featured: false, newArrival: true, onSale: true, colors: ['Terracota','Verde'] },
+  { name: 'Camisa Lino Natural', slug: 'camisa-lino-natural', price: 360, oldPrice: null, cat: 2, subcat: 8, brand: 1, sizes: ['M','L','XL'], availability: 'low_stock', featured: false, newArrival: true, onSale: false, colors: ['Beige'] },
 
   // Hombre - Playeras
-  { name: 'Playera Básica Algodón', slug: 'playera-basica-algodon', price: 150, oldPrice: null, cat: 2, subcat: 9, brand: 4, sizes: ['S','M','L','XL','2XL','3XL'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['#1c1917','#ffffff','#4a7c59'] },
-  { name: 'Playera Estampada Urbana', slug: 'playera-estampada-urbana', price: 190, oldPrice: null, cat: 2, subcat: 9, brand: 8, sizes: ['S','M','L','XL'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['#1c1917'] },
-  { name: 'Playera Deportiva Dry-Fit', slug: 'playera-deportiva-dry-fit', price: 210, oldPrice: null, cat: 2, subcat: 9, brand: 4, sizes: ['S','M','L','XL','2XL'], availability: 'available', featured: true, newArrival: false, onSale: false, colors: ['#1c1917','#d4a373'] },
+  { name: 'Playera Básica Algodón', slug: 'playera-basica-algodon', price: 150, oldPrice: null, cat: 2, subcat: 9, brand: 4, sizes: ['S','M','L','XL','2XL','3XL'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['Negro','Blanco','Verde'] },
+  { name: 'Playera Estampada Urbana', slug: 'playera-estampada-urbana', price: 190, oldPrice: null, cat: 2, subcat: 9, brand: 8, sizes: ['S','M','L','XL'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['Negro'] },
+  { name: 'Playera Deportiva Dry-Fit', slug: 'playera-deportiva-dry-fit', price: 210, oldPrice: null, cat: 2, subcat: 9, brand: 4, sizes: ['S','M','L','XL','2XL'], availability: 'available', featured: true, newArrival: false, onSale: false, colors: ['Negro','Dorado'] },
 
   // Hombre - Pantalones
-  { name: 'Jean Recto Clásico', slug: 'jean-recto-clasico', price: 380, oldPrice: null, cat: 2, subcat: 10, brand: 3, sizes: ['M','L','XL'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['#1c1917','#4a7c59'] },
-  { name: 'Pantalón Casual Beige', slug: 'pantalon-casual-beige', price: 340, oldPrice: null, cat: 2, subcat: 10, brand: 2, sizes: ['M','L','XL'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['#d4a373','#e5e0d8'] },
+  { name: 'Jean Recto Clásico', slug: 'jean-recto-clasico', price: 380, oldPrice: null, cat: 2, subcat: 10, brand: 3, sizes: ['M','L','XL'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['Negro','Verde'] },
+  { name: 'Pantalón Casual Beige', slug: 'pantalon-casual-beige', price: 340, oldPrice: null, cat: 2, subcat: 10, brand: 2, sizes: ['M','L','XL'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['Dorado','Beige'] },
 
   // Hombre - Chamarras
-  { name: 'Chamarra Vaquera', slug: 'chamarra-vaquera', price: 520, oldPrice: 650, cat: 2, subcat: 11, brand: 3, sizes: ['M','L','XL','2XL'], availability: 'available', featured: true, newArrival: false, onSale: true, colors: ['#4a7c59','#1c1917'] },
-  { name: 'Chamarra Ligera Impermeable', slug: 'chamarra-ligera-impermeable', price: 440, oldPrice: null, cat: 2, subcat: 11, brand: 4, sizes: ['S','M','L','XL'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['#1c1917'] },
+  { name: 'Chamarra Vaquera', slug: 'chamarra-vaquera', price: 520, oldPrice: 650, cat: 2, subcat: 11, brand: 3, sizes: ['M','L','XL','2XL'], availability: 'available', featured: true, newArrival: false, onSale: true, colors: ['Verde','Negro'] },
+  { name: 'Chamarra Ligera Impermeable', slug: 'chamarra-ligera-impermeable', price: 440, oldPrice: null, cat: 2, subcat: 11, brand: 4, sizes: ['S','M','L','XL'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['Negro'] },
 
   // Hombre - Accesorios
-  { name: 'Reloj Clásico Acero', slug: 'reloj-clasico-acero', price: 620, oldPrice: null, cat: 2, subcat: 13, brand: 1, sizes: ['Única'], availability: 'available', featured: true, newArrival: false, onSale: false, colors: ['#1c1917','#d4a373'] },
-  { name: 'Cinturón Cuero', slug: 'cinturon-cuero', price: 220, oldPrice: null, cat: 2, subcat: 13, brand: 3, sizes: ['M','L','XL'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['#1c1917'] },
-  { name: 'Gorra Deportiva', slug: 'gorra-deportiva', price: 120, oldPrice: null, cat: 2, subcat: 13, brand: 4, sizes: ['Única'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['#1c1917','#d4a373','#4a7c59'] },
+  { name: 'Reloj Clásico Acero', slug: 'reloj-clasico-acero', price: 620, oldPrice: null, cat: 2, subcat: 13, brand: 1, sizes: ['Única'], availability: 'available', featured: true, newArrival: false, onSale: false, colors: ['Negro','Dorado'] },
+  { name: 'Cinturón Cuero', slug: 'cinturon-cuero', price: 220, oldPrice: null, cat: 2, subcat: 13, brand: 3, sizes: ['M','L','XL'], availability: 'available', featured: false, newArrival: false, onSale: false, colors: ['Negro'] },
+  { name: 'Gorra Deportiva', slug: 'gorra-deportiva', price: 120, oldPrice: null, cat: 2, subcat: 13, brand: 4, sizes: ['Única'], availability: 'available', featured: false, newArrival: true, onSale: false, colors: ['Negro','Dorado','Verde'] },
 ];
 
 for (let i = 0; i < products.length; i++) {

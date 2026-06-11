@@ -396,7 +396,7 @@ export default function ProductForm({ initialData, isEditing }: Props) {
       </div>
 
       <ImageUpload
-        existingImages={form.images.map((img) => ({ id: img.id, url: img.url }))}
+        existingImages={form.images.map((img) => ({ id: img.id, url: img.url, public_id: img.public_id }))}
         onImagesChange={(images) => updateField('images', images)}
       />
 

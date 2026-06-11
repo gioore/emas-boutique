@@ -8,7 +8,6 @@ async function seed() {
   await query('DELETE FROM subcategories');
   await query('DELETE FROM categories');
   await query('DELETE FROM brands');
-  await query('DELETE FROM site_config');
 
   await query(`INSERT INTO brands (id, name, slug, active) VALUES
     (1, 'Michael Kors', 'michael-kors', true), (2, 'Tommy Hilfiger', 'tommy-hilfiger', true),
@@ -80,17 +79,6 @@ async function seed() {
     ]);
   }
   await query("SELECT setval('products_id_seq', (SELECT MAX(id) FROM products))");
-
-  const settings = JSON.stringify({
-    site_name: 'EMAS Boutique',
-    site_description: 'Boutique de moda en Guatemala',
-    whatsapp: '50247633183',
-    email: 'info@emasboutique.com',
-    instagram: 'emasboutique',
-    hero_title: 'Elegancia que Inspira',
-    hero_subtitle: 'Descubre las últimas tendencias en moda femenina y masculina',
-  });
-  await query(`INSERT INTO site_config (key, value, updated_at) VALUES ('site_settings', $1, now()) ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = now()`, [settings]);
 }
 
 export async function GET(request: Request) {
