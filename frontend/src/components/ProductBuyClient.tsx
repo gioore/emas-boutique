@@ -36,9 +36,17 @@ const COLOR_MAP: Record<string, string> = {
   terracota: '#c76f4b',
 };
 
-const HEX_TO_NAME = Object.fromEntries(
-  Object.entries(COLOR_MAP).map(([name, hex]) => [hex.toLowerCase(), name])
-);
+function capitalize(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+const HEX_TO_NAME: Record<string, string> = {
+  ...Object.fromEntries(
+    Object.entries(COLOR_MAP).map(([name, hex]) => [hex.toLowerCase(), capitalize(name)])
+  ),
+  '#4a7c59': 'Verde',
+  '#991b1b': 'Vino',
+};
 
 function getColorHex(color: string): string {
   const cleaned = color.toLowerCase().trim();
@@ -53,7 +61,7 @@ function getColorLabel(color: string): string {
     const hex = cleaned.startsWith('0x') ? '#' + cleaned.slice(2) : cleaned;
     return HEX_TO_NAME[hex] || color;
   }
-  return color;
+  return capitalize(color);
 }
 
 function isLightColor(hex: string): boolean {
