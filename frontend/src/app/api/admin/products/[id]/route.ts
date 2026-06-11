@@ -18,7 +18,10 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
       WHERE p.id = $1
     `, [id]);
     if (!row) return NextResponse.json({ error: 'Producto no encontrado' }, { status: 404 });
-    const mapped = { ...row, price: Number(row.price), old_price: row.old_price ? Number(row.old_price) : null };
+    let images: any[] = [];
+    if (Array.isArray(row.images)) images = row.images;
+    else if (typeof row.images === 'string') try { images = JSON.parse(row.images); } catch {}
+    const mapped = { ...row, images, price: Number(row.price), old_price: row.old_price ? Number(row.old_price) : null };
     return NextResponse.json({ data: mapped });
   } catch (err: any) {
     if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });

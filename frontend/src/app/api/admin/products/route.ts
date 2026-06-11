@@ -4,6 +4,12 @@ import { requireAuth } from '@/lib/admin-auth-server';
 import { query, queryOne } from '@/lib/db';
 import { validateProductBody, ensureUniqueSlug } from '@/lib/product-utils';
 
+function parseImages(p: any): any[] {
+  if (Array.isArray(p.images)) return p.images;
+  if (typeof p.images === 'string') try { return JSON.parse(p.images); } catch { return []; }
+  return [];
+}
+
 export async function GET() {
   try {
     await requireAuth();
@@ -17,6 +23,7 @@ export async function GET() {
     `);
     const mapped = rows.map((p: any) => ({
       ...p,
+      images: parseImages(p),
       price: Number(p.price),
       old_price: p.old_price ? Number(p.old_price) : null,
     }));
