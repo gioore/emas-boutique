@@ -41,6 +41,8 @@ function SectionHeader({ label, title }: { label: string; title: string }) {
   );
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   let featured: Product[] = [];
   let newArrivals: Product[] = [];
