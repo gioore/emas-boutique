@@ -1,10 +1,11 @@
-import { queryOne } from './db';
+import { execute, queryOne } from './db';
 
 export function validateProductBody(data: Record<string, unknown>, isUpdate = false): string | null {
   if (!isUpdate || data.name !== undefined) {
     if (!data.name || typeof data.name !== 'string' || !data.name.trim()) return 'El nombre del producto es requerido';
   }
-  if (data.price !== undefined && data.price !== null) {
+  if (!isUpdate || data.price !== undefined) {
+    if (data.price === undefined || data.price === null) return 'El precio es requerido';
     const price = Number(data.price);
     if (isNaN(price) || price < 0) return 'El precio debe ser un número válido mayor o igual a 0';
   }
@@ -24,4 +25,8 @@ export async function ensureUniqueSlug(slug: string, excludeId?: number): Promis
     counter++;
     candidate = `${slug}-${counter}`;
   }
+}
+
+export async function syncSequence(table: string): Promise<void> {
+  await execute(`SELECT setval('${table}_id_seq', COALESCE((SELECT MAX(id) FROM ${table}), 0))`);
 }

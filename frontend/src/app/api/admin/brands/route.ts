@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/admin-auth-server';
 import { query, queryOne } from '@/lib/db';
+import { syncSequence } from '@/lib/product-utils';
 
 export async function GET() {
   try {
@@ -26,10 +27,11 @@ export async function POST(request: NextRequest) {
     let slug = data.slug || data.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
     const existing = await queryOne('SELECT id FROM brands WHERE slug = $1', [slug]);
     if (existing) {
-      const count = await queryOne('SELECT COUNT(*) as n FROM brands WHERE slug LIKE $1', [`${slug}-%`]);
+      const count = await queryOne<{ n: number }>('SELECT COUNT(*) as n FROM brands WHERE slug LIKE $1', [`${slug}-%`]);
       slug = `${slug}-${(count?.n ?? 0) + 1}`;
     }
-    const result = await queryOne(
+    await syncSequence('brands');
+    const result = await queryOne<{ id: number }>(
       'INSERT INTO brands (name, slug, logo_url, active) VALUES ($1,$2,$3,$4) RETURNING id',
       [data.name.trim(), slug, data.logo_url || null, data.active ?? true]
     );

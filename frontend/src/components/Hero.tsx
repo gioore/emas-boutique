@@ -14,7 +14,7 @@ export default function Hero() {
       />
 
       {/* Animated wave pattern */}
-      <div className="absolute inset-0 z-10 opacity-20 animate-wave-move" style={{ width: '150%', marginLeft: '-25%' }}>
+      <div aria-hidden="true" className="absolute inset-0 z-10 opacity-20 animate-wave-move" style={{ width: '150%', marginLeft: '-25%' }}>
         <svg viewBox="0 0 1440 900" preserveAspectRatio="none" className="w-full h-full">
           <path
             d="M0 600 Q 360 400, 720 550 T 1440 500 V 900 H 0 Z"
@@ -29,6 +29,7 @@ export default function Hero() {
 
       {/* Subtle dot pattern */}
       <div
+        aria-hidden="true"
         className="absolute inset-0 z-10 opacity-[0.07]"
         style={{
           backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',

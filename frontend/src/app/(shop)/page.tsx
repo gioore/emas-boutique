@@ -71,7 +71,7 @@ export default async function Home() {
             </div>
             <div>
               <p className="text-3xl font-bold" style={{ color: BRAND_COLORS.gold }}>{featured.length + newArrivals.length + onSale.length || '100'}+</p>
-              <p className="text-xs uppercase tracking-wider mt-1 font-medium" style={{ color: BRAND_COLORS.textMuted }}>Productos importados</p>
+              <p className="text-xs uppercase tracking-wider mt-1 font-medium" style={{ color: BRAND_COLORS.textMuted }}>Productos</p>
             </div>
             <div>
               <p className="text-3xl font-bold" style={{ color: BRAND_COLORS.gold }}>{brands.length}+</p>
@@ -282,7 +282,7 @@ export default async function Home() {
             ¿Lista para renovar tu guardarropa?
           </h2>
           <p className="mb-10 max-w-lg mx-auto text-lg" style={{ color: BRAND_COLORS.textMuted }}>
-            Mercadería importada 100% original. Entregas inmediatas y bajo pedido con envíos a toda Guatemala.
+            100% original. Entregas inmediatas y bajo pedido con envíos a toda Guatemala.
           </p>
           <div className="flex justify-center gap-4 flex-wrap">
             <Link

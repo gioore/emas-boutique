@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: `Términos y Condiciones - ${SITE_CONFIG.name}`,
-  description: 'Términos y condiciones de uso de EMAS Boutique, tienda de mercadería importada en Guatemala.',
+  description: 'Términos y condiciones de uso de EMAS Boutique, tienda de moda en Guatemala.',
 };
 
 export default function TerminosPage() {
@@ -26,17 +26,17 @@ export default function TerminosPage() {
 
           <h2 className="text-2xl font-bold mt-10">1. General</h2>
           <p>
-            EMAS Boutique es un emprendimiento guatemalteco dedicado a la venta de mercadería
-            importada 100% original. Al realizar un pedido a través de WhatsApp o cualquier
+            EMAS Boutique es un emprendimiento guatemalteco dedicado a la venta de ropa,
+            calzado y accesorios 100% originales. Al realizar un pedido a través de WhatsApp o cualquier
             otro medio, aceptas estos términos en su totalidad.
           </p>
 
           <h2 className="text-2xl font-bold mt-10">2. Productos</h2>
           <p>
-            Todos los productos anunciados son 100% originales e importados. Las imágenes
-            son de referencia y pueden tener ligeras variaciones respecto al producto real
-            (iluminación, tonos de color). Nos esforzamos por describir cada producto con
-            la mayor precisión posible.
+            Todos los productos anunciados son 100% originales. Las imágenes
+son de referencia y pueden tener ligeras variaciones respecto al producto real
+(iluminación, tonos de color). Nos esforzamos por describir cada producto con
+la mayor precisión posible.
           </p>
 
           <h2 className="text-2xl font-bold mt-10">3. Precios</h2>

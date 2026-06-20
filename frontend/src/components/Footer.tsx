@@ -42,6 +42,11 @@ export default function Footer() {
             <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-widest">Ayuda</h4>
             <ul className="space-y-3 text-sm">
               <li>
+                <Link href="/como-comprar" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#78716c' }}>
+                  Cómo Comprar
+                </Link>
+              </li>
+              <li>
                 <Link href="/faq" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#78716c' }}>
                   FAQ
                 </Link>
@@ -59,6 +64,11 @@ export default function Footer() {
               <li>
                 <Link href="/cambios-devoluciones" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#78716c' }}>
                   Cambios y Devoluciones
+                </Link>
+              </li>
+              <li>
+                <Link href="/medios-de-pago" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#78716c' }}>
+                  Medios de Pago
                 </Link>
               </li>
             </ul>

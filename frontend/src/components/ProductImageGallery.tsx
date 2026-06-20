@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { getImageUrl } from '@/lib/images';
+import { getOptimizedImageUrl } from '@/lib/images';
 import { BRAND_COLORS } from '@/lib/config';
 
 interface Props {
@@ -37,7 +37,7 @@ export default function ProductImageGallery({ images, productName, onSale, newAr
         {images[selectedIndex]?.url ? (
           <>
             <Image
-              src={getImageUrl(images[selectedIndex])}
+              src={getOptimizedImageUrl(images[selectedIndex], 800)}
               alt={productName}
               fill
               className="object-cover transition-opacity duration-300"
@@ -61,7 +61,7 @@ export default function ProductImageGallery({ images, productName, onSale, newAr
           </>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center" style={{ color: '#d6d3d1' }}>
-            <svg className="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg aria-hidden="true" className="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
           </div>
@@ -100,7 +100,7 @@ export default function ProductImageGallery({ images, productName, onSale, newAr
             >
               {img.url && (
                 <Image
-                  src={getImageUrl(img)}
+                  src={getOptimizedImageUrl(img, 160)}
                   alt=""
                   width={80}
                   height={80}

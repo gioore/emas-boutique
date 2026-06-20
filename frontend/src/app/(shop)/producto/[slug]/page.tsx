@@ -4,6 +4,7 @@ import { getProduct } from '@/lib/queries';
 import { getImageUrl } from '@/lib/images';
 import { query } from '@/lib/db';
 import { formatProduct } from '@/lib/format-product';
+import type { ProductRow } from '@/lib/format-product';
 import { SITE_CONFIG, SITE_URL, BRAND_COLORS } from '@/lib/config';
 import ProductCard from '@/components/ProductCard';
 import ShareButton from '@/components/ShareButton';
@@ -69,7 +70,7 @@ export async function generateMetadata({ params }: Props) {
 async function fetchRelated(product: Product): Promise<Product[]> {
   if (!product.subcat?.id) return [];
   try {
-    const rows = await query(
+    const rows = await query<ProductRow>(
       `SELECT p.*, b.id as brand_id, b.name as brand_name, b.slug as brand_slug,
         c.id as cat_id, c.name as cat_name, c.slug as cat_slug,
         sc.id as subcat_id, sc.name as subcat_name, sc.slug as subcat_slug

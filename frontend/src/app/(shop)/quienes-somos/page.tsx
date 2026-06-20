@@ -2,7 +2,7 @@ import { SITE_CONFIG, BRAND_COLORS } from '@/lib/config';
 
 export const metadata = {
   title: `Quiénes Somos - ${SITE_CONFIG.name}`,
-  description: 'Conoce la historia de EMAS Boutique, tu tienda de mercadería importada 100% original en Guatemala.',
+  description: 'Conoce la historia de EMAS Boutique, tu tienda de moda 100% original en Guatemala.',
 };
 
 export default function QuienesSomosPage() {
@@ -20,18 +20,18 @@ export default function QuienesSomosPage() {
         <div className="prose prose-lg max-w-none" style={{ color: BRAND_COLORS.text }}>
           <p className="text-xl leading-relaxed" style={{ color: BRAND_COLORS.textMuted }}>
             EMAS Boutique nace de la pasión por la moda y el deseo de ofrecer a Guatemala
-            mercadería importada 100% original a precios accesibles.
+            productos 100% originales a precios accesibles.
           </p>
           <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
           <h2 className="text-2xl font-bold mt-10">Nuestra Historia</h2>
           <p>
             EMAS Boutique es un emprendimiento guatemalteco dedicado a la venta de ropa,
-            calzado, bolsos y accesorios importados. Seleccionamos cuidadosamente cada
+            calzado, bolsos y accesorios. Seleccionamos cuidadosamente cada
             pieza para ofrecerte lo mejor de las tendencias internacionales.
           </p>
           <h2 className="text-2xl font-bold mt-10">Nuestra Misión</h2>
           <p>
-            Brindar a nuestros clientes productos importados de alta calidad, originales
+            Brindar a nuestros clientes productos de alta calidad, originales
             y con estilo, acompañados de un servicio cercano y personalizado. Creemos en
             la moda como expresión de identidad.
           </p>

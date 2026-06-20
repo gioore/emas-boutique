@@ -39,7 +39,7 @@ const faqs = [
   {
     question: '¿Los productos son originales?',
     answer:
-      'Sí, todos nuestros productos son 100% originales e importados. Seleccionamos cuidadosamente cada pieza para garantizar la mejor calidad.',
+      'Sí, todos nuestros productos son 100% originales. Seleccionamos cuidadosamente cada pieza para garantizar la mejor calidad.',
   },
   {
     question: '¿Tienen tienda física?',

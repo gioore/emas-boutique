@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidateTag } from 'next/cache';
 import { requireAuth } from '@/lib/admin-auth-server';
 import { query, queryOne } from '@/lib/db';
-import { validateProductBody, ensureUniqueSlug } from '@/lib/product-utils';
+import { validateProductBody, ensureUniqueSlug, syncSequence } from '@/lib/product-utils';
 
 function parseImages(p: any): any[] {
   if (Array.isArray(p.images)) return p.images;
@@ -46,7 +46,9 @@ export async function POST(request: NextRequest) {
     const slug = data.slug || data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     const uniqueSlug = await ensureUniqueSlug(slug);
 
-    const result = await queryOne(`
+    await syncSequence('products');
+
+    const result = await queryOne<{ id: number }>(`
       INSERT INTO products (name, slug, price, old_price, category, subcategory, category_id, subcategory_id,
         description, sizes, images, featured, brand_id, sku, availability, new_arrival, on_sale, colors, tags)
       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)

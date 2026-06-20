@@ -9,7 +9,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
   try {
     await requireAuth();
     const { id } = await params;
-    const row = await queryOne(`
+    const row = await queryOne<{ images: unknown; price: unknown; old_price: unknown }>(`
       SELECT p.*, b.name as brand_name, c.name as cat_name, sc.name as subcat_name
       FROM products p
       LEFT JOIN brands b ON b.id = p.brand_id

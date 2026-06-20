@@ -1,6 +1,5 @@
 export interface Brand {
   id: number;
-  documentId?: string;
   name?: string;
   slug?: string | null;
   logo?: { url: string } | null;
@@ -9,7 +8,6 @@ export interface Brand {
 
 export interface Category {
   id: number;
-  documentId?: string;
   name?: string;
   slug?: string | null;
   description?: string | null;
@@ -19,7 +17,6 @@ export interface Category {
 
 export interface Subcategory {
   id: number;
-  documentId?: string;
   name?: string;
   slug?: string | null;
   description?: string | null;
@@ -30,13 +27,12 @@ export interface Subcategory {
 
 export interface Product {
   id: number;
-  documentId?: string;
   name: string;
   slug: string;
   price: number;
   oldPrice: number | null;
-  category: string; // kept for backwards compat (enum)
-  subcategory: string; // kept for backwards compat (enum)
+  category: string;
+  subcategory: string;
   cat: Category | null;
   subcat: Subcategory | null;
   description: string;
@@ -52,18 +48,16 @@ export interface Product {
   tags: string[] | null;
   createdAt: string;
   updatedAt: string;
-  publishedAt?: string;
 }
 
 export interface Image {
   id: number;
-  documentId?: string;
   url: string;
   alternativeText: string | null;
   name: string;
   width: number;
   height: number;
-  formats: {
+  formats?: {
     thumbnail?: ImageFormat;
     small?: ImageFormat;
     medium?: ImageFormat;

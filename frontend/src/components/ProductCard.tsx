@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getImageUrl } from '@/lib/images';
+import { getOptimizedImageUrl } from '@/lib/images';
 import { BRAND_COLORS } from '@/lib/config';
 import type { Product } from '@/types/product';
 
@@ -14,7 +14,7 @@ interface Props {
 export default function ProductCard({ product }: Props) {
   const [imgIndex, setImgIndex] = useState(0);
   const hasTwoImages = product.images && product.images.length >= 2;
-  const imageUrl = product.images?.[imgIndex] ? getImageUrl(product.images[imgIndex]) : '/placeholder.svg';
+  const imageUrl = product.images?.[imgIndex] ? getOptimizedImageUrl(product.images[imgIndex], 400) : '/placeholder.svg';
 
   return (
     <Link

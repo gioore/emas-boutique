@@ -1,9 +1,19 @@
 import { Suspense } from 'react';
+import type { Metadata } from 'next';
 import CatalogView from '@/components/catalog/CatalogView';
 import { getCatalogData } from '@/lib/catalog';
 import { BRAND_COLORS } from '@/lib/config';
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: 'Ropa para Hombre | EMAS Boutique',
+  description: 'Camisas, playeras, pantalones, chamarras y accesorios para hombre. Moda original en Guatemala.',
+  openGraph: {
+    title: 'Hombre - EMAS Boutique',
+    description: 'Descubre nuestra colección de moda masculina.',
+  },
+};
 
 export default async function HombrePage() {
   const catalog = await getCatalogData('hombre');
@@ -17,7 +27,7 @@ export default async function HombrePage() {
       <CatalogView
         mode="hombre"
         title="Hombre"
-        subtitle="Camisas, playeras, pantalones y accesorios importados"
+        subtitle="Camisas, playeras, pantalones y accesorios"
         products={catalog.products}
         brands={catalog.brands}
         categories={catalog.categories}

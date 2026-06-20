@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SITE_URL } from '@/lib/config';
+import { OG_IMAGE_URL } from '@/lib/images';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,15 +15,23 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EMAS Boutique - Mercadería importada 100% original",
-  description: "Descubre nuestra colección importada. Vestidos, blusas, pantalones, bolsos y más. Envíos a toda Guatemala.",
+  title: "EMAS Boutique",
+  description: "Vestidos, blusas, pantalones, bolsos y más. Envíos a toda Guatemala.",
   openGraph: {
-    title: "EMAS Boutique - Mercadería importada 100% original",
-    description: "Vestidos, blusas, pantalones, bolsos y accesorios importados. Envíos a toda Guatemala.",
+    title: "EMAS Boutique",
+    description: "Vestidos, blusas, pantalones, bolsos y accesorios. Envíos a toda Guatemala.",
     url: SITE_URL,
     siteName: "EMAS Boutique",
     locale: "es_GT",
     type: "website",
+    images: [{ url: OG_IMAGE_URL, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@emasboutique",
+    title: "EMAS Boutique",
+    description: "Vestidos, blusas, pantalones, bolsos y accesorios. Envíos a toda Guatemala.",
+    images: [OG_IMAGE_URL],
   },
   robots: {
     index: true,

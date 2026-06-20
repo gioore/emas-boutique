@@ -1,6 +1,7 @@
 import type { Brand, Category, Product, Subcategory } from '@/types/product';
 import { query } from './db';
 import { formatProduct } from './format-product';
+import type { ProductRow } from './format-product';
 
 export type CatalogSection = 'all' | 'mujer' | 'hombre';
 export type CategoryWithSubcategories = Category & { subcategories?: Subcategory[] };
@@ -37,7 +38,7 @@ async function getProducts(section: CatalogSection): Promise<Product[]> {
   const where = section !== 'all' ? 'WHERE p.category = $1' : '';
   const params = section !== 'all' ? [section] : [];
 
-  const rows = await query(`
+  const rows = await query<ProductRow>(`
     SELECT p.*,
       c.id as cat_id, c.name as cat_name, c.slug as cat_slug,
       sc.id as subcat_id, sc.name as subcat_name, sc.slug as subcat_slug,
@@ -50,7 +51,7 @@ async function getProducts(section: CatalogSection): Promise<Product[]> {
     ORDER BY p.created_at DESC
   `, params);
 
-  return rows.map(formatProduct);
+  return rows.map(formatProduct).filter((p): p is NonNullable<typeof p> => p != null);
 }
 
 async function getBrands(): Promise<Brand[]> {

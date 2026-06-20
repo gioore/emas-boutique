@@ -1,13 +1,10 @@
 import { cookies } from 'next/headers';
-import { createHmac, timingSafeEqual } from 'crypto';
+import { createHmac, randomBytes, timingSafeEqual } from 'crypto';
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
-if (!IS_PRODUCTION && (!process.env.ADMIN_USERNAME || !process.env.ADMIN_PASSWORD)) {
-  console.warn('[AUTH] Using default admin credentials — set ADMIN_USERNAME/ADMIN_PASSWORD in .env for production');
-}
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || (IS_PRODUCTION ? '' : 'admin');
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || (IS_PRODUCTION ? '' : 'boutique2025');
-const ADMIN_SESSION_SECRET = process.env.ADMIN_SESSION_SECRET || (IS_PRODUCTION ? '' : 'dev-only-session-secret');
+const ADMIN_SESSION_SECRET = process.env.ADMIN_SESSION_SECRET || (IS_PRODUCTION ? '' : randomBytes(32).toString('base64'));
 const COOKIE_NAME = 'admin_session';
 const SESSION_DURATION = 86400000; // 24h
 

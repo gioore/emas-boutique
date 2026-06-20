@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMAS Boutique — Mockup Visual</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif; background: #faf7f2; color: #1c1917; line-height: 1.5; }
+  
+  /* ===== TAPETE DE PRESENTACIÓN ===== */
+  .slide-cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #faf7f2 0%, #f5f0e8 100%);
+  }
+  .slide-cover h1 { font-size: 3.5rem; color: #1c1917; letter-spacing: -1px; }
+  .slide-cover .gold { color: #d4a373; }
+  .slide-cover p { font-size: 1.2rem; color: #78716c; margin-top: 12px; max-width: 500px; }
+  .slide-cover .divider { width: 60px; height: 3px; background: #d4a373; margin: 24px auto; border-radius: 2px; }
+
+  /* ===== BARRA SUPERIOR ===== */
+  .top-bar {
+    background: #1c1917; color: #fff; text-align: center; font-size: 0.78rem; padding: 8px 16px; letter-spacing: 0.5px;
+  }
+  
+  /* ===== HEADER ===== */
+  .header {
+    display: flex; align-items: center; justify-content: space-between;
+    max-width: 1200px; margin: 0 auto; padding: 18px 24px;
+  }
+  .header .logo { font-size: 1.5rem; font-weight: 800; color: #1c1917; letter-spacing: -0.5px; }
+  .header .logo span { color: #d4a373; }
+  .header nav { display: flex; gap: 28px; }
+  .header nav a { text-decoration: none; color: #44403c; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+  .header nav a:hover { color: #1c1917; }
+  .header .whatsapp-top {
+    display: flex; align-items: center; gap: 6px;
+    background: #25D366; color: #fff; padding: 8px 18px; border-radius: 50px;
+    font-size: 0.85rem; font-weight: 600; text-decoration: none;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    max-width: 1200px; margin: 0 auto; padding: 60px 24px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+  }
+  .hero h2 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 4px; color: #d4a373; font-weight: 600; }
+  .hero h1 { font-size: 3.2rem; line-height: 1.15; margin-top: 12px; font-weight: 700; }
+  .hero h1 span { color: #d4a373; }
+  .hero p { color: #78716c; margin-top: 16px; font-size: 1.05rem; max-width: 480px; }
+  .hero-buttons { display: flex; gap: 14px; margin-top: 32px; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #d4a373; color: #fff; padding: 14px 32px; border-radius: 50px;
+    font-weight: 600; text-decoration: none; font-size: 0.95rem;
+    transition: transform 0.2s; box-shadow: 0 4px 14px rgba(212,163,115,0.3);
+  }
+  .btn-primary:hover { transform: scale(1.03); }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 10px;
+    border: 2px solid #d4a373; color: #d4a373; padding: 12px 28px; border-radius: 50px;
+    font-weight: 600; text-decoration: none; font-size: 0.95rem;
+  }
+  .hero-image {
+    width: 100%; aspect-ratio: 3/4; border-radius: 20px;
+    background: linear-gradient(135deg, #e5e0d8, #d4a37333);
+    display: flex; align-items: center; justify-content: center;
+    color: #d4a373; font-size: 1rem; letter-spacing: 1px;
+    overflow: hidden; position: relative;
+  }
+  .hero-image .overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(212,163,115,0.1), rgba(199,111,75,0.05));
+  }
+  .hero-image .badge {
+    position: absolute; top: 20px; left: 20px;
+    background: #c76f4b; color: #fff; padding: 6px 14px; border-radius: 50px;
+    font-size: 0.75rem; font-weight: 700;
+  }
+  .hero-image .brand-tag {
+    position: absolute; bottom: 20px; left: 20px; right: 20px;
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .hero-image .brand-tag span {
+    background: rgba(255,255,255,0.9); padding: 4px 12px; border-radius: 50px;
+    font-size: 0.7rem; font-weight: 600; color: #1c1917;
+  }
+  .hero-image .model { font-size: 1.1rem; color: #78716c; text-align: center; }
+
+  /* ===== SECCIÓN GENÉRICA ===== */
+  .section { max-width: 1200px; margin: 0 auto; padding: 70px 24px; }
+  .section-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 4px; color: #78716c; text-align: center; font-weight: 500; }
+  .section-title { font-size: 2rem; font-weight: 700; text-align: center; margin-top: 8px; }
+  .section-divider { width: 50px; height: 2px; background: #d4a373; margin: 14px auto 40px; border-radius: 1px; }
+
+  /* ===== TARJETAS DE PRODUCTO ===== */
+  .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .product-card {
+    background: #fff; border-radius: 16px; overflow: hidden;
+    border: 1px solid #e5e0d8; transition: transform 0.3s; cursor: pointer;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .product-card:hover { transform: translateY(-3px); }
+  .product-card .img {
+    aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; color: #a8a29e; position: relative; overflow: hidden;
+  }
+  .product-card .badges { position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 5px; }
+  .product-card .badge { padding: 3px 10px; border-radius: 50px; font-size: 0.65rem; font-weight: 700; color: #fff; }
+  .badge-oferta { background: #c76f4b; }
+  .badge-nuevo { background: #d4a373; }
+  .badge-original { background: rgba(212,163,115,0.85); }
+  .product-card .info { padding: 14px 16px 18px; }
+  .product-card .brand { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: #78716c; font-weight: 600; }
+  .product-card .subcat { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: #78716c; margin-top: 3px; }
+  .product-card .name { font-size: 0.85rem; font-weight: 600; margin-top: 6px; color: #1c1917; }
+  .product-card .sizes { display: flex; gap: 4px; margin-top: 8px; flex-wrap: wrap; }
+  .product-card .sizes span {
+    background: #f5f0e8; padding: 1px 8px; border-radius: 4px;
+    font-size: 0.62rem; color: #78716c; font-weight: 500;
+  }
+  .product-card .price { font-size: 1rem; font-weight: 700; margin-top: 10px; color: #1c1917; }
+  .product-card .price-old { font-size: 0.8rem; text-decoration: line-through; color: #78716c; margin-left: 8px; font-weight: 400; }
+  .price-sale { color: #991b1b !important; }
+
+  /* ===== CATEGORÍAS ===== */
+  .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .cat-card {
+    position: relative; height: 380px; border-radius: 20px; overflow: hidden;
+    display: flex; align-items: flex-end; padding: 32px;
+    background: linear-gradient(135deg, #e5e0d8, #d4a37322);
+    text-decoration: none; color: #fff;
+  }
+  .cat-card .overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  }
+  .cat-card h3 { position: relative; font-size: 2rem; font-weight: 700; z-index: 1; }
+  .cat-card p { position: relative; font-size: 0.85rem; opacity: 0.85; margin-top: 4px; z-index: 1; }
+
+  /* ===== PRODUCTO DETALLE ===== */
+  .product-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; max-width: 1200px; margin: 0 auto; padding: 50px 24px; align-items: start; }
+  .detail-gallery { position: relative; }
+  .detail-gallery .main-img {
+    width: 100%; aspect-ratio: 3/4; border-radius: 16px;
+    background: linear-gradient(135deg, #f5f0e8, #e5e0d8);
+    display: flex; align-items: center; justify-content: center;
+    color: #a8a29e; font-size: 0.85rem;
+  }
+  .detail-gallery .thumbs { display: flex; gap: 10px; margin-top: 12px; }
+  .detail-gallery .thumb {
+    width: 70px; height: 70px; border-radius: 8px; border: 2px solid transparent;
+    background: #f5f0e8; cursor: pointer;
+  }
+  .detail-gallery .thumb.active { border-color: #d4a373; }
+  .detail-info .brand { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: #78716c; font-weight: 600; }
+  .detail-info .subcat { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; color: #78716c; margin-top: 6px; }
+  .detail-info h1 { font-size: 2rem; font-weight: 700; margin-top: 12px; }
+  .detail-info .price-row { display: flex; align-items: center; gap: 12px; margin-top: 20px; }
+  .detail-info .price-row .current { font-size: 1.8rem; font-weight: 700; }
+  .detail-info .price-row .old { font-size: 1.1rem; text-decoration: line-through; color: #78716c; }
+  .detail-info .price-row .discount {
+    background: #f5f0e8; color: #991b1b; padding: 3px 12px; border-radius: 50px;
+    font-size: 0.7rem; font-weight: 700;
+  }
+  .detail-info .availability {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 14px; font-size: 0.8rem; font-weight: 500; color: #4a7c59;
+  }
+  .detail-info .availability .dot { width: 8px; height: 8px; border-radius: 50%; background: #4a7c59; }
+  .detail-info .sku { font-size: 0.75rem; color: #78716c; margin-top: 6px; }
+  .detail-info .desc { margin-top: 24px; color: #57534e; font-size: 0.9rem; line-height: 1.7; }
+  .detail-info .colors-title { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 28px; color: #1c1917; }
+  .detail-info .color-dots { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+  .detail-info .color-dot {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 500;
+    border: 1px solid #e5e0d8;
+  }
+  .detail-info .color-dot .circle { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); }
+  .detail-info .sizes-title { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 24px; color: #1c1917; }
+  .detail-info .size-btns { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .detail-info .size-btn {
+    padding: 8px 20px; border: 1px solid #d6d3d1; border-radius: 8px;
+    font-size: 0.8rem; font-weight: 500; cursor: pointer; background: #fff; color: #1c1917;
+  }
+  .detail-info .size-btn.active { background: #1c1917; color: #fff; border-color: #1c1917; }
+  .detail-info .buy-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #25D366; color: #fff; padding: 16px 40px; border-radius: 50px;
+    font-weight: 700; font-size: 0.95rem; text-decoration: none; margin-top: 30px;
+    box-shadow: 0 4px 16px rgba(37,211,102,0.3);
+  }
+  .detail-info .buy-hint { font-size: 0.7rem; color: #78716c; margin-top: 8px; }
+
+  /* ===== WHY / TESTIMONIALS ===== */
+  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .why-card {
+    background: #fff; border: 1px solid #e5e0d8; border-radius: 16px;
+    padding: 36px 24px; text-align: center;
+  }
+  .why-card .icon {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: rgba(212,163,115,0.12); display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+  }
+  .why-card .icon svg { width: 28px; height: 28px; color: #d4a373; }
+  .why-card h4 { font-size: 1rem; font-weight: 700; }
+  .why-card p { font-size: 0.82rem; color: #78716c; margin-top: 8px; line-height: 1.6; }
+
+  .test-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .test-card {
+    background: #fff; border: 1px solid #e5e0d8; border-radius: 16px;
+    padding: 24px;
+  }
+  .test-card .stars { color: #d4a373; margin-bottom: 10px; font-size: 0.9rem; }
+  .test-card p { font-size: 0.85rem; color: #78716c; line-height: 1.6; font-style: italic; }
+  .test-card .name { font-size: 0.85rem; font-weight: 600; margin-top: 12px; color: #1c1917; }
+
+  /* ===== MARCAS ===== */
+  .brand-bar { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .brand-pill {
+    padding: 12px 28px; background: #fff; border: 1px solid #e5e0d8;
+    border-radius: 12px; font-size: 0.85rem; font-weight: 600; color: #1c1917;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    background: #1c1917; color: #a8a29e; padding: 50px 24px 30px;
+    text-align: center;
+  }
+  .footer .logo { font-size: 1.3rem; font-weight: 800; color: #fff; }
+  .footer .logo span { color: #d4a373; }
+  .footer p { margin-top: 10px; font-size: 0.85rem; max-width: 400px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+  .footer .social { display: flex; justify-content: center; gap: 16px; margin-top: 20px; }
+  .footer .social a { color: #d4a373; text-decoration: none; font-size: 0.85rem; font-weight: 500; }
+  .footer .links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 24px; font-size: 0.8rem; }
+  .footer .links a { color: #a8a29e; text-decoration: none; }
+  .footer .copy { border-top: 1px solid #292524; margin-top: 28px; padding-top: 20px; font-size: 0.75rem; }
+
+  /* ===== WHATSAPP FLOTANTE ===== */
+  .whatsapp-float {
+    position: fixed; bottom: 24px; right: 24px;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: #25D366; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.3); cursor: pointer;
+    font-size: 1.5rem; z-index: 100;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .hero, .product-detail { grid-template-columns: 1fr; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .cat-grid { grid-template-columns: 1fr; }
+    .why-grid { grid-template-columns: 1fr; }
+    .test-grid { grid-template-columns: 1fr; }
+    .header nav { display: none; }
+    .hero h1 { font-size: 2.2rem; }
+  }
+  @media (max-width: 500px) {
+    .product-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ===== DIVISOR DE SECCIONES EN MOCKUP ===== */
+  .mockup-section-label {
+    text-align: center; padding: 60px 20px 0; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 3px; color: #d4a373; font-weight: 600;
+  }
+
+  /* ===== BOTTOM MOBILE BUY ===== */
+  .mobile-buy {
+    display: none;
+  }
+  @media (max-width: 640px) {
+    .mobile-buy {
+      display: flex; position: fixed; bottom: 0; left: 0; right: 0;
+      padding: 14px 16px; background: #fff; border-top: 1px solid #e5e0d8;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 99;
+    }
+    .mobile-buy a {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: #25D366; color: #fff; padding: 12px; border-radius: 50px;
+      font-weight: 700; font-size: 0.85rem; text-decoration: none; width: 100%;
+    }
+    .detail-info .buy-btn { display: none; }
+  }
+
+  /* ===== GUÍA DE NAVEGACIÓN ===== */
+  .nav-guide {
+    display: flex; justify-content: center; gap: 6px; padding: 30px 20px 10px; flex-wrap: wrap;
+  }
+  .nav-guide a {
+    padding: 8px 18px; border-radius: 50px; font-size: 0.8rem;
+    background: #fff; border: 1px solid #e5e0d8; color: #44403c; text-decoration: none; font-weight: 500;
+  }
+  .nav-guide a.active { background: #d4a373; color: #fff; border-color: #d4a373; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- PORTADA DE PRESENTACIÓN -->
+<!-- ============================================================ -->
+<div class="slide-cover">
+  <div style="font-size: 1rem; letter-spacing: 6px; text-transform: uppercase; color: #d4a373; font-weight: 600; margin-bottom: 8px;">Propuesta Visual</div>
+  <h1><span class="gold">EMAS</span> Boutique</h1>
+  <div class="divider"></div>
+  <p>Mercadería importada 100% original. Tienda online con catálogo, whatsapp y panel administrador.</p>
+  <div style="display: flex; gap: 8px; margin-top: 24px; font-size: 0.75rem; color: #78716c;">
+    <span style="background: #d4a373; color: #fff; padding: 4px 12px; border-radius: 50px;">Dorado #d4a373</span>
+    <span style="background: #c76f4b; color: #fff; padding: 4px 12px; border-radius: 50px;">Terracota #c76f4b</span>
+    <span style="background: #1c1917; color: #fff; padding: 4px 12px; border-radius: 50px;">Oscuro #1c1917</span>
+    <span style="background: #faf7f2; color: #1c1917; padding: 4px 12px; border-radius: 50px; border: 1px solid #e5e0d8;">Fondo #faf7f2</span>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- BARRA SUPERIOR -->
+<!-- ============================================================ -->
+<div class="top-bar">📦 Envíos a toda Guatemala &nbsp;|&nbsp; 🇬🇹 Mercadería 100% original</div>
+
+<!-- ============================================================ -->
+<!-- HEADER -->
+<!-- ============================================================ -->
+<div class="header">
+  <div class="logo">EMAS<span>.</span></div>
+  <nav>
+    <a href="#">Inicio</a>
+    <a href="#" style="font-weight: 700; color: #1c1917;">Catálogo</a>
+    <a href="#">Mujer</a>
+    <a href="#">Hombre</a>
+  </nav>
+  <div>
+    <a class="whatsapp-top" href="#">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      +502 4763-3183
+    </a>
+  </div>
+</div>
+
+<div class="nav-guide">
+  <a href="#" class="active">Inicio</a>
+  <a href="#">Catálogo</a>
+  <a href="#">Mujer</a>
+  <a href="#">Hombre</a>
+  <a href="#">Producto</a>
+</div>
+
+<!-- ============================================================ -->
+<!-- HERO -->
+<!-- ============================================================ -->
+<div class="hero">
+  <div>
+    <h2>Colección 2026</h2>
+    <h1>Tu estilo<br><span>importado</span></h1>
+    <p>Vestidos, blusas, pantalones, bolsos y accesorios importados. Envíos a toda Guatemala.</p>
+    <div class="hero-buttons">
+      <a class="btn-primary" href="#">Ver Catálogo →</a>
+      <a class="btn-outline" href="#">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir por WhatsApp
+      </a>
+    </div>
+  </div>
+  <div class="hero-image">
+    <div class="overlay"></div>
+    <div class="badge">Nueva Colección</div>
+    <div class="brand-tag">
+      <span>Michael Kors</span>
+      <span>Nike</span>
+      <span>Coach</span>
+      <span>Tommy Hilfiger</span>
+    </div>
+    <div class="model">✨ Vestido Destacado ✨</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- NUEVOS INGRESOS -->
+<!-- ============================================================ -->
+<div class="section" style="padding-top: 20px;">
+  <div class="section-label">Lo más nuevo</div>
+  <div class="section-title">Nuevos Ingresos</div>
+  <div class="section-divider"></div>
+
+  <div class="product-grid">
+    <a class="product-card" href="#">
+      <div class="img" style="background: linear-gradient(135deg, #e5e0d8, #d4a37322);">
+        <div class="badges"><span class="badge badge-nuevo">Nuevo</span></div>
+        <div style="width: 60%; height: 60%; border-radius: 8px; background: rgba(212,163,115,0.15);"></div>
+      </div>
+      <div class="info">
+        <div class="brand">Nike</div>
+        <div class="subcat">Accesorios</div>
+        <div class="name">Gorra Deportiva</div>
+        <div class="sizes"><span>Única</span></div>
+        <div class="price">Q120.00</div>
+      </div>
+    </a>
+    <a class="product-card" href="#">
+      <div class="img" style="background: linear-gradient(135deg, #d4c8b8, #c76f4b22);">
+        <div class="badges"><span class="badge badge-nuevo">Nuevo</span></div>
+        <div style="width: 60%; height: 60%; border-radius: 8px; background: rgba(199,111,75,0.15);"></div>
+      </div>
+      <div class="info">
+        <div class="brand">Nike</div>
+        <div class="subcat">Chamarras</div>
+        <div class="name">Chamarra Ligera Impermeable</div>
+        <div class="sizes"><span>S</span><span>M</span><span>L</span><span>XL</span></div>
+        <div class="price">Q440.00</div>
+      </div>
+    </a>
+    <a class="product-card" href="#">
+      <div class="img" style="background: linear-gradient(135deg, #e0d6c8, #d4a37322);">
+        <div class="badges"><span class="badge badge-nuevo">Nuevo</span></div>
+        <div style="width: 60%; height: 60%; border-radius: 8px; background: rgba(212,163,115,0.15);"></div>
+      </div>
+      <div class="info">
+        <div class="brand">Tommy Hilfiger</div>
+        <div class="subcat">Pantalones</div>
+        <div class="name">Pantalón Casual Beige</div>
+        <div class="sizes"><span>M</span><span>L</span><span>XL</span></div>
+        <div class="price">Q340.00</div>
+      </div>
+    </a>
+    <a class="product-card" href="#">
+      <div class="img" style="background: linear-gradient(135deg, #d4c8b8, #1c191733);">
+        <div class="badges"><span class="badge badge-nuevo">Nuevo</span></div>
+        <div style="width: 60%; height: 60%; border-radius: 8px; background: rgba(28,25,23,0.1);"></div>
+      </div>
+      <div class="info">
+        <div class="brand">Puma</div>
+        <div class="subcat">Playeras</div>
+        <div class="name">Playera Estampada Urbana</div>
+        <div class="sizes"><span>S</span><span>M</span><span>L</span><span>XL</span></div>
+        <div class="price">Q190.00</div>
+      </div>
+    </a>
+  </div>
+
+  <div style="text-align: center; margin-top: 36px;">
+    <a class="btn-outline" href="#" style="display: inline-flex;">Ver todos los nuevos ingresos →</a>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CATEGORÍAS -->
+<!-- ============================================================ -->
+<div class="section" style="background: #f5f0e8; max-width: 100%;">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div class="section-label">Categorías</div>
+    <div class="section-title">Explora por categoría</div>
+    <div class="section-divider"></div>
+    <div class="cat-grid">
+      <a class="cat-card" href="#" style="background: linear-gradient(135deg, #c76f4b66, #1c1917aa);">
+        <div class="overlay"></div>
+        <div>
+          <h3>Mujer</h3>
+          <p>Vestidos, blusas, pantalones y más</p>
+        </div>
+      </a>
+      <a class="cat-card" href="#" style="background: linear-gradient(135deg, #d4a37366, #1c1917aa);">
+        <div class="overlay"></div>
+        <div>
+          <h3>Hombre</h3>
+          <p>Camisas, playeras, pantalones y más</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- POR QUÉ EMAS -->
+<!-- ============================================================ -->
+<div class="section">
+  <div class="section-label">Por qué nosotras</div>
+  <div class="section-title">¿Por qué EMAS Boutique?</div>
+  <div class="section-divider"></div>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+      </div>
+      <h4>100% Original</h4>
+      <p>Todo nuestro inventario es mercadería importada original. Sin imitaciones.</p>
+    </div>
+    <div class="why-card">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+      </div>
+      <h4>Atención Personalizada</h4>
+      <p>Te atendemos por WhatsApp de forma directa y sin complicaciones.</p>
+    </div>
+    <div class="why-card">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
+      </div>
+      <h4>Envíos Seguros</h4>
+      <p>Empacamos con cuidado y enviamos a toda Guatemala con entregas rápidas.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- OFERTAS -->
+<!-- ============================================================ -->
+<div class="section" style="background: #f5f0e8; max-width: 100%;">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div class="section-label">No te lo pierdas</div>
+    <div class="section-title">Ofertas Especiales</div>
+    <div class="section-divider"></div>
+    <div class="product-grid">
+      <a class="product-card" href="#">
+        <div class="img" style="background: linear-gradient(135deg, #c76f4b33, #1c191744);">
+          <div class="badges"><span class="badge badge-oferta">OFERTA</span></div>
+          <div style="width: 60%; height: 60%; border-radius: 8px; background: rgba(199,111,75,0.15);"></div>
+        </div>
+        <div class="info">
+          <div class="brand">Coach</div>
+          <div class="subcat">Chamarras</div>
+          <div class="name">Chamarra Vaquera</div>
+          <div class="sizes"><span>M</span><span>L</span><span>XL</span><span>2XL</span></div>
+          <div class="price price-sale">Q520.00 <span class="price-old">Q650.00</span></div>
+        </div>
+      </a>
+      <a class="product-card" href="#">
+        <div class="img" style="background: linear-gradient(135deg, #d4a37344, #c76f4b33);">
+          <div class="badges"><span class="badge badge-oferta">OFERTA</span><span class="badge badge-nuevo">Nuevo</span></div>
+          <div style="width: 60%; height: 60%; border-radius: 8px; background: rgba(212,163,115,0.15);"></div>
+        </div>
+        <div class="info">
+          <div class="brand">Tommy Hilfiger</div>
+          <div class="subcat">Camisas</div>
+          <div class="name">Camisa Casual Cuadros</div>
+          <div class="sizes"><span>M</span><span>L</span><span>XL</span></div>
+          <div class="price price-sale">Q280.00 <span class="price-old">Q350.00</span></div>
+        </div>
+      </a>
+      <a class="product-card" href="#">
+        <div class="img" style="background: linear-gradient(135deg, #d4c8b8, #d4a37333);">
+          <div class="badges"><span class="badge badge-oferta">OFERTA</span><span class="badge badge-nuevo">Nuevo</span></div>
+          <div style="width: 60%; height: 60%; border-radius: 8px; background: rgba(212,163,115,0.15);"></div>
+        </div>
+        <div class="info">
+          <div class="brand">Guess</div>
+          <div class="subcat">Pantalones</div>
+          <div class="name">Pantalón Palazzo Floral</div>
+          <div class="sizes"><span>S</span><span>M</span><span>L</span></div>
+          <div class="price price-sale">Q420.00 <span class="price-old">Q520.00</span></div>
+        </div>
+      </a>
+      <a class="product-card" href="#">
+        <div class="img" style="background: linear-gradient(135deg, #d4a37333, #e5e0d8);">
+          <div class="badges"><span class="badge badge-oferta">OFERTA</span><span class="badge badge-nuevo">Nuevo</span></div>
+          <div style="width: 60%; height: 60%; border-radius: 8px; background: rgba(212,163,115,0.15);"></div>
+        </div>
+        <div class="info">
+          <div class="brand">Michael Kors</div>
+          <div class="subcat">Blusas</div>
+          <div class="name">Blusa Seda Estampada</div>
+          <div class="sizes"><span>S</span><span>M</span><span>L</span></div>
+          <div class="price price-sale">Q350.00 <span class="price-old">Q420.00</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MARCAS -->
+<!-- ============================================================ -->
+<div class="section">
+  <div class="section-label">Marcas</div>
+  <div class="section-title">Marcas que trabajamos</div>
+  <div class="section-divider"></div>
+  <div class="brand-bar">
+    <span class="brand-pill">Adidas</span>
+    <span class="brand-pill">Calvin Klein</span>
+    <span class="brand-pill">Coach</span>
+    <span class="brand-pill">Guess</span>
+    <span class="brand-pill">Michael Kors</span>
+    <span class="brand-pill">Nike</span>
+    <span class="brand-pill">Puma</span>
+    <span class="brand-pill">Tommy Hilfiger</span>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- VISTA DETALLE DE PRODUCTO -->
+<!-- ============================================================ -->
+<div class="mockup-section-label">— Vista Detalle de Producto —</div>
+
+<div class="product-detail">
+  <div class="detail-gallery">
+    <div class="main-img">
+      <div style="text-align: center;">
+        <div style="font-size: 0.7rem; color: #78716c;">📷 Galería de imágenes</div>
+        <div style="display: flex; gap: 6px; justify-content: center; margin-top: 8px;">
+          <span style="background: #d4a373; width: 10px; height: 10px; border-radius: 50%;"></span>
+          <span style="background: #d6d3d1; width: 10px; height: 10px; border-radius: 50%;"></span>
+          <span style="background: #d6d3d1; width: 10px; height: 10px; border-radius: 50%;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="thumbs">
+      <div class="thumb active"></div>
+      <div class="thumb"></div>
+      <div class="thumb"></div>
+      <div class="thumb"></div>
+    </div>
+  </div>
+  <div class="detail-info">
+    <div class="badge badge-oferta" style="display: inline-block; margin-bottom: 10px;">OFERTA</div>
+    <div class="brand">Coach</div>
+    <div class="subcat">Chamarras</div>
+    <h1>Chamarra Vaquera</h1>
+    <div class="price-row">
+      <span class="current" style="color: #991b1b;">Q520.00</span>
+      <span class="old">Q650.00</span>
+      <span class="discount">-20%</span>
+    </div>
+    <div class="availability"><span class="dot"></span> Disponible</div>
+    <div class="sku">SKU: SKU-024</div>
+    <div class="desc">
+      Chamarra vaquera 100% original Coach. Ideal para cualquier ocasión. Importada, calidad premium.
+    </div>
+
+    <div class="colors-title">Colores disponibles</div>
+    <div class="color-dots">
+      <div class="color-dot"><span class="circle" style="background: #4a7c59;"></span> Verde</div>
+      <div class="color-dot"><span class="circle" style="background: #1c1917;"></span> Negro</div>
+    </div>
+
+    <div class="sizes-title">1. Selecciona tu talla</div>
+    <div class="size-btns">
+      <span class="size-btn">M</span>
+      <span class="size-btn active">L</span>
+      <span class="size-btn">XL</span>
+      <span class="size-btn">2XL</span>
+    </div>
+
+    <a class="buy-btn" href="#">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      2. Comprar por WhatsApp
+    </a>
+    <div class="buy-hint">Haz clic para contactarnos. Incluye producto, precio, talla y enlace.</div>
+  </div>
+</div>
+
+<!-- Mobile buy bar (mockup) -->
+<div class="mobile-buy">
+  <a href="#">💬 Comprar por WhatsApp — Talla L</a>
+</div>
+
+<!-- ============================================================ -->
+<!-- TESTIMONIOS -->
+<!-- ============================================================ -->
+<div class="section">
+  <div class="section-label">Testimonios</div>
+  <div class="section-title">Lo que dicen nuestras clientas</div>
+  <div class="section-divider"></div>
+  <div class="test-grid">
+    <div class="test-card">
+      <div class="stars">★★★★★</div>
+      <p>"Compré un vestido y llegó antes de lo esperado. La calidad es increíble, exactamente como se ve en las fotos."</p>
+      <div class="name">— María F.</div>
+    </div>
+    <div class="test-card">
+      <div class="stars">★★★★★</div>
+      <p>"Me encanta que todo sea original. La atención por WhatsApp es súper rápida y resolvieron todas mis dudas."</p>
+      <div class="name">— Ana G.</div>
+    </div>
+    <div class="test-card">
+      <div class="stars">★★★★★</div>
+      <p>"Compré un reloj para regalo y quedaron fascinados. Producto original, bien empacado y el precio justo."</p>
+      <div class="name">— Carlos M.</div>
+    </div>
+    <div class="test-card">
+      <div class="stars">★★★★★</div>
+      <p>"EMAS Boutique es mi tienda de confianza. Siempre encuentran lo que busco y los envíos llegan perfectos."</p>
+      <div class="name">— Sofía R.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- DESTACADOS -->
+<!-- ============================================================ -->
+<div class="section" style="background: #f5f0e8; max-width: 100%;">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div class="section-label">Destacados</div>
+    <div class="section-title">Productos Destacados</div>
+    <div class="section-divider"></div>
+    <div class="product-grid">
+      <a class="product-card" href="#">
+        <div class="img" style="background: linear-gradient(135deg, #e5e0d8, #1c191733);">
+          <div class="badges"><span class="badge badge-original">100% Original</span></div>
+          <div style="width: 60%; height: 60%; border-radius: 8px; background: rgba(28,25,23,0.08);"></div>
+        </div>
+        <div class="info">
+          <div class="brand">Michael Kors</div>
+          <div class="subcat">Accesorios</div>
+          <div class="name">Reloj Clásico Acero</div>
+          <div class="sizes"><span>Única</span></div>
+          <div class="price">Q620.00</div>
+        </div>
+      </a>
+      <a class="product-card" href="#">
+        <div class="img" style="background: linear-gradient(135deg, #d4a37333, #c76f4b33);">
+          <div class="badges"><span class="badge badge-oferta">OFERTA</span></div>
+          <div style="width: 60%; height: 60%; border-radius: 8px; background: rgba(212,163,115,0.15);"></div>
+        </div>
+        <div class="info">
+          <div class="brand">Coach</div>
+          <div class="subcat">Chamarras</div>
+          <div class="name">Chamarra Vaquera</div>
+          <div class="sizes"><span>M</span><span>L</span><span>XL</span><span>2XL</span></div>
+          <div class="price price-sale">Q520.00 <span class="price-old">Q650.00</span></div>
+        </div>
+      </a>
+      <a class="product-card" href="#">
+        <div class="img" style="background: linear-gradient(135deg, #1c191733, #d4a37322);">
+          <div class="badges"><span class="badge badge-original">100% Original</span></div>
+          <div style="width: 60%; height: 60%; border-radius: 8px; background: rgba(28,25,23,0.08);"></div>
+        </div>
+        <div class="info">
+          <div class="brand">Nike</div>
+          <div class="subcat">Playeras</div>
+          <div class="name">Playera Deportiva Dry-Fit</div>
+          <div class="sizes"><span>S</span><span>M</span><span>L</span><span>XL</span><span>2XL</span></div>
+          <div class="price">Q210.00</div>
+        </div>
+      </a>
+      <a class="product-card" href="#">
+        <div class="img" style="background: linear-gradient(135deg, #e5e0d8, #d4a37333);">
+          <div class="badges"><span class="badge badge-original">100% Original</span></div>
+          <div style="width: 60%; height: 60%; border-radius: 8px; background: rgba(212,163,115,0.15);"></div>
+        </div>
+        <div class="info">
+          <div class="brand">Calvin Klein</div>
+          <div class="subcat">Vestidos</div>
+          <div class="name">Vestido Largo Noche</div>
+          <div class="sizes"><span>S</span><span>M</span><span>L</span></div>
+          <div class="price">Q680.00</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CTA FINAL -->
+<!-- ============================================================ -->
+<div class="section" style="text-align: center;">
+  <div class="section-divider"></div>
+  <h2 style="font-size: 2rem; font-weight: 700;">¿Lista para renovar tu guardarropa?</h2>
+  <p style="color: #78716c; margin-top: 12px; max-width: 450px; margin-left: auto; margin-right: auto;">
+    Mercadería importada 100% original. Entregas inmediatas y bajo pedido con envíos a toda Guatemala.
+  </p>
+  <div style="display: flex; gap: 14px; justify-content: center; margin-top: 32px; flex-wrap: wrap;">
+    <a class="btn-primary" href="#">Ver Catálogo Completo →</a>
+    <a class="btn-outline" href="#">💬 Pedir por WhatsApp</a>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- FOOTER -->
+<!-- ============================================================ -->
+<div class="footer">
+  <div class="logo">EMAS<span>.</span></div>
+  <p>Mercadería importada 100% original. Entregas inmediatas y bajo pedido. Envíos a toda Guatemala.</p>
+  <div class="social">
+    <a href="#">📱 +502 4763-3183</a>
+    <a href="#">📷 @emasboutique_</a>
+    <a href="#">✉️ info@emasboutique.com</a>
+  </div>
+  <div class="links">
+    <a href="#">Inicio</a>
+    <a href="#">Catálogo</a>
+    <a href="#">FAQ</a>
+    <a href="#">Guía de Tallas</a>
+    <a href="#">Envíos</a>
+    <a href="#">Contacto</a>
+  </div>
+  <div class="copy">© 2026 EMAS Boutique. Todos los derechos reservados.</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- WHATSAPP FLOTANTE -->
+<!-- ============================================================ -->
+<div class="whatsapp-float">💬</div>
+
+</body>
+</html>

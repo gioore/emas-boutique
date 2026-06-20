@@ -1,9 +1,19 @@
 import { Suspense } from 'react';
+import type { Metadata } from 'next';
 import CatalogView from '@/components/catalog/CatalogView';
 import { getCatalogData } from '@/lib/catalog';
 import { BRAND_COLORS } from '@/lib/config';
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: 'Catálogo | EMAS Boutique',
+  description: 'Explora nuestro catálogo completo de ropa, accesorios y calzado para mujer y hombre. Moda original en Guatemala.',
+  openGraph: {
+    title: 'Catálogo - EMAS Boutique',
+    description: 'Explora nuestro catálogo completo de ropa, accesorios y calzado.',
+  },
+};
 
 function CatalogFallback() {
   return (
@@ -20,8 +30,8 @@ export default async function CatalogoPage() {
     <Suspense fallback={<CatalogFallback />}>
       <CatalogView
         mode="all"
-        title="Catalogo"
-        subtitle="Explora todos nuestros productos importados"
+        title="Catálogo"
+        subtitle="Explora todos nuestros productos"
         products={catalog.products}
         brands={catalog.brands}
         categories={catalog.categories}

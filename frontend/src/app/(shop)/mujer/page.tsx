@@ -1,9 +1,19 @@
 import { Suspense } from 'react';
+import type { Metadata } from 'next';
 import CatalogView from '@/components/catalog/CatalogView';
 import { getCatalogData } from '@/lib/catalog';
 import { BRAND_COLORS } from '@/lib/config';
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: 'Ropa para Mujer | EMAS Boutique',
+  description: 'Vestidos, blusas, pantalones, faldas y accesorios para mujer. Las mejores marcas originales en Guatemala.',
+  openGraph: {
+    title: 'Mujer - EMAS Boutique',
+    description: 'Descubre nuestra colección de moda femenina.',
+  },
+};
 
 export default async function MujerPage() {
   const catalog = await getCatalogData('mujer');
@@ -17,7 +27,7 @@ export default async function MujerPage() {
       <CatalogView
         mode="mujer"
         title="Mujer"
-        subtitle="Vestidos, blusas, pantalones y accesorios importados"
+        subtitle="Vestidos, blusas, pantalones y accesorios"
         products={catalog.products}
         brands={catalog.brands}
         categories={catalog.categories}

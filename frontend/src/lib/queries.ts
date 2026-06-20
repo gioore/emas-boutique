@@ -1,17 +1,6 @@
 import { query, queryOne } from './db';
 import { formatProduct } from './format-product';
-
-interface ProductRow {
-  id: number; name: string; slug: string; price: number; old_price: number | null;
-  category: string | null; subcategory: string | null;
-  category_id: number | null; subcategory_id: number | null;
-  brand_id: number | null; brand_name: string | null; brand_slug: string | null;
-  description: string | null; sizes: string[] | null; images: any;
-  featured: boolean; sku: string | null;
-  availability: string | null; new_arrival: boolean; on_sale: boolean;
-  colors: string[] | null; tags: string[] | null;
-  created_at: string; updated_at: string;
-}
+import type { ProductRow } from './format-product';
 
 function formatBrand(b: any) {
   return {
@@ -36,7 +25,7 @@ export async function getProduct(slug: string) {
     WHERE p.slug = $1
   `, [slug]);
   if (!p) throw new Error('Product not found');
-  return { data: formatProduct(p), meta: {} };
+  return { data: formatProduct(p)!, meta: {} };
 }
 
 export async function getFeaturedProducts() {
@@ -51,7 +40,7 @@ export async function getFeaturedProducts() {
     LEFT JOIN subcategories sc ON sc.id = p.subcategory_id
     WHERE p.featured = true ORDER BY p.created_at DESC LIMIT 20
   `);
-  return rows.map(formatProduct);
+  return rows.map(formatProduct).filter((p): p is NonNullable<typeof p> => p != null);
 }
 
 export async function getNewArrivals() {
@@ -66,7 +55,7 @@ export async function getNewArrivals() {
     LEFT JOIN subcategories sc ON sc.id = p.subcategory_id
     WHERE p.new_arrival = true ORDER BY p.created_at DESC LIMIT 20
   `);
-  return rows.map(formatProduct);
+  return rows.map(formatProduct).filter((p): p is NonNullable<typeof p> => p != null);
 }
 
 export async function getOnSaleProducts() {
@@ -81,7 +70,7 @@ export async function getOnSaleProducts() {
     LEFT JOIN subcategories sc ON sc.id = p.subcategory_id
     WHERE p.on_sale = true ORDER BY p.created_at DESC LIMIT 20
   `);
-  return rows.map(formatProduct);
+  return rows.map(formatProduct).filter((p): p is NonNullable<typeof p> => p != null);
 }
 
 export async function getBrands() {

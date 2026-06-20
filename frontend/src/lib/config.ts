@@ -8,20 +8,20 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PU
 
 export const SITE_CONFIG = {
   name: 'EMAS BOUTIQUE',
-  tagline: 'Mercadería importada 100% original',
-  description: 'Descubre nuestra colección importada. Vestidos, blusas, pantalones, bolsos y más. Envíos a toda Guatemala.',
+  tagline: '100% original',
+  description: 'Vestidos, blusas, pantalones, bolsos y más. Envíos a toda Guatemala.',
   instagram: 'emasboutique_',
   whatsapp: '50247633183',
   whatsappDisplay: '+502 4763-3183',
   email: 'info@emasboutique.com',
-  heroTitle: 'Tu estilo importado',
-  heroSubtitle: 'Mercadería 100% original',
-  heroDescription: 'Vestidos, blusas, pantalones, bolsos y accesorios importados. Envíos a toda Guatemala.',
+  heroTitle: 'Tu estilo',
+  heroSubtitle: '100% original',
+  heroDescription: 'Vestidos, blusas, pantalones, bolsos y accesorios. Envíos a toda Guatemala.',
   whatsappMessage: '¡Hola! Quiero información sobre EMAS BOUTIQUE.',
   whatsappProductMessage: (name: string, price: number) =>
     `Hola, me interesa este producto: ${name} - Q${price.toFixed(2)}. ¿Está disponible?`,
   footer: {
-    description: 'Mercadería importada 100% original. Entregas inmediatas y bajo pedido. Envíos a toda Guatemala.',
+    description: '100% original. Entregas inmediatas y bajo pedido. Envíos a toda Guatemala.',
     copyright: `© ${new Date().getFullYear()} EMAS Boutique. Todos los derechos reservados.`,
   },
   categories: [
@@ -33,7 +33,7 @@ export const SITE_CONFIG = {
 export const WHY_EMAS = [
   {
     title: '100% Original',
-    description: 'Todo nuestro inventario es mercadería importada original. Sin imitaciones.',
+    description: 'Todo nuestro inventario es 100% original. Sin imitaciones.',
     icon: 'shield',
   },
   {

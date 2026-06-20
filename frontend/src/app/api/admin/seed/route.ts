@@ -71,7 +71,7 @@ async function seed() {
       i + 1, p.name, p.slug, p.price, p.oldPrice,
       p.cat === 1 ? 'mujer' : 'hombre', '',
       p.cat, p.subcat,
-      `Hermoso ${p.name.toLowerCase()}, ideal para cualquier ocasión. 100% original importado.`,
+      `Hermoso ${p.name.toLowerCase()}, ideal para cualquier ocasión. 100% original.`,
       JSON.stringify(p.sizes), '[]', p.featured, p.brand,
       `SKU-${String(i + 1).padStart(3, '0')}`,
       p.availability, p.newArrival, p.onSale,
