@@ -245,8 +245,11 @@ export default async function ProductoPage({ params }: Props) {
             </div>
 
             <ProductBuyClient
+              productId={product.id}
               productName={product.name}
               productPrice={product.price}
+              productSlug={product.slug}
+              productImage={product.images?.[0]?.url || ''}
               sizes={product.sizes || []}
               colors={colors}
             />

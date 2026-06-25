@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { SITE_CONFIG, BRAND_COLORS } from '@/lib/config';
 import WhatsAppIcon from '@/components/WhatsAppIcon';
+import CartIcon from '@/components/cart/CartIcon';
 
 const navLinks = [
   { href: '/', label: 'Inicio' },
@@ -142,6 +143,7 @@ export default function Header() {
                   </div>
                 );
               })}
+              <CartIcon />
               <a
                 href={`https://wa.me/${SITE_CONFIG.whatsapp}`}
                 target="_blank"
@@ -224,7 +226,18 @@ export default function Header() {
               ))}
             </nav>
 
-            <div className="pt-6 border-t" style={{ borderColor: '#e5e0d8' }}>
+            <div className="pt-6 border-t flex flex-col gap-2" style={{ borderColor: '#e5e0d8' }}>
+              <Link
+                href="/carrito"
+                className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-semibold transition-all"
+                style={{ backgroundColor: '#f5f0e8', color: '#1c1917' }}
+                onClick={() => setMenuOpen(false)}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                Carrito
+              </Link>
               <a
                 href={`https://wa.me/${SITE_CONFIG.whatsapp}`}
                 target="_blank"
