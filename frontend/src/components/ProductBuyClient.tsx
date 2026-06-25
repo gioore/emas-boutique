@@ -226,7 +226,7 @@ export default function ProductBuyClient({ productId, productName, productPrice,
       )}
 
       {/* Desktop buttons */}
-      <div className="hidden sm:flex items-center gap-3 pt-6 border-t" style={{ borderColor: '#e5e0d8' }}>
+      <div className="hidden sm:flex items-center gap-3 pt-6 border-t" style={{ borderColor: '#e5e5e5' }}>
         <button
           onClick={handleAddToCart}
           className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 font-semibold rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 border-2"
@@ -250,7 +250,7 @@ export default function ProductBuyClient({ productId, productName, productPrice,
       </div>
 
       {/* Mobile sticky bar */}
-      <div className="block sm:hidden fixed bottom-0 left-0 right-0 z-50 p-4 border-t shadow-2xl" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
+      <div className="block sm:hidden fixed bottom-0 left-0 right-0 z-50 p-4 border-t shadow-2xl" style={{ backgroundColor: '#ffffff', borderColor: '#e5e5e5' }}>
         <div className="flex gap-3">
           <button
             onClick={handleAddToCart}

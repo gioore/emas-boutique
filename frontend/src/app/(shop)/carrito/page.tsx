@@ -160,7 +160,7 @@ export default function CarritoPage() {
             <span className="text-sm font-medium" style={{ color: BRAND_COLORS.textMuted }}>Subtotal</span>
             <span className="text-lg font-bold" style={{ color: BRAND_COLORS.text }}>Q{totalPrice.toFixed(2)}</span>
           </div>
-          <div className="flex items-center justify-between mb-6 pb-6 border-b" style={{ borderColor: '#e5e0d8' }}>
+          <div className="flex items-center justify-between mb-6 pb-6 border-b" style={{ borderColor: '#e5e5e5' }}>
             <span className="text-sm font-medium" style={{ color: BRAND_COLORS.textMuted }}>Total</span>
             <span className="text-2xl font-bold" style={{ color: BRAND_COLORS.text }}>Q{totalPrice.toFixed(2)}</span>
           </div>

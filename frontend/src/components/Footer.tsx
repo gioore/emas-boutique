@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12">
           <div className="sm:col-span-2 lg:col-span-1 reveal visible">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold" style={{ backgroundColor: '#d4a373', color: '#1c1917' }}>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold" style={{ backgroundColor: '#000000', color: '#ffffff' }}>
                 EB
               </div>
               <h3 className="text-white font-bold text-xl tracking-tight">{SITE_CONFIG.name}</h3>

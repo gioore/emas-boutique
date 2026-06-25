@@ -66,7 +66,7 @@ export default function Header() {
     return (
       <div
         className="absolute top-full left-0 w-64 p-5 rounded-b-xl shadow-xl border-t z-50"
-        style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}
+        style={{ backgroundColor: '#ffffff', borderColor: '#e5e5e5' }}
         onMouseEnter={() => handleMegaEnter(cat.slug || '')}
         onMouseLeave={handleMegaLeave}
       >
@@ -105,7 +105,7 @@ export default function Header() {
         </div>
       </div>
 
-      <header className="sticky top-0 z-50 border-b" style={{ backgroundColor: 'rgba(250,247,242,0.95)', backdropFilter: 'blur-sm', borderColor: '#e5e0d8' }}>
+      <header className="sticky top-0 z-50 border-b" style={{ backgroundColor: 'rgba(255,255,255,0.98)', backdropFilter: 'blur-sm', borderColor: '#e5e5e5' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center gap-3 group">
@@ -180,7 +180,7 @@ export default function Header() {
       {menuOpen && (
         <div className="fixed top-0 left-0 h-full w-72 z-[60] md:hidden shadow-2xl animate-slide-in-left" style={{ backgroundColor: BRAND_COLORS.background }}>
           <div className="flex flex-col pt-20 px-6 h-full">
-            <div className="flex items-center gap-3 mb-10 border-b pb-6" style={{ borderColor: '#e5e0d8' }}>
+            <div className="flex items-center gap-3 mb-10 border-b pb-6" style={{ borderColor: '#e5e5e5' }}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: BRAND_COLORS.primary, color: BRAND_COLORS.white }}>
                 EB
               </div>
@@ -226,11 +226,11 @@ export default function Header() {
               ))}
             </nav>
 
-            <div className="pt-6 border-t flex flex-col gap-2" style={{ borderColor: '#e5e0d8' }}>
+            <div className="pt-6 border-t flex flex-col gap-2" style={{ borderColor: '#e5e5e5' }}>
               <Link
                 href="/carrito"
                 className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-semibold transition-all"
-                style={{ backgroundColor: '#f5f0e8', color: '#1c1917' }}
+                style={{ backgroundColor: '#f5f5f5', color: '#000000' }}
                 onClick={() => setMenuOpen(false)}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -13,7 +13,7 @@ export default function ErrorFallback({
   message = 'Ocurrió un error inesperado. Intenta de nuevo.',
   onReset,
   fullPage = true,
-  bgColor = '#faf7f2',
+  bgColor = '#ffffff',
 }: Props) {
   return (
     <div className={`flex items-center justify-center p-8 ${fullPage ? 'min-h-screen' : ''}`} style={{ backgroundColor: bgColor }}>

@@ -21,11 +21,11 @@ export default function ProductCard({ product }: Props) {
       href={`/producto/${product.slug}`}
       scroll={false}
       className="group flex flex-col bg-white rounded-2xl overflow-hidden transition-all duration-500"
-      style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)', border: '1px solid #e5e0d8' }}
+      style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)', border: '1px solid #e5e5e5' }}
       onMouseEnter={() => hasTwoImages && setImgIndex(1)}
       onMouseLeave={() => setImgIndex(0)}
     >
-      <div className="aspect-[3/4] relative overflow-hidden" style={{ backgroundColor: '#f5f0e8' }}>
+      <div className="aspect-[3/4] relative overflow-hidden" style={{ backgroundColor: '#f5f5f5' }}>
         {product.images?.[imgIndex] ? (
           <Image
             src={imageUrl}
@@ -75,18 +75,18 @@ export default function ProductCard({ product }: Props) {
         <span className="text-xs uppercase tracking-wider font-medium mt-1" style={{ color: BRAND_COLORS.textMuted }}>
           {product.subcat?.name || product.subcategory}
         </span>
-        <h3 className="text-sm font-semibold mt-1.5 leading-snug transition-colors duration-300 group-hover:text-[#d4a373]" style={{ color: '#000000' }}>
+        <h3 className="text-sm font-semibold mt-1.5 leading-snug transition-colors duration-300 group-hover:text-black" style={{ color: '#000000' }}>
           {product.name}
         </h3>
         {product.sizes && product.sizes.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-2">
             {product.sizes.slice(0, 4).map((size) => (
-              <span key={size} className="text-[10px] px-1.5 py-0.5 rounded font-medium" style={{ backgroundColor: '#f5f0e8', color: '#78716c' }}>
+              <span key={size} className="text-[10px] px-1.5 py-0.5 rounded font-medium" style={{ backgroundColor: '#f5f5f5', color: '#78716c' }}>
                 {size}
               </span>
             ))}
             {product.sizes.length > 4 && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded font-medium" style={{ backgroundColor: '#f5f0e8', color: '#78716c' }}>
+              <span className="text-[10px] px-1.5 py-0.5 rounded font-medium" style={{ backgroundColor: '#f5f5f5', color: '#78716c' }}>
                 +{product.sizes.length - 4}
               </span>
             )}

@@ -62,7 +62,7 @@ export default function FAQPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: BRAND_COLORS.white }}>
-      <div className="border-b" style={{ backgroundColor: BRAND_COLORS.background, borderColor: '#e5e0d8' }}>
+      <div className="border-b" style={{ backgroundColor: BRAND_COLORS.background, borderColor: '#e5e5e5' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <span className="text-xs uppercase tracking-[0.3em] font-medium" style={{ color: BRAND_COLORS.textMuted }}>
             {SITE_CONFIG.name}
@@ -81,7 +81,7 @@ export default function FAQPage() {
             <div
               key={index}
               className="border rounded-xl overflow-hidden transition-all"
-              style={{ borderColor: '#e5e0d8' }}
+              style={{ borderColor: '#e5e5e5' }}
             >
               <button
                 onClick={() => toggle(index)}

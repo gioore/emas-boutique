@@ -343,7 +343,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-sm font-semibold uppercase tracking-wider" style={{ color: BRAND_COLORS.text }}>Filtros</h3>
-                  <button onClick={() => setShowFilters(false)} className="p-2 rounded-lg hover:bg-[#e5e0d8] transition-colors" aria-label="Cerrar filtros">
+                  <button onClick={() => setShowFilters(false)} className="p-2 rounded-lg hover:bg-gray-100 transition-colors" aria-label="Cerrar filtros">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: BRAND_COLORS.text }}>
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -376,7 +376,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
                   <button key={p} onClick={() => goToPage(p)}
                     className="w-9 h-9 rounded-lg text-sm font-medium transition-colors"
-                    style={{ backgroundColor: p === safePage ? '#d4a373' : '#f5f0e8', color: p === safePage ? '#ffffff' : '#44403c' }}>
+                    style={{ backgroundColor: p === safePage ? '#000000' : '#ffffff', color: p === safePage ? '#ffffff' : '#000000' }}>
                     {p}
                   </button>
                 ))}
