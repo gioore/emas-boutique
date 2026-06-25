@@ -216,7 +216,7 @@ export default async function ProductoPage({ params }: Props) {
               </p>
             )}
 
-            <div className="w-12 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
+            <div className="w-12 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
 
             {product.description && (
               <div className="mb-8">

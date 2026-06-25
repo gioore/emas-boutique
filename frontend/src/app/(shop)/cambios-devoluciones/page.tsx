@@ -23,7 +23,7 @@ export default function CambiosDevolucionesPage() {
             En EMAS Boutique queremos que estés completamente satisfecha con tu compra.
             Por eso, ponemos a tu disposición nuestra política de cambios y devoluciones.
           </p>
-          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
 
           <h2 className="text-2xl font-bold mt-10">Plazo para Cambios o Devoluciones</h2>
           <p>
@@ -76,7 +76,7 @@ export default function CambiosDevolucionesPage() {
             realizó el pago.
           </p>
 
-          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
           <p>
             ¿Tienes alguna duda? Escríbenos por{' '}
             <Link

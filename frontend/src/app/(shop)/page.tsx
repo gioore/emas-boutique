@@ -16,7 +16,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 }
 
 function GoldDivider() {
-  return <div className="w-16 h-0.5 mx-auto mt-4" style={{ backgroundColor: BRAND_COLORS.gold }} />;
+  return <div className="w-16 h-0.5 mx-auto mt-4" style={{ backgroundColor: BRAND_COLORS.text }} />;
 }
 
 function ViewAllLink({ href, label }: { href: string; label: string }) {
@@ -24,7 +24,7 @@ function ViewAllLink({ href, label }: { href: string; label: string }) {
     <Link
       href={href}
       className="inline-flex px-8 py-3 text-sm font-semibold rounded-full transition-all hover:scale-105"
-      style={{ border: `2px solid ${BRAND_COLORS.primary}`, color: BRAND_COLORS.primary }}
+      style={{ border: `2px solid ${BRAND_COLORS.text}`, color: BRAND_COLORS.text }}
     >
       {label}
     </Link>
@@ -66,15 +66,15 @@ export default async function Home() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 gap-8 text-center">
             <div>
-              <p className="text-3xl font-bold" style={{ color: BRAND_COLORS.gold }}>{featured.length + newArrivals.length + onSale.length || '100'}+</p>
+              <p className="text-3xl font-bold" style={{ color: BRAND_COLORS.text }}>{featured.length + newArrivals.length + onSale.length || '100'}+</p>
               <p className="text-xs uppercase tracking-wider mt-1 font-medium" style={{ color: BRAND_COLORS.textMuted }}>Productos</p>
             </div>
             <div>
-              <p className="text-3xl font-bold" style={{ color: BRAND_COLORS.gold }}>{brands.length}+</p>
+              <p className="text-3xl font-bold" style={{ color: BRAND_COLORS.text }}>{brands.length}+</p>
               <p className="text-xs uppercase tracking-wider mt-1 font-medium" style={{ color: BRAND_COLORS.textMuted }}>Marcas originales</p>
             </div>
             <div>
-              <p className="text-3xl font-bold" style={{ color: BRAND_COLORS.gold }}>🇬🇹</p>
+              <p className="text-3xl font-bold" style={{ color: BRAND_COLORS.text }}>🇬🇹</p>
               <p className="text-xs uppercase tracking-wider mt-1 font-medium" style={{ color: BRAND_COLORS.textMuted }}>Envíos a todo GT</p>
             </div>
           </div>
@@ -149,12 +149,12 @@ export default async function Home() {
                     </svg>
                   )}
                   {item.icon === 'chat' && (
-                    <svg className="w-8 h-8" style={{ color: BRAND_COLORS.gold }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-8 h-8" style={{ color: BRAND_COLORS.text }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
                   )}
                   {item.icon === 'truck' && (
-                    <svg className="w-8 h-8" style={{ color: BRAND_COLORS.gold }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-8 h-8" style={{ color: BRAND_COLORS.text }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
                     </svg>
                   )}
@@ -248,7 +248,7 @@ export default async function Home() {
       {/* Instagram */}
       <section className="py-12 sm:py-16" style={{ backgroundColor: BRAND_COLORS.white }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="w-16 h-0.5 mx-auto mb-6" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 mx-auto mb-6" style={{ backgroundColor: BRAND_COLORS.text }} />
           <SectionLabel text="Síguenos" />
           <SectionTitle>@{SITE_CONFIG.instagram}</SectionTitle>
           <p className="mt-3 text-base max-w-md mx-auto" style={{ color: BRAND_COLORS.textMuted }}>
@@ -259,7 +259,7 @@ export default async function Home() {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 mt-8 px-8 py-3.5 text-sm font-semibold rounded-full transition-all hover:scale-105 shadow-md"
-            style={{ background: 'linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)', color: '#ffffff' }}
+            style={{ backgroundColor: BRAND_COLORS.black, color: '#ffffff' }}
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
@@ -273,7 +273,7 @@ export default async function Home() {
       <section className="relative py-16 sm:py-24 overflow-hidden" style={{ backgroundColor: BRAND_COLORS.backgroundAlt }}>
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, #000000 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="w-16 h-0.5 mx-auto mb-6" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 mx-auto mb-6" style={{ backgroundColor: BRAND_COLORS.text }} />
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight" style={{ color: BRAND_COLORS.text }}>
             ¿Lista para renovar tu guardarropa?
           </h2>
@@ -284,7 +284,7 @@ export default async function Home() {
             <Link
               href="/catalogo"
               className="group relative overflow-hidden px-10 py-4 text-white font-semibold rounded-full transition-all duration-300 shadow-xl inline-flex items-center gap-2"
-              style={{ backgroundColor: BRAND_COLORS.primary }}
+              style={{ backgroundColor: BRAND_COLORS.black }}
             >
               <span className="relative z-10">Ver Catálogo Completo</span>
               <svg className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -297,7 +297,7 @@ export default async function Home() {
               target="_blank"
               rel="noopener noreferrer"
               className="group px-10 py-4 font-semibold rounded-full transition-all duration-300 inline-flex items-center gap-2"
-              style={{ border: `2px solid ${BRAND_COLORS.primary}`, color: BRAND_COLORS.primary }}
+              style={{ border: `2px solid ${BRAND_COLORS.text}`, color: BRAND_COLORS.text }}
             >
               <WhatsAppIcon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
               Pedir por WhatsApp

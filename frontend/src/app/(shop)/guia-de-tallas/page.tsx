@@ -23,7 +23,7 @@ export default function GuiaDeTallasPage() {
           tallas pueden variar ligeramente según la marca.
         </p>
 
-        <div className="w-16 h-0.5 mb-10" style={{ backgroundColor: BRAND_COLORS.gold }} />
+        <div className="w-16 h-0.5 mb-10" style={{ backgroundColor: BRAND_COLORS.text }} />
 
         {/* Mujer */}
         <h2 className="text-2xl font-bold mb-6" style={{ color: BRAND_COLORS.text }}>Ropa de Mujer</h2>
@@ -139,7 +139,7 @@ export default function GuiaDeTallasPage() {
           </ul>
         </div>
 
-        <div className="w-16 h-0.5 my-10" style={{ backgroundColor: BRAND_COLORS.gold }} />
+        <div className="w-16 h-0.5 my-10" style={{ backgroundColor: BRAND_COLORS.text }} />
         <p style={{ color: BRAND_COLORS.textMuted }}>
           <strong>Nota importante:</strong> Las tallas pueden variar entre marcas. Si tienes
           dudas sobre qué talla elegir, envíanos tus medidas por{' '}

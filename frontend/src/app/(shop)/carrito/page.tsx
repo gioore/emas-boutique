@@ -40,7 +40,7 @@ export default function CarritoPage() {
         <Link
           href="/catalogo"
           className="px-8 py-3.5 text-white font-semibold rounded-full transition-all hover:scale-105 shadow-lg"
-          style={{ backgroundColor: BRAND_COLORS.primary }}
+          style={{ backgroundColor: BRAND_COLORS.black }}
         >
           Ver catálogo
         </Link>

@@ -22,7 +22,7 @@ export default function TerminosPage() {
           <p className="text-xl leading-relaxed" style={{ color: BRAND_COLORS.textMuted }}>
             Al realizar una compra en EMAS Boutique, aceptas los siguientes términos y condiciones.
           </p>
-          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
 
           <h2 className="text-2xl font-bold mt-10">1. General</h2>
           <p>
@@ -109,7 +109,7 @@ la mayor precisión posible.
             Guatemala.
           </p>
 
-          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
           <p className="text-sm" style={{ color: BRAND_COLORS.textMuted }}>
             Última actualización: {new Date().toLocaleDateString('es-GT', { month: 'long', year: 'numeric' })}.
           </p>

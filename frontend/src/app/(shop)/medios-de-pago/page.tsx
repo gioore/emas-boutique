@@ -23,7 +23,7 @@ export default function MediosDePagoPage() {
             En EMAS Boutique ofrecemos varias opciones de pago para tu comodidad.
             Todos nuestros precios están en Quetzales (Q).
           </p>
-          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
 
           <h2 className="text-2xl font-bold mt-10">Transferencia Bancaria</h2>
           <p>
@@ -65,7 +65,7 @@ export default function MediosDePagoPage() {
             bancaria en nuestros sistemas.
           </p>
 
-          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
           <p>
             ¿Tienes dudas sobre los métodos de pago? Escríbenos por{' '}
             <Link

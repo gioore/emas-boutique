@@ -22,7 +22,7 @@ export default function EnviosPage() {
           <p className="text-xl leading-relaxed" style={{ color: BRAND_COLORS.textMuted }}>
             En EMAS Boutique realizamos entregas en la Ciudad de Guatemala y envíos a todo el país.
           </p>
-          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
 
           <h2 className="text-2xl font-bold mt-10">Áreas de Entrega</h2>
           <p>
@@ -72,7 +72,7 @@ export default function EnviosPage() {
             de inmediato para resolverlo.
           </p>
 
-          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
           <p>
             ¿Tienes dudas sobre tu entrega? Escríbenos por{' '}
             <Link

@@ -49,7 +49,7 @@ export default function ProductCard({ product }: Props) {
             </span>
           )}
           {product.newArrival && (
-            <span className="px-2.5 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: BRAND_COLORS.gold, color: '#ffffff' }}>
+            <span className="px-2.5 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: BRAND_COLORS.black, color: '#ffffff' }}>
               Nuevo
             </span>
           )}

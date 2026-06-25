@@ -22,7 +22,7 @@ export default function QuienesSomosPage() {
             EMAS Boutique nace de la pasión por la moda y el deseo de ofrecer a Guatemala
             productos 100% originales a precios accesibles.
           </p>
-          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
           <h2 className="text-2xl font-bold mt-10">Nuestra Historia</h2>
           <p>
             EMAS Boutique es un emprendimiento guatemalteco dedicado a la venta de ropa,
@@ -42,7 +42,7 @@ export default function QuienesSomosPage() {
             <li><strong>Cercanía:</strong> Te atendemos de forma personalizada vía WhatsApp.</li>
             <li><strong>Compromiso:</strong> Entregas inmediatas y envíos a toda Guatemala.</li>
           </ul>
-          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
           <p>
             Contáctanos por WhatsApp al <strong>{SITE_CONFIG.whatsappDisplay}</strong> para
             cualquier consulta. ¡Estamos para servirte!

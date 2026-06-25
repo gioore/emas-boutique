@@ -235,7 +235,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
   if (!ready) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: BRAND_COLORS.background }}>
-        <div className="w-8 h-8 border-4 rounded-full border-t-transparent animate-spin" style={{ borderColor: BRAND_COLORS.primary, borderTopColor: 'transparent' }} />
+        <div className="w-8 h-8 border-4 rounded-full border-t-transparent animate-spin" style={{ borderColor: BRAND_COLORS.text, borderTopColor: 'transparent' }} />
       </div>
     );
   }
@@ -247,7 +247,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
           <div className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] font-medium mb-2" style={{ color: BRAND_COLORS.textMuted }}>
             <span>{mode === 'all' ? SITE_CONFIG.name : 'Categoria'}</span>
             {hasActiveFilters && (
-              <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: BRAND_COLORS.gold }} />
+              <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: BRAND_COLORS.text }} />
             )}
           </div>
           <h1 className="text-4xl font-bold mt-2" style={{ color: BRAND_COLORS.text }}>{title}</h1>
@@ -285,10 +285,10 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
               <option value="name-asc">A-Z</option>
               <option value="name-desc">Z-A</option>
             </select>
-            <button onClick={() => setShowFilters(true)} className="relative px-4 py-3 border rounded-xl text-sm font-medium transition-colors flex items-center gap-2" style={{ borderColor: '#e5e5e5', backgroundColor: hasActiveFilters ? BRAND_COLORS.primary : BRAND_COLORS.white, color: hasActiveFilters ? BRAND_COLORS.white : BRAND_COLORS.text }} aria-label="Abrir filtros">
+            <button onClick={() => setShowFilters(true)} className="relative px-4 py-3 border rounded-xl text-sm font-medium transition-colors flex items-center gap-2" style={{ borderColor: '#e5e5e5', backgroundColor: hasActiveFilters ? BRAND_COLORS.black : BRAND_COLORS.white, color: hasActiveFilters ? BRAND_COLORS.white : BRAND_COLORS.text }} aria-label="Abrir filtros">
               Filtros
               {activeFilterCount > 0 && (
-                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold" style={{ backgroundColor: BRAND_COLORS.gold, color: '#1c1917' }}>
+                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold" style={{ backgroundColor: BRAND_COLORS.black, color: '#ffffff' }}>
                   {activeFilterCount}
                 </span>
               )}
@@ -393,7 +393,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
             <p className="text-lg" style={{ color: BRAND_COLORS.textMuted }}>No se encontraron productos.</p>
             <p className="text-sm mt-2" style={{ color: '#78716c' }}>Intenta ajustar los filtros o buscar con otros términos.</p>
             {hasActiveFilters && (
-              <button onClick={clearFilters} className="mt-4 px-6 py-2.5 text-sm font-medium rounded-lg transition-colors" style={{ backgroundColor: BRAND_COLORS.primary, color: BRAND_COLORS.white }}>
+              <button onClick={clearFilters} className="mt-4 px-6 py-2.5 text-sm font-medium rounded-lg transition-colors" style={{ backgroundColor: BRAND_COLORS.black, color: BRAND_COLORS.white }}>
                 Limpiar filtros
               </button>
             )}

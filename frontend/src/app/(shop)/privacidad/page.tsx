@@ -22,7 +22,7 @@ export default function PrivacidadPage() {
             En EMAS Boutique nos tomamos muy en serio la privacidad de tus datos.
             Esta política describe cómo recopilamos, usamos y protegemos tu información.
           </p>
-          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
 
           <h2 className="text-2xl font-bold mt-10">Información que Recopilamos</h2>
           <p>
@@ -89,7 +89,7 @@ export default function PrivacidadPage() {
             relevante, te notificaremos por WhatsApp.
           </p>
 
-          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
           <p className="text-sm" style={{ color: BRAND_COLORS.textMuted }}>
             Última actualización: {new Date().toLocaleDateString('es-GT', { month: 'long', year: 'numeric' })}.
           </p>

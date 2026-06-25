@@ -51,7 +51,7 @@ export default function ComoComprarPage() {
             Comprar en EMAS Boutique es muy sencillo. Sigue estos pasos y recibe tus productos
             favoritos en la comodidad de tu hogar.
           </p>
-          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
 
           {steps.map((step) => (
             <div key={step.number} className="mb-12">
@@ -70,7 +70,7 @@ export default function ComoComprarPage() {
             </div>
           ))}
 
-          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.gold }} />
+          <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
           <p>
             ¿Listo para empezar?{' '}
             <Link href="/catalogo" className="font-semibold underline" style={{ color: BRAND_COLORS.secondary }}>

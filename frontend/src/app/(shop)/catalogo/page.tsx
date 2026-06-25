@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 function CatalogFallback() {
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: BRAND_COLORS.background }}>
-      <div className="w-8 h-8 border-4 rounded-full border-t-transparent animate-spin" style={{ borderColor: BRAND_COLORS.primary, borderTopColor: 'transparent' }} />
+      <div className="w-8 h-8 border-4 rounded-full border-t-transparent animate-spin" style={{ borderColor: BRAND_COLORS.text, borderTopColor: 'transparent' }} />
     </div>
   );
 }

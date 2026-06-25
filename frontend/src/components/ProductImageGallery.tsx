@@ -73,12 +73,12 @@ export default function ProductImageGallery({ images, productName, onSale, newAr
             </span>
           )}
           {newArrival && (
-            <span className="px-3 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: BRAND_COLORS.gold, color: '#ffffff' }}>
+            <span className="px-3 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: BRAND_COLORS.black, color: '#ffffff' }}>
               Nuevo Ingreso
             </span>
           )}
           {!onSale && !newArrival && (
-            <span className="px-3 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: BRAND_COLORS.gold, color: '#ffffff' }}>
+            <span className="px-3 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: BRAND_COLORS.black, color: '#ffffff' }}>
               100% Original
             </span>
           )}
@@ -93,7 +93,7 @@ export default function ProductImageGallery({ images, productName, onSale, newAr
               onClick={() => setSelectedIndex(i)}
               className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 border-2 transition-all duration-200 hover:opacity-80"
               style={{
-                borderColor: i === selectedIndex ? BRAND_COLORS.primary : BRAND_COLORS.border,
+                borderColor: i === selectedIndex ? BRAND_COLORS.text : BRAND_COLORS.border,
                 opacity: i === selectedIndex ? 1 : 0.6,
               }}
               aria-label={`Ver imagen ${i + 1} de ${images.length}`}
