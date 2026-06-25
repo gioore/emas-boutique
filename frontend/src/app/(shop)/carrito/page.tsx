@@ -10,17 +10,16 @@ export default function CarritoPage() {
   const { items, removeItem, updateQuantity, clearCart, totalItems, totalPrice } = useCart();
 
   const buildWhatsAppMessage = () => {
-    const lines: string[] = ['¡Hola! Quiero hacer un pedido:\n'];
+    const lines: string[] = ['Hola! Quiero hacer un pedido:\n'];
     items.forEach((item, i) => {
       const productUrl = `${SITE_URL}/producto/${item.slug}`;
-      lines.push(`▫️ *${item.name}* — Q${item.price.toFixed(2)}`);
+      lines.push(`${i + 1}. ${item.name} - Q${item.price.toFixed(2)}`);
       lines.push(`   Talla: ${item.size} | Cant: ${item.quantity}`);
       if (item.color) lines.push(`   Color: ${item.color}`);
       lines.push(`   ${productUrl}`);
       if (i < items.length - 1) lines.push('');
     });
-    lines.push(`\n━━━━━━━━━━━━━━━`);
-    lines.push(`*Total: Q${totalPrice.toFixed(2)}*`);
+    lines.push(`\nTotal: Q${totalPrice.toFixed(2)}`);
     return encodeURIComponent(lines.join('\n'));
   };
 

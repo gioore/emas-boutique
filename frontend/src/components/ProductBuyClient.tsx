@@ -160,7 +160,7 @@ export default function ProductBuyClient({ productId, productName, productPrice,
       {colors.length > 0 && (
         <div className="mb-6">
           <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: '#1c1917' }}>
-            {selectedColor ? '2. Color seleccionado' : '2. Selecciona tu color'}
+            {selectedColor ? '1. Color seleccionado' : '1. Selecciona tu color'}
           </h3>
           <div className="flex flex-wrap gap-3">
             {colors.map((color, i) => {
@@ -202,7 +202,7 @@ export default function ProductBuyClient({ productId, productName, productPrice,
       {sizes.length > 0 && (
         <div className="mb-6">
           <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: '#1c1917' }}>
-            1. Selecciona tu talla
+            2. Selecciona tu talla
           </h3>
           <div className="flex flex-wrap gap-2">
             {sizes.map((size) => (
@@ -271,7 +271,7 @@ export default function ProductBuyClient({ productId, productName, productPrice,
           >
             <WhatsAppIcon className="w-5 h-5 shrink-0" />
             <span className="text-sm">Comprar</span>
-            {selectedSize && <span className="text-xs font-normal">— Talla {selectedSize}</span>}
+            {selectedSize && <span className="text-xs font-normal">- Talla {selectedSize}</span>}
           </a>
         </div>
       </div>
