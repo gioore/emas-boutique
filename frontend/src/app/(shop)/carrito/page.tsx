@@ -72,7 +72,7 @@ export default function CarritoPage() {
             <div
               key={`${item.id}-${item.size}`}
               className="flex gap-4 p-4 rounded-2xl"
-              style={{ backgroundColor: BRAND_COLORS.white, border: '1px solid #e5e0d8' }}
+              style={{ backgroundColor: BRAND_COLORS.white, border: `1px solid ${BRAND_COLORS.border}` }}
             >
               <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden shrink-0" style={{ backgroundColor: '#f5f5f5' }}>
                 {item.image ? (
@@ -155,7 +155,7 @@ export default function CarritoPage() {
         </div>
 
         {/* Summary */}
-        <div className="rounded-2xl p-6" style={{ backgroundColor: BRAND_COLORS.white, border: '1px solid #e5e0d8' }}>
+        <div className="rounded-2xl p-6" style={{ backgroundColor: BRAND_COLORS.white, border: `1px solid ${BRAND_COLORS.border}` }}>
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium" style={{ color: BRAND_COLORS.textMuted }}>Subtotal</span>
             <span className="text-lg font-bold" style={{ color: BRAND_COLORS.text }}>Q{totalPrice.toFixed(2)}</span>

@@ -93,7 +93,7 @@ export default function ProductImageGallery({ images, productName, onSale, newAr
               onClick={() => setSelectedIndex(i)}
               className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 border-2 transition-all duration-200 hover:opacity-80"
               style={{
-                borderColor: i === selectedIndex ? BRAND_COLORS.primary : '#e5e0d8',
+                borderColor: i === selectedIndex ? BRAND_COLORS.primary : BRAND_COLORS.border,
                 opacity: i === selectedIndex ? 1 : 0.6,
               }}
               aria-label={`Ver imagen ${i + 1} de ${images.length}`}

@@ -9,7 +9,7 @@ export const metadata = {
 export default function MediosDePagoPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: BRAND_COLORS.white }}>
-      <div className="border-b" style={{ backgroundColor: BRAND_COLORS.background, borderColor: '#e5e0d8' }}>
+      <div className="border-b" style={{ backgroundColor: BRAND_COLORS.background, borderColor: BRAND_COLORS.border }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <span className="text-xs uppercase tracking-[0.3em] font-medium" style={{ color: BRAND_COLORS.textMuted }}>
             {SITE_CONFIG.name}

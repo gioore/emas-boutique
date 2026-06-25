@@ -111,7 +111,7 @@ export default function Header() {
             <Link href="/" className="flex items-center gap-3 group">
               <div
                 className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 group-hover:shadow-lg"
-                style={{ backgroundColor: BRAND_COLORS.primary, color: BRAND_COLORS.white }}
+                style={{ backgroundColor: BRAND_COLORS.black, color: BRAND_COLORS.white }}
               >
                 EB
               </div>
@@ -181,7 +181,7 @@ export default function Header() {
         <div className="fixed top-0 left-0 h-full w-72 z-[60] md:hidden shadow-2xl animate-slide-in-left" style={{ backgroundColor: BRAND_COLORS.background }}>
           <div className="flex flex-col pt-20 px-6 h-full">
             <div className="flex items-center gap-3 mb-10 border-b pb-6" style={{ borderColor: '#e5e5e5' }}>
-              <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: BRAND_COLORS.primary, color: BRAND_COLORS.white }}>
+              <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: BRAND_COLORS.black, color: BRAND_COLORS.white }}>
                 EB
               </div>
               <div>
@@ -197,7 +197,7 @@ export default function Header() {
                     href={link.href}
                     className="px-4 py-3 rounded-xl text-sm font-medium transition-all block"
                     style={{
-                      backgroundColor: isActive(link.href) ? 'rgba(212,163,115,0.15)' : 'transparent',
+                      backgroundColor: isActive(link.href) ? 'rgba(0,0,0,0.08)' : 'transparent',
                       color: isActive(link.href) ? '#000000' : BRAND_COLORS.textMuted,
                     }}
                     onClick={() => setMenuOpen(false)}
