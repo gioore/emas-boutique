@@ -10,6 +10,7 @@ import ProductCard from '@/components/ProductCard';
 import ShareButton from '@/components/ShareButton';
 import ProductBuyClient from '@/components/ProductBuyClient';
 import ProductImageGallery from '@/components/ProductImageGallery';
+import ScrollToTopOnMount from '@/components/ScrollToTopOnMount';
 import type { Product } from '@/types/product';
 
 function sanitizeHtml(html: string): string {
@@ -104,6 +105,7 @@ export default async function ProductoPage({ params }: Props) {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: BRAND_COLORS.white }}>
+      <ScrollToTopOnMount />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

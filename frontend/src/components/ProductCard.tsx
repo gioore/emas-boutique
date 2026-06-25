@@ -19,6 +19,7 @@ export default function ProductCard({ product }: Props) {
   return (
     <Link
       href={`/producto/${product.slug}`}
+      scroll={false}
       className="group flex flex-col bg-white rounded-2xl overflow-hidden transition-all duration-500"
       style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)', border: '1px solid #e5e0d8' }}
       onMouseEnter={() => hasTwoImages && setImgIndex(1)}

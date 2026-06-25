@@ -106,10 +106,19 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
       );
     }
     if (mode === 'all' && filters.category) result = result.filter((product) => String(product.cat?.id) === filters.category);
-    if (filters.subcategory) result = result.filter((product) => product.subcat?.name === filters.subcategory || product.subcategory === filters.subcategory);
+    if (filters.subcategory) {
+      const subcat = normalize(filters.subcategory);
+      result = result.filter((product) =>
+        normalize(product.subcat?.name || '') === subcat ||
+        normalize(product.subcategory || '') === subcat
+      );
+    }
     if (filters.brand) result = result.filter((product) => String(product.brand?.id) === filters.brand);
     if (filters.size) result = result.filter((product) => product.sizes?.includes(filters.size));
-    if (filters.availability) result = result.filter((product) => product.availability === filters.availability);
+    if (filters.availability) {
+      const avail = normalize(filters.availability);
+      result = result.filter((product) => normalize(product.availability || '') === avail);
+    }
     if (filters.minPrice) result = result.filter((product) => product.price >= parseFloat(filters.minPrice));
     if (filters.maxPrice) result = result.filter((product) => product.price <= parseFloat(filters.maxPrice));
     switch (filters.sort) {
