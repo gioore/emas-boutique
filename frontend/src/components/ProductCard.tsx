@@ -31,7 +31,7 @@ export default function ProductCard({ product }: Props) {
             alt={product.name}
             fill
             className="object-cover transition-all duration-700"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center" style={{ color: '#d6d3d1' }}>

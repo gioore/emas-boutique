@@ -64,11 +64,7 @@ export default async function Home() {
       {/* Stats Bar */}
       <section className="py-12" style={{ backgroundColor: BRAND_COLORS.backgroundAlt }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <p className="text-3xl font-bold" style={{ color: BRAND_COLORS.gold }}>5+</p>
-              <p className="text-xs uppercase tracking-wider mt-1 font-medium" style={{ color: BRAND_COLORS.textMuted }}>Años de experiencia</p>
-            </div>
+          <div className="grid grid-cols-3 gap-8 text-center">
             <div>
               <p className="text-3xl font-bold" style={{ color: BRAND_COLORS.gold }}>{featured.length + newArrivals.length + onSale.length || '100'}+</p>
               <p className="text-xs uppercase tracking-wider mt-1 font-medium" style={{ color: BRAND_COLORS.textMuted }}>Productos</p>
@@ -87,10 +83,10 @@ export default async function Home() {
 
       {/* New Arrivals */}
       {newArrivals.length > 0 && (
-        <section className="py-20" style={{ backgroundColor: BRAND_COLORS.background }}>
+        <section className="py-12 sm:py-20" style={{ backgroundColor: BRAND_COLORS.background }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeader label="Lo más nuevo" title="Nuevos Ingresos" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-8">
               {newArrivals.slice(0, 8).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -103,7 +99,7 @@ export default async function Home() {
       )}
 
       {/* Categories */}
-      <section className="py-20" style={{ backgroundColor: BRAND_COLORS.backgroundAlt }}>
+      <section className="py-12 sm:py-20" style={{ backgroundColor: BRAND_COLORS.backgroundAlt }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label="Categorías" title="Explora por categoría" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -136,7 +132,7 @@ export default async function Home() {
       </section>
 
       {/* Why EMAS */}
-      <section className="py-20" style={{ backgroundColor: BRAND_COLORS.background }}>
+      <section className="py-12 sm:py-20" style={{ backgroundColor: BRAND_COLORS.background }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label="Por qué nosotras" title="¿Por qué EMAS Boutique?" />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
@@ -173,10 +169,10 @@ export default async function Home() {
 
       {/* On Sale */}
       {onSale.length > 0 && (
-        <section className="py-20" style={{ backgroundColor: BRAND_COLORS.backgroundAlt }}>
+        <section className="py-12 sm:py-20" style={{ backgroundColor: BRAND_COLORS.backgroundAlt }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeader label="No te lo pierdas" title="Ofertas Especiales" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-8">
               {onSale.slice(0, 4).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -190,7 +186,7 @@ export default async function Home() {
 
       {/* Brands */}
       {brands.filter(b => b.active !== false).length > 0 && (
-        <section className="py-16" style={{ backgroundColor: BRAND_COLORS.background }}>
+        <section className="py-12 sm:py-16" style={{ backgroundColor: BRAND_COLORS.background }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeader label="Marcas" title="Marcas que trabajamos" />
             <div className="flex flex-wrap justify-center gap-4">
@@ -210,7 +206,7 @@ export default async function Home() {
       )}
 
       {/* Testimonials */}
-      <section className="py-20" style={{ backgroundColor: BRAND_COLORS.backgroundAlt }}>
+      <section className="py-12 sm:py-20" style={{ backgroundColor: BRAND_COLORS.backgroundAlt }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label="Testimonios" title="Lo que dicen nuestras clientas" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
@@ -237,10 +233,10 @@ export default async function Home() {
 
       {/* Featured */}
       {featured.length > 0 && (
-        <section className="py-20" style={{ backgroundColor: BRAND_COLORS.background }}>
+        <section className="py-12 sm:py-20" style={{ backgroundColor: BRAND_COLORS.background }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeader label="Destacados" title="Productos Destacados" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-8">
               {featured.slice(0, 8).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -250,7 +246,7 @@ export default async function Home() {
       )}
 
       {/* Instagram */}
-      <section className="py-16" style={{ backgroundColor: BRAND_COLORS.white }}>
+      <section className="py-12 sm:py-16" style={{ backgroundColor: BRAND_COLORS.white }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="w-16 h-0.5 mx-auto mb-6" style={{ backgroundColor: BRAND_COLORS.gold }} />
           <SectionLabel text="Síguenos" />
@@ -274,7 +270,7 @@ export default async function Home() {
       </section>
 
       {/* CTA */}
-      <section className="relative py-24 overflow-hidden" style={{ backgroundColor: BRAND_COLORS.backgroundAlt }}>
+      <section className="relative py-16 sm:py-24 overflow-hidden" style={{ backgroundColor: BRAND_COLORS.backgroundAlt }}>
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, #1c1917 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="w-16 h-0.5 mx-auto mb-6" style={{ backgroundColor: BRAND_COLORS.gold }} />

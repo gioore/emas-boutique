@@ -98,10 +98,10 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center h-8">
           <span className="text-[11px] tracking-wider font-medium" style={{ color: BRAND_COLORS.textMuted }}>
             Envíos a toda Guatemala{' '}
-              <svg className="inline-block w-4 h-3 align-baseline" viewBox="0 0 24 18">
-                <rect width="24" height="18" fill="#4997D0"/>
-                <rect y="6" width="24" height="6" fill="#FFFFFF"/>
-                <rect y="6" width="24" height="6" fill="#4997D0" clipPath="polygon(0 6, 10 6, 10 0, 14 0, 14 6, 24 6, 24 12, 14 12, 14 18, 10 18, 10 12, 0 12)" style={{clipPath: 'polygon(0 6, 10 6, 10 0, 14 0, 14 6, 24 6, 24 12, 14 12, 14 18, 10 18, 10 12, 0 12)'}}/>
+              <svg className="inline-block w-4 h-3 align-baseline" viewBox="0 0 24 18" aria-hidden="true">
+                <rect x="0" width="8" height="18" fill="#4997D0"/>
+                <rect x="8" width="8" height="18" fill="#FFFFFF"/>
+                <rect x="16" width="8" height="18" fill="#4997D0"/>
               </svg>
           </span>
         </div>

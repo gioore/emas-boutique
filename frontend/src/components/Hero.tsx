@@ -4,7 +4,7 @@ import { SITE_CONFIG } from '@/lib/config';
 
 export default function Hero() {
   return (
-    <section className="relative h-[90vh] min-h-[700px] overflow-hidden" style={{ backgroundColor: '#1c1917' }}>
+    <section className="relative min-h-[600px] lg:min-h-[700px] h-[80vh] overflow-hidden" style={{ backgroundColor: '#1c1917' }}>
       {/* Gradient overlays */}
       <div
         className="absolute inset-0 z-10"
