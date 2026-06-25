@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import ProductCard from '@/components/ProductCard';
 import { BRAND_COLORS, SITE_CONFIG } from '@/lib/config';
 import { SIZE_OPTIONS } from '@/lib/constants';
@@ -49,6 +50,7 @@ function getSubcategoriesForMode(categories: CategoryWithSubcategories[], mode: 
 const PAGE_SIZE = 20;
 
 export default function CatalogView({ mode, title, subtitle, products, brands, categories, error }: Props) {
+  const searchParams = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
   const [sticky, setSticky] = useState(false);
   const [page, setPage] = useState(1);
@@ -81,7 +83,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
       search: params.get('search') || '',
     });
     setReady(true);
-  }, [mode]);
+  }, [searchParams.toString(), mode]);
 
   useEffect(() => {
     if (!sortBarRef.current) return;
