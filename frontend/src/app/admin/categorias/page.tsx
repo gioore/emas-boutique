@@ -90,7 +90,7 @@ export default function AdminCategoriesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8">
         <div>
           <h1 className="text-2xl font-bold" style={{ color: '#1c1917' }}>Categorías</h1>
           <p className="mt-1" style={{ color: '#78716c' }}>
@@ -99,10 +99,11 @@ export default function AdminCategoriesPage() {
         </div>
         <Link
           href="/admin/categorias/nueva"
-          className="px-5 py-2.5 font-medium rounded-lg transition-colors text-sm"
+          className="px-4 sm:px-5 py-2.5 font-medium rounded-lg transition-colors text-sm text-center"
           style={{ backgroundColor: '#1c1917', color: '#ffffff' }}
         >
-          + Nueva Categoría
+          <span className="sm:hidden">+ Nueva</span>
+          <span className="hidden sm:inline">+ Nueva Categoría</span>
         </Link>
       </div>
 
@@ -133,7 +134,8 @@ export default function AdminCategoriesPage() {
               style={{ borderColor: '#d6d3d1', color: '#1c1917', backgroundColor: '#ffffff' }}
             />
           </div>
-          <div className="rounded-xl border overflow-hidden" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
+          {/* Desktop table */}
+          <div className="hidden sm:block rounded-xl border overflow-hidden" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
             <div className="max-h-[calc(100vh-380px)] overflow-y-auto">
               <table className="w-full">
                 <thead className="sticky top-0 z-10" style={{ backgroundColor: '#faf7f2' }}>
@@ -197,6 +199,50 @@ export default function AdminCategoriesPage() {
                 </tbody>
               </table>
             </div>
+          </div>
+
+          {/* Mobile cards */}
+          <div className="block sm:hidden space-y-3">
+            {filtered.length === 0 ? (
+              <div className="text-center py-12 text-sm" style={{ color: '#78716c' }}>
+                {search ? 'No hay categorías que coincidan con la búsqueda' : 'No hay categorías aún'}
+              </div>
+            ) : filtered.map((category) => (
+              <div key={category.id} className="rounded-xl border p-4" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
+                <div className="flex items-start justify-between mb-2">
+                  <span className="text-sm font-medium" style={{ color: '#1c1917' }}>{category.name}</span>
+                  {category.active ? (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium shrink-0" style={{ backgroundColor: '#f0fdf4', color: '#166534' }}>
+                      Activa
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium shrink-0" style={{ backgroundColor: '#f5f5f4', color: '#57534e' }}>
+                      Inactiva
+                    </span>
+                  )}
+                </div>
+                {category.description && (
+                  <p className="text-xs mb-2" style={{ color: '#78716c' }}>{category.description}</p>
+                )}
+                <p className="text-xs mb-3" style={{ color: '#78716c' }}>Orden: {category.order ?? '—'}</p>
+                <div className="flex gap-2 pt-3 border-t" style={{ borderColor: '#e5e0d8' }}>
+                  <Link
+                    href={`/admin/categorias/${category.id}/editar`}
+                    className="flex-1 text-center px-3 py-2 text-sm font-medium rounded-lg transition-colors"
+                    style={{ backgroundColor: '#f5f5f4', color: '#44403c' }}
+                  >
+                    Editar
+                  </Link>
+                  <button
+                    onClick={() => setDeleteId(category.id)}
+                    className="flex-1 text-center px-3 py-2 text-sm font-medium rounded-lg transition-colors"
+                    style={{ backgroundColor: '#fef2f2', color: '#dc2626' }}
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}

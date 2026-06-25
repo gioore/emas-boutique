@@ -35,7 +35,7 @@ function formatCategory(c: any): CategoryWithSubcategories {
 }
 
 async function getProducts(section: CatalogSection): Promise<Product[]> {
-  const where = section !== 'all' ? 'WHERE p.category = $1' : '';
+  const where = section !== 'all' ? 'WHERE c.slug = $1' : '';
   const params = section !== 'all' ? [section] : [];
 
   const rows = await query<ProductRow>(`

@@ -61,18 +61,13 @@ export default function AdminLayout({
     );
   }
 
-  if (!authed) return null;
+  if (!authed || sessionExpired) return null;
 
   return (
-    <div className="flex min-h-screen" style={{ backgroundColor: '#faf7f2' }}>
+    <div className="flex flex-col lg:flex-row min-h-screen pt-14 lg:pt-0" style={{ backgroundColor: '#faf7f2' }}>
       <AdminSidebar />
       <div className="flex-1 overflow-auto">
         <div className="p-4 sm:p-8">
-          {sessionExpired && (
-            <div className="mb-4 p-4 rounded-lg text-sm" style={{ backgroundColor: '#fef2f2', color: '#991b1b' }}>
-              Sesión expirada. Inicia sesión nuevamente.
-            </div>
-          )}
           <ErrorBoundary>{children}</ErrorBoundary>
         </div>
       </div>

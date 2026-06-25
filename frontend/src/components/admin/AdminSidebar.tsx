@@ -26,6 +26,9 @@ export default function AdminSidebar() {
     <>
       {/* Mobile top bar */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 h-14 border-b" style={{ backgroundColor: '#1c1917', borderColor: '#292524' }}>
+        <Link href="/admin/productos/nuevo" className="w-9 h-9 rounded-full flex items-center justify-center text-lg font-bold" style={{ backgroundColor: '#d4a373', color: '#1c1917' }} aria-label="Nuevo Producto">
+          +
+        </Link>
         <span className="text-white font-bold text-sm">EMAS Admin</span>
         <button onClick={() => setMenuOpen(!menuOpen)} className="p-2 text-white" aria-label="Menú">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -38,17 +41,12 @@ export default function AdminSidebar() {
         </button>
       </div>
 
-      {/* Mobile overlay */}
-      {menuOpen && (
-        <div className="lg:hidden fixed inset-0 z-40" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} onClick={() => setMenuOpen(false)} />
-      )}
-
-      {/* Sidebar */}
+      {/* Sidebar — in normal flow on mobile, static sidebar on desktop */}
       <aside
         className={`
-          fixed lg:static inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300
-          ${menuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-          flex flex-col min-h-screen
+          ${menuOpen ? 'block' : 'hidden'} lg:block
+          w-full lg:w-64 lg:min-h-screen
+          flex flex-col
         `}
         style={{ backgroundColor: '#1c1917', color: '#ffffff' }}
       >
@@ -110,9 +108,6 @@ export default function AdminSidebar() {
           </button>
         </div>
       </aside>
-
-      {/* Spacer for mobile top bar */}
-      <div className="lg:hidden h-14" />
     </>
   );
 }

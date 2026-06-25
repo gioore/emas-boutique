@@ -400,14 +400,14 @@ export default function ProductForm({ initialData, isEditing }: Props) {
         onImagesChange={(images) => updateField('images', images)}
       />
 
-      <div className="flex gap-4 pt-4 border-t" style={{ borderColor: '#e5e0d8' }}>
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 border-t" style={{ borderColor: '#e5e0d8' }}>
         <button type="submit" disabled={saving}
-          className="px-8 py-3 font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 sm:px-8 py-3 font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           style={{ backgroundColor: '#1c1917', color: '#ffffff' }}>
           {saving ? 'Guardando...' : isEditing ? 'Actualizar Producto' : 'Crear Producto'}
         </button>
         <button type="button" onClick={() => router.push('/admin')}
-          className="px-8 py-3 border font-medium rounded-lg transition-colors"
+          className="px-6 sm:px-8 py-3 border font-medium rounded-lg transition-colors"
           style={{ borderColor: '#d6d3d1', color: '#44403c' }}>
           Cancelar
         </button>

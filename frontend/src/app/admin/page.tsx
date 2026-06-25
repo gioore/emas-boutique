@@ -120,7 +120,7 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8">
         <div>
           <h1 className="text-2xl font-bold" style={{ color: '#1c1917' }}>Dashboard</h1>
           <p className="mt-1" style={{ color: '#78716c' }}>
@@ -129,7 +129,7 @@ export default function AdminDashboard() {
         </div>
         <Link
           href="/admin/productos/nuevo"
-          className="px-5 py-2.5 font-medium rounded-lg transition-colors text-sm"
+          className="px-4 sm:px-5 py-2.5 font-medium rounded-lg transition-colors text-sm text-center"
           style={{ backgroundColor: '#1c1917', color: '#ffffff' }}
         >
           + Nuevo Producto
@@ -143,29 +143,29 @@ export default function AdminDashboard() {
       )}
 
       {/* Metrics */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-        <div className="rounded-xl border p-4" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
-          <p className="text-2xl font-bold" style={{ color: '#1c1917' }}>{metrics.total}</p>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-6 sm:mb-8">
+        <div className="rounded-xl border p-3 sm:p-4" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
+          <p className="text-xl sm:text-2xl font-bold" style={{ color: '#1c1917' }}>{metrics.total}</p>
           <p className="text-xs mt-1" style={{ color: '#78716c' }}>Total productos</p>
         </div>
-        <div className="rounded-xl border p-4" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
-          <p className="text-2xl font-bold" style={{ color: '#166534' }}>{metrics.featured}</p>
+        <div className="rounded-xl border p-3 sm:p-4" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
+          <p className="text-xl sm:text-2xl font-bold" style={{ color: '#166534' }}>{metrics.featured}</p>
           <p className="text-xs mt-1" style={{ color: '#78716c' }}>Destacados</p>
         </div>
-        <div className="rounded-xl border p-4" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
-          <p className="text-2xl font-bold" style={{ color: '#991b1b' }}>{metrics.onSale}</p>
+        <div className="rounded-xl border p-3 sm:p-4" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
+          <p className="text-xl sm:text-2xl font-bold" style={{ color: '#991b1b' }}>{metrics.onSale}</p>
           <p className="text-xs mt-1" style={{ color: '#78716c' }}>En oferta</p>
         </div>
-        <div className="rounded-xl border p-4" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
-          <p className="text-2xl font-bold" style={{ color: '#92400e' }}>{metrics.newArrivals}</p>
+        <div className="rounded-xl border p-3 sm:p-4" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
+          <p className="text-xl sm:text-2xl font-bold" style={{ color: '#92400e' }}>{metrics.newArrivals}</p>
           <p className="text-xs mt-1" style={{ color: '#78716c' }}>Nuevos ingresos</p>
         </div>
-        <div className="rounded-xl border p-4" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
-          <p className="text-2xl font-bold" style={{ color: '#991b1b' }}>{metrics.outOfStock}</p>
+        <div className="rounded-xl border p-3 sm:p-4" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
+          <p className="text-xl sm:text-2xl font-bold" style={{ color: '#991b1b' }}>{metrics.outOfStock}</p>
           <p className="text-xs mt-1" style={{ color: '#78716c' }}>Agotados</p>
         </div>
-        <div className="rounded-xl border p-4" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
-          <p className="text-2xl font-bold" style={{ color: '#92400e' }}>{metrics.lowStock}</p>
+        <div className="rounded-xl border p-3 sm:p-4" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
+          <p className="text-xl sm:text-2xl font-bold" style={{ color: '#92400e' }}>{metrics.lowStock}</p>
           <p className="text-xs mt-1" style={{ color: '#78716c' }}>Últimas unidades</p>
         </div>
       </div>
@@ -177,7 +177,7 @@ export default function AdminDashboard() {
           placeholder="Buscar productos..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full max-w-md px-4 py-2.5 border rounded-lg outline-none"
+          className="w-full px-4 py-2.5 border rounded-lg outline-none"
           style={{ borderColor: '#d6d3d1', backgroundColor: '#ffffff', color: '#1c1917' }}
         />
       </div>
@@ -195,107 +195,185 @@ export default function AdminDashboard() {
           <p className="text-lg" style={{ color: '#78716c' }}>No se encontraron productos con ese nombre.</p>
         </div>
       ) : (
-        <div className="rounded-xl border overflow-hidden" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
-          <div className="max-h-[calc(100vh-320px)] overflow-y-auto">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b" style={{ backgroundColor: '#faf7f2', borderColor: '#e5e0d8' }}>
-                  <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Producto</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider hidden sm:table-cell" style={{ color: '#78716c' }}>Marca</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider hidden sm:table-cell" style={{ color: '#78716c' }}>Categoría</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Precio</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider hidden sm:table-cell" style={{ color: '#78716c' }}>Estado</th>
-                  <th className="text-right px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Acciones</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y" style={{ borderColor: '#e5e0d8' }}>
-                {filtered.map((product) => (
-                  <tr key={product.id} className="transition-colors" style={{ backgroundColor: '#ffffff' }}>
-                    <td className="px-4 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0" style={{ backgroundColor: '#f5f0e8' }}>
-                          {product.images?.[0] && (
-                            <Image
-                              src={getImageUrl(product.images[0])}
-                              alt=""
-                              width={48}
-                              height={48}
-                              className="w-full h-full object-cover"
-                            />
-                          )}
-                        </div>
-                        <div>
-                          <span className="text-sm font-medium block" style={{ color: '#1c1917' }}>
-                            {product.name.length > 30 ? product.name.slice(0, 30) + '...' : product.name}
-                          </span>
-                          {product.sku && (
-                            <span className="text-xs" style={{ color: '#78716c' }}>{product.sku}</span>
-                          )}
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-4 py-4 hidden sm:table-cell">
-                      <span className="text-sm" style={{ color: '#57534e' }}>
-                        {product.brand_name || '—'}
-                      </span>
-                    </td>
-                    <td className="px-4 py-4 hidden sm:table-cell">
-                      <span className="text-sm capitalize" style={{ color: '#57534e' }}>{product.cat_name || product.category}</span>
-                      <span className="text-xs ml-1" style={{ color: '#78716c' }}>/ {product.subcat_name || product.subcategory}</span>
-                    </td>
-                    <td className="px-4 py-4">
-                      <div>
-                        <span className="text-sm font-medium" style={{ color: '#1c1917' }}>Q{product.price.toFixed(2)}</span>
-                        {product.on_sale && product.old_price && (
-                          <span className="text-xs line-through ml-1" style={{ color: '#78716c' }}>Q{Number(product.old_price).toFixed(2)}</span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-4 py-4 hidden sm:table-cell">
-                      <div className="flex flex-wrap gap-1">
-                        {product.featured && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f0fdf4', color: '#166534' }}>Destacado</span>
-                        )}
-                        {product.new_arrival && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#fef3c7', color: '#92400e' }}>Nuevo</span>
-                        )}
-                        {product.on_sale && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#fef2f2', color: '#991b1b' }}>Oferta</span>
-                        )}
-                        {product.availability === 'out_of_stock' && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f5f5f4', color: '#57534e' }}>Agotado</span>
-                        )}
-                        {(!product.featured && !product.new_arrival && !product.on_sale) && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f0fdf4', color: '#166534' }}>Activo</span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-4 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <Link
-                          href={`/admin/productos/${product.id}/editar`}
-                          className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
-                          style={{ backgroundColor: '#f5f5f4', color: '#44403c' }}
-                        >
-                          Editar
-                        </Link>
-                        <button
-                          onClick={() => setDeleteId(product.id)}
-                          className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
-                          style={{ backgroundColor: '#fef2f2', color: '#dc2626' }}
-                        >
-                          Eliminar
-                        </button>
-                      </div>
-                    </td>
+        <>
+          {/* Desktop table */}
+          <div className="hidden sm:block rounded-xl border overflow-hidden" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
+            <div className="max-h-[calc(100vh-320px)] overflow-y-auto">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b" style={{ backgroundColor: '#faf7f2', borderColor: '#e5e0d8' }}>
+                    <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Producto</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Marca</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Categoría</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Precio</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Estado</th>
+                    <th className="text-right px-4 py-3 text-xs font-medium uppercase tracking-wider" style={{ color: '#78716c' }}>Acciones</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y" style={{ borderColor: '#e5e0d8' }}>
+                  {filtered.map((product) => (
+                    <tr key={product.id} className="transition-colors" style={{ backgroundColor: '#ffffff' }}>
+                      <td className="px-4 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0" style={{ backgroundColor: '#f5f0e8' }}>
+                            {product.images?.[0] && (
+                              <Image
+                                src={getImageUrl(product.images[0])}
+                                alt=""
+                                width={48}
+                                height={48}
+                                className="w-full h-full object-cover"
+                              />
+                            )}
+                          </div>
+                          <div>
+                            <span className="text-sm font-medium block" style={{ color: '#1c1917' }}>
+                              {product.name.length > 30 ? product.name.slice(0, 30) + '...' : product.name}
+                            </span>
+                            {product.sku && (
+                              <span className="text-xs" style={{ color: '#78716c' }}>{product.sku}</span>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <span className="text-sm" style={{ color: '#57534e' }}>
+                          {product.brand_name || '—'}
+                        </span>
+                      </td>
+                      <td className="px-4 py-4">
+                        <span className="text-sm capitalize" style={{ color: '#57534e' }}>{product.cat_name || product.category}</span>
+                        <span className="text-xs ml-1" style={{ color: '#78716c' }}>/ {product.subcat_name || product.subcategory}</span>
+                      </td>
+                      <td className="px-4 py-4">
+                        <div>
+                          <span className="text-sm font-medium" style={{ color: '#1c1917' }}>Q{product.price.toFixed(2)}</span>
+                          {product.on_sale && product.old_price && (
+                            <span className="text-xs line-through ml-1" style={{ color: '#78716c' }}>Q{Number(product.old_price).toFixed(2)}</span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <div className="flex flex-wrap gap-1">
+                          {product.featured && (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f0fdf4', color: '#166534' }}>Destacado</span>
+                          )}
+                          {product.new_arrival && (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#fef3c7', color: '#92400e' }}>Nuevo</span>
+                          )}
+                          {product.on_sale && (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#fef2f2', color: '#991b1b' }}>Oferta</span>
+                          )}
+                          {product.availability === 'out_of_stock' && (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f5f5f4', color: '#57534e' }}>Agotado</span>
+                          )}
+                          {(!product.featured && !product.new_arrival && !product.on_sale) && (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f0fdf4', color: '#166534' }}>Activo</span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <Link
+                            href={`/admin/productos/${product.id}/editar`}
+                            className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
+                            style={{ backgroundColor: '#f5f5f4', color: '#44403c' }}
+                          >
+                            Editar
+                          </Link>
+                          <button
+                            onClick={() => setDeleteId(product.id)}
+                            className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
+                            style={{ backgroundColor: '#fef2f2', color: '#dc2626' }}
+                          >
+                            Eliminar
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            </div>
           </div>
+
+          {/* Mobile cards */}
+          <div className="block sm:hidden space-y-3">
+            {filtered.map((product) => (
+              <div key={product.id} className="rounded-xl border p-4" style={{ backgroundColor: '#ffffff', borderColor: '#e5e0d8' }}>
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0" style={{ backgroundColor: '#f5f0e8' }}>
+                    {product.images?.[0] && (
+                      <Image
+                        src={getImageUrl(product.images[0])}
+                        alt=""
+                        width={56}
+                        height={56}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-sm font-medium block leading-tight" style={{ color: '#1c1917' }}>
+                      {product.name}
+                    </span>
+                    {product.sku && (
+                      <span className="text-xs" style={{ color: '#78716c' }}>SKU: {product.sku}</span>
+                    )}
+                    <div className="text-sm font-medium mt-1" style={{ color: '#1c1917' }}>
+                      Q{product.price.toFixed(2)}
+                      {product.on_sale && product.old_price && (
+                        <span className="text-xs line-through ml-1" style={{ color: '#78716c' }}>Q{Number(product.old_price).toFixed(2)}</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs mb-3" style={{ color: '#78716c' }}>
+                  {product.brand_name && <span>Marca: {product.brand_name}</span>}
+                  <span>{product.cat_name || product.category}{product.subcat_name ? ` / ${product.subcat_name}` : ''}</span>
+                </div>
+
+                <div className="flex flex-wrap gap-1 mb-3">
+                  {product.featured && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f0fdf4', color: '#166534' }}>Destacado</span>
+                  )}
+                  {product.new_arrival && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#fef3c7', color: '#92400e' }}>Nuevo</span>
+                  )}
+                  {product.on_sale && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#fef2f2', color: '#991b1b' }}>Oferta</span>
+                  )}
+                  {product.availability === 'out_of_stock' && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f5f5f4', color: '#57534e' }}>Agotado</span>
+                  )}
+                  {(!product.featured && !product.new_arrival && !product.on_sale) && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: '#f0fdf4', color: '#166534' }}>Activo</span>
+                  )}
+                </div>
+
+                <div className="flex gap-2 pt-3 border-t" style={{ borderColor: '#e5e0d8' }}>
+                  <Link
+                    href={`/admin/productos/${product.id}/editar`}
+                    className="flex-1 text-center px-3 py-2 text-sm font-medium rounded-lg transition-colors"
+                    style={{ backgroundColor: '#f5f5f4', color: '#44403c' }}
+                  >
+                    Editar
+                  </Link>
+                  <button
+                    onClick={() => setDeleteId(product.id)}
+                    className="flex-1 text-center px-3 py-2 text-sm font-medium rounded-lg transition-colors"
+                    style={{ backgroundColor: '#fef2f2', color: '#dc2626' }}
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
+        </>
       )}
 
       {deleteId && (

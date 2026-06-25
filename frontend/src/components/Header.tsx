@@ -60,9 +60,6 @@ export default function Header() {
     megaTimer.current = setTimeout(() => setMegaOpen(null), 150);
   };
 
-  const mujerCats = categories.filter((c) => c.slug === 'mujer');
-  const hombreCats = categories.filter((c) => c.slug === 'hombre');
-
   const renderMegaMenu = (cat: Category | undefined) => {
     if (!cat || cat.subcategories.length === 0) return null;
     return (

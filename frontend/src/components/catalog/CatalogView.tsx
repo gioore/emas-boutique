@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import ProductCard from '@/components/ProductCard';
 import { BRAND_COLORS, SITE_CONFIG } from '@/lib/config';
 import { SIZE_OPTIONS } from '@/lib/constants';
@@ -50,23 +49,39 @@ function getSubcategoriesForMode(categories: CategoryWithSubcategories[], mode: 
 const PAGE_SIZE = 20;
 
 export default function CatalogView({ mode, title, subtitle, products, brands, categories, error }: Props) {
-  const searchParams = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
   const [sticky, setSticky] = useState(false);
   const [page, setPage] = useState(1);
+  const [ready, setReady] = useState(false);
   const sortBarRef = useRef<HTMLDivElement>(null);
 
   const [filters, setFilters] = useState<Filters>({
-    category: mode === 'all' ? searchParams.get('categoria') || '' : '',
-    subcategory: searchParams.get('subcategoria') || '',
-    brand: searchParams.get('marca') || '',
-    size: searchParams.get('talla') || '',
-    availability: searchParams.get('disponibilidad') || '',
-    minPrice: searchParams.get('minPrice') || '',
-    maxPrice: searchParams.get('maxPrice') || '',
-    sort: searchParams.get('sort') || 'newest',
-    search: searchParams.get('search') || '',
+    category: '',
+    subcategory: '',
+    brand: '',
+    size: '',
+    availability: '',
+    minPrice: '',
+    maxPrice: '',
+    sort: 'newest',
+    search: '',
   });
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setFilters({
+      category: mode === 'all' ? params.get('categoria') || '' : '',
+      subcategory: params.get('subcategoria') || '',
+      brand: params.get('marca') || '',
+      size: params.get('talla') || '',
+      availability: params.get('disponibilidad') || '',
+      minPrice: params.get('minPrice') || '',
+      maxPrice: params.get('maxPrice') || '',
+      sort: params.get('sort') || 'newest',
+      search: params.get('search') || '',
+    });
+    setReady(true);
+  }, [mode]);
 
   useEffect(() => {
     if (!sortBarRef.current) return;
@@ -214,6 +229,14 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
       </div>
     </div>
   );
+
+  if (!ready) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: BRAND_COLORS.background }}>
+        <div className="w-8 h-8 border-4 rounded-full border-t-transparent animate-spin" style={{ borderColor: BRAND_COLORS.primary, borderTopColor: 'transparent' }} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: mode === 'all' ? BRAND_COLORS.background : BRAND_COLORS.white }}>
