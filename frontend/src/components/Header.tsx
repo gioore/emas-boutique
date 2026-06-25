@@ -158,7 +158,7 @@ export default function Header() {
             </nav>
 
             <button
-              className="md:hidden p-2 relative z-50"
+              className="md:hidden p-2 relative z-[70]"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
             >
@@ -175,11 +175,11 @@ export default function Header() {
       </header>
 
       {menuOpen && (
-        <div className="fixed inset-0 z-40 md:hidden" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} onClick={() => setMenuOpen(false)} />
+        <div className="fixed inset-0 z-[55] md:hidden" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} onClick={() => setMenuOpen(false)} />
       )}
 
       {menuOpen && (
-        <div className="fixed top-0 left-0 h-full w-72 z-40 md:hidden shadow-2xl animate-slide-in-left" style={{ backgroundColor: BRAND_COLORS.background }}>
+        <div className="fixed top-0 left-0 h-full w-72 z-[60] md:hidden shadow-2xl animate-slide-in-left" style={{ backgroundColor: BRAND_COLORS.background }}>
           <div className="flex flex-col pt-20 px-6 h-full">
             <div className="flex items-center gap-3 mb-10 border-b pb-6" style={{ borderColor: '#e5e0d8' }}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: BRAND_COLORS.primary, color: BRAND_COLORS.white }}>
