@@ -27,7 +27,7 @@ export default function WhatsAppButton({ phone = SITE_CONFIG.whatsapp, message =
         <button
           onClick={scrollToTop}
           className="w-10 h-10 rounded-full shadow-lg hover:scale-110 transition-all duration-200 flex items-center justify-center"
-          style={{ backgroundColor: '#1c1917', color: '#ffffff' }}
+          style={{ backgroundColor: '#000000' , color: '#ffffff' }}
           aria-label="Volver arriba"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

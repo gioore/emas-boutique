@@ -4,7 +4,7 @@ import { SITE_CONFIG } from '@/lib/config';
 
 export default function Footer() {
   return (
-    <footer style={{ backgroundColor: '#1c1917', color: '#d6d3d1' }}>
+    <footer style={{ backgroundColor: '#000000', color: '#d6d3d1' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12">
           <div className="sm:col-span-2 lg:col-span-1 reveal visible">

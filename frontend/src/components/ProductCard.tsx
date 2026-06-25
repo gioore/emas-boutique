@@ -54,7 +54,7 @@ export default function ProductCard({ product }: Props) {
             </span>
           )}
           {!product.onSale && !product.newArrival && (
-            <span className="px-2.5 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: 'rgba(212,163,115,0.9)', color: '#ffffff' }}>
+            <span className="px-2.5 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: '#000000', color: '#ffffff' }}>
               100% Original
             </span>
           )}
@@ -75,7 +75,7 @@ export default function ProductCard({ product }: Props) {
         <span className="text-xs uppercase tracking-wider font-medium mt-1" style={{ color: BRAND_COLORS.textMuted }}>
           {product.subcat?.name || product.subcategory}
         </span>
-        <h3 className="text-sm font-semibold mt-1.5 leading-snug transition-colors duration-300 group-hover:text-[#d4a373]" style={{ color: '#1c1917' }}>
+        <h3 className="text-sm font-semibold mt-1.5 leading-snug transition-colors duration-300 group-hover:text-[#d4a373]" style={{ color: '#000000' }}>
           {product.name}
         </h3>
         {product.sizes && product.sizes.length > 0 && (
@@ -95,7 +95,7 @@ export default function ProductCard({ product }: Props) {
         <div className="mt-auto pt-3 flex items-center gap-2">
           {product.onSale && product.oldPrice ? (
             <>
-              <p className="text-base font-bold" style={{ color: '#991b1b' }}>
+              <p className="text-base font-bold" style={{ color: '#dc2626' }}>
                 Q{product.price.toFixed(2)}
               </p>
               <p className="text-sm line-through" style={{ color: BRAND_COLORS.textMuted }}>
@@ -103,7 +103,7 @@ export default function ProductCard({ product }: Props) {
               </p>
             </>
           ) : (
-            <p className="text-base font-bold" style={{ color: '#1c1917' }}>
+            <p className="text-base font-bold" style={{ color: '#000000' }}>
               Q{product.price.toFixed(2)}
             </p>
           )}

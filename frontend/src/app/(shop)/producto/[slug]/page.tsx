@@ -181,7 +181,7 @@ export default async function ProductoPage({ params }: Props) {
                   <p className="text-xl line-through" style={{ color: BRAND_COLORS.textMuted }}>
                     Q{product.oldPrice.toFixed(2)}
                   </p>
-                  <span className="px-2.5 py-1 text-xs font-bold rounded-full" style={{ backgroundColor: '#f5f0e8', color: '#991b1b' }}>
+                  <span className="px-2.5 py-1 text-xs font-bold rounded-full" style={{ backgroundColor: '#f5f5f5', color: '#991b1b' }}>
                     -{Math.round((1 - product.price / product.oldPrice) * 100)}%
                   </span>
                 </>
@@ -261,7 +261,7 @@ export default async function ProductoPage({ params }: Props) {
         </div>
 
         {relatedProducts.length > 0 && (
-          <div className="mt-20 pt-12 border-t" style={{ borderColor: '#e5e0d8' }}>
+          <div className="mt-20 pt-12 border-t" style={{ borderColor: '#e5e5e5' }}>
             <h2 className="text-2xl font-bold mb-8" style={{ color: BRAND_COLORS.text }}>Productos Relacionados</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
               {relatedProducts.map((rp) => (

@@ -84,7 +84,7 @@ function Toast({ message, visible }: { message: string; visible: boolean }) {
         visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
       }`}
     >
-      <div className="flex items-center gap-2 px-5 py-3 rounded-xl shadow-2xl text-sm font-medium" style={{ backgroundColor: '#1c1917', color: '#ffffff' }}>
+      <div className="flex items-center gap-2 px-5 py-3 rounded-xl shadow-2xl text-sm font-medium" style={{ backgroundColor: '#000000' , color: '#ffffff' }}>
         <svg className="w-5 h-5 shrink-0" style={{ color: '#4a7c59' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
         </svg>
@@ -152,7 +152,7 @@ export default function ProductBuyClient({ productId, productName, productPrice,
       <Toast message={toastMessage} visible={showToast} />
 
       {error && (
-        <div className="mb-4 px-4 py-2.5 rounded-lg text-sm font-medium" style={{ backgroundColor: '#fef2f2', color: '#991b1b', border: '1px solid #fecaca' }}>
+        <div className="mb-4 px-4 py-2.5 rounded-lg text-sm font-medium" style={{ backgroundColor: '#fef2f2' , color: '#dc2626', border: '1px solid #fecaca' }}>
           {error}
         </div>
       )}

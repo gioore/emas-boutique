@@ -4,12 +4,12 @@ import { SITE_CONFIG } from '@/lib/config';
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[600px] lg:min-h-[700px] h-[80vh] overflow-hidden" style={{ backgroundColor: '#1c1917' }}>
+    <section className="relative min-h-[600px] lg:min-h-[700px] h-[80vh] overflow-hidden" style={{ backgroundColor: '#000000' }}>
       {/* Gradient overlays */}
       <div
         className="absolute inset-0 z-10"
         style={{
-          background: 'linear-gradient(135deg, rgba(199,111,75,0.4) 0%, rgba(28,25,23,0.6) 40%, rgba(28,25,23,0.9) 70%, rgba(28,25,23,1) 100%)',
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.85) 70%, rgba(0,0,0,1) 100%)',
         }}
       />
 
@@ -18,11 +18,11 @@ export default function Hero() {
         <svg viewBox="0 0 1440 900" preserveAspectRatio="none" className="w-full h-full">
           <path
             d="M0 600 Q 360 400, 720 550 T 1440 500 V 900 H 0 Z"
-            fill="rgba(212,163,115,0.15)"
+            fill="rgba(255,255,255,0.08)"
           />
           <path
             d="M0 650 Q 360 500, 720 600 T 1440 550 V 900 H 0 Z"
-            fill="rgba(199,111,75,0.1)"
+            fill="rgba(255,255,255,0.05)"
           />
         </svg>
       </div>
@@ -30,7 +30,7 @@ export default function Hero() {
       {/* Subtle dot pattern */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 z-10 opacity-[0.07]"
+        className="absolute inset-0 z-10 opacity-[0.06]"
         style={{
           backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
           backgroundSize: '40px 40px',
@@ -39,28 +39,28 @@ export default function Hero() {
 
       {/* EB watermark */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 select-none pointer-events-none">
-        <span className="text-[clamp(12rem,25vw,25rem)] font-black tracking-tighter opacity-[0.03]" style={{ color: '#d4a373' }}>
+        <span className="text-[clamp(12rem,25vw,25rem)] font-black tracking-tighter opacity-[0.03]" style={{ color: '#ffffff' }}>
           EB
         </span>
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-[#1c1917] via-transparent to-transparent z-10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-transparent to-transparent z-10" />
 
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center scale-110"
         style={{
           backgroundImage: "url('/brand/hero-bg.svg')",
-          backgroundColor: '#292524',
-          opacity: 0.2,
+          backgroundColor: '#1a1a1a',
+          opacity: 0.15,
         }}
       />
 
       {/* Content */}
       <div className="relative z-20 flex flex-col items-center justify-center h-full text-center px-4">
         <div className="animate-fade-in-down">
-          <div className="w-16 h-0.5 mx-auto mb-6 animate-glow-gold" style={{ backgroundColor: '#d4a373' }} />
-          <span className="text-xs uppercase tracking-[0.4em] mb-6 font-medium block" style={{ color: '#d4a373' }}>
+          <div className="w-16 h-0.5 mx-auto mb-6" style={{ backgroundColor: 'rgba(255,255,255,0.6)' }} />
+          <span className="text-xs uppercase tracking-[0.4em] mb-6 font-medium block" style={{ color: 'rgba(255,255,255,0.6)' }}>
             Colección {new Date().getFullYear()}
           </span>
         </div>
@@ -71,12 +71,12 @@ export default function Hero() {
 
         <p
           className="text-lg sm:text-xl mb-3 max-w-lg drop-shadow-md animate-fade-in-up"
-          style={{ color: '#d4a373', fontWeight: 500, letterSpacing: '0.08em' }}
+          style={{ color: 'rgba(255,255,255,0.7)', fontWeight: 500, letterSpacing: '0.08em' }}
         >
           {SITE_CONFIG.heroSubtitle}
         </p>
 
-        <p className="text-base sm:text-lg mb-12 max-w-xl drop-shadow-md animate-fade-in-up" style={{ color: '#d6d3d1', lineHeight: 1.8 }}>
+        <p className="text-base sm:text-lg mb-12 max-w-xl drop-shadow-md animate-fade-in-up" style={{ color: 'rgba(255,255,255,0.5)', lineHeight: 1.8 }}>
           {SITE_CONFIG.heroDescription}
         </p>
 
@@ -84,20 +84,20 @@ export default function Hero() {
           <Link
             href="/mujer"
             className="group relative overflow-hidden px-10 py-4 font-semibold rounded-full transition-all duration-300 shadow-xl inline-flex items-center gap-2"
-            style={{ backgroundColor: '#d4a373', color: '#1c1917' }}
+            style={{ backgroundColor: '#ffffff', color: '#000000' }}
           >
             <span className="relative z-10">Ver Catálogo</span>
             <svg className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+            <div className="absolute inset-0 bg-black/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
           </Link>
           <a
             href={`https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(SITE_CONFIG.whatsappMessage)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="group px-10 py-4 font-semibold rounded-full transition-all duration-300 inline-flex items-center gap-2"
-            style={{ border: '2px solid rgba(255,255,255,0.8)', color: '#ffffff' }}
+            style={{ border: '2px solid rgba(255,255,255,0.6)', color: '#ffffff' }}
           >
             <WhatsAppIcon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
             Pedir por WhatsApp

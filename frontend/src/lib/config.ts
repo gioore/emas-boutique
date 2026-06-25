@@ -51,33 +51,33 @@ export const WHY_EMAS = [
 export const TESTIMONIALS = [
   {
     name: 'María F.',
-    text: 'Compré un vestido y llegó antes de lo esperado. La calidad es increíble, exactamente como se ve en las fotos. Volveré a comprar seguro.',
+    text: '#000000',
   },
   {
     name: 'Ana G.',
-    text: 'Me encanta que todo sea original. La atención por WhatsApp es súper rápida y resolvieron todas mis dudas. Recomendada.',
+    text: '#000000',
   },
   {
     name: 'Carlos M.',
-    text: 'Compré un reloj para regalo y quedaron fascinados. Producto original, bien empacado y el precio justo.',
+    text: '#000000',
   },
   {
     name: 'Sofía R.',
-    text: 'EMAS Boutique es mi tienda de confianza. Siempre encuentran lo que busco y los envíos llegan perfectos.',
+    text: '#000000',
   },
 ];
 
 export const BRAND_COLORS = {
   primary: '#d4a373',
-  secondary: '#18181b',
-  accent: '#c76f4b',
-  background: '#faf7f2',
-  backgroundAlt: '#f5f0e8',
-  text: '#1c1917',
-  textMuted: '#78716c',
+  secondary: '#000000',
+  accent: '#dc2626',
+  background: '#ffffff',
+  backgroundAlt: '#f5f5f5',
+  text: '#000000',
+  textMuted: '#666666',
   white: '#ffffff',
-  black: '#0c0a09',
+  black: '#000000',
   gold: '#d4a373',
-  terracotta: '#c76f4b',
-  border: '#e5e0d8',
+  terracotta: '#dc2626',
+  border: '#e5e5e5',
 };

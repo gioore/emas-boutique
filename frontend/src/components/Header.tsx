@@ -92,7 +92,7 @@ export default function Header() {
 
   return (
     <>
-      <div style={{ backgroundColor: '#292524' }}>
+      <div style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center h-8">
           <span className="text-[11px] tracking-wider font-medium" style={{ color: BRAND_COLORS.textMuted }}>
             Envíos a toda Guatemala{' '}
@@ -198,7 +198,7 @@ export default function Header() {
                     className="px-4 py-3 rounded-xl text-sm font-medium transition-all block"
                     style={{
                       backgroundColor: isActive(link.href) ? 'rgba(212,163,115,0.15)' : 'transparent',
-                      color: isActive(link.href) ? BRAND_COLORS.primary : BRAND_COLORS.textMuted,
+                      color: isActive(link.href) ? '#000000' : BRAND_COLORS.textMuted,
                     }}
                     onClick={() => setMenuOpen(false)}
                   >
