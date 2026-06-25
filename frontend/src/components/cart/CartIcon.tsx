@@ -10,7 +10,7 @@ export default function CartIcon() {
     <Link
       href="/carrito"
       className="flex items-center gap-1.5 text-sm font-medium transition-colors"
-      style={{ color: '#1c1917' }}
+      style={{ color: '#000000' }}
       aria-label={`Carrito de compras${totalItems > 0 ? ` (${totalItems} productos)` : ''}`}
     >
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

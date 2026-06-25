@@ -159,7 +159,7 @@ export default function ProductBuyClient({ productId, productName, productPrice,
 
       {colors.length > 0 && (
         <div className="mb-6">
-          <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: '#1c1917' }}>
+          <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: '#000000' }}>
             {selectedColor ? '1. Color seleccionado' : '1. Selecciona tu color'}
           </h3>
           <div className="flex flex-wrap gap-3">
@@ -177,7 +177,7 @@ export default function ProductBuyClient({ productId, productName, productPrice,
                     backgroundColor: hex,
                     borderColor: isSelected ? '#1c1917' : light ? '#d6d3d1' : 'transparent',
                     color: light ? '#1c1917' : '#ffffff',
-                    outline: isSelected ? '2px solid #1c1917' : 'none',
+                    outline: isSelected ? '2px solid #000000' : 'none',
                     outlineOffset: '2px',
                   }}
                   aria-label={`Color: ${color}${isSelected ? ' (seleccionado)' : ''}`}
@@ -201,7 +201,7 @@ export default function ProductBuyClient({ productId, productName, productPrice,
 
       {sizes.length > 0 && (
         <div className="mb-6">
-          <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: '#1c1917' }}>
+          <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: '#000000' }}>
             2. Selecciona tu talla
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -214,8 +214,8 @@ export default function ProductBuyClient({ productId, productName, productPrice,
                 aria-pressed={selectedSize === size}
                 style={{
                   borderColor: selectedSize === size ? '#1c1917' : '#d6d3d1',
-                  backgroundColor: selectedSize === size ? '#1c1917' : '#ffffff',
-                  color: selectedSize === size ? '#ffffff' : '#1c1917',
+                  backgroundColor: selectedSize === size ? '#000000' : '#ffffff',
+                  color: selectedSize === size ? '#ffffff' : '#000000',
                 }}
               >
                 {size}
@@ -230,7 +230,7 @@ export default function ProductBuyClient({ productId, productName, productPrice,
         <button
           onClick={handleAddToCart}
           className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 font-semibold rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 border-2"
-          style={{ borderColor: '#1c1917', color: '#1c1917', backgroundColor: '#ffffff' }}
+          style={{ borderColor: '#000000', color: '#000000', backgroundColor: '#ffffff' }}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -255,7 +255,7 @@ export default function ProductBuyClient({ productId, productName, productPrice,
           <button
             onClick={handleAddToCart}
             className="flex items-center justify-center gap-2 flex-1 py-3.5 font-semibold rounded-full border-2 transition-all active:scale-[0.98]"
-            style={{ borderColor: '#1c1917', color: '#1c1917', backgroundColor: '#ffffff' }}
+            style={{ borderColor: '#000000', color: '#000000', backgroundColor: '#ffffff' }}
           >
             <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />

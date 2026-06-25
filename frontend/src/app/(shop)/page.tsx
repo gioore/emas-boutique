@@ -271,7 +271,7 @@ export default async function Home() {
 
       {/* CTA */}
       <section className="relative py-16 sm:py-24 overflow-hidden" style={{ backgroundColor: BRAND_COLORS.backgroundAlt }}>
-        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, #1c1917 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, #000000 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="w-16 h-0.5 mx-auto mb-6" style={{ backgroundColor: BRAND_COLORS.gold }} />
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight" style={{ color: BRAND_COLORS.text }}>
