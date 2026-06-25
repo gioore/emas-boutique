@@ -17,7 +17,7 @@ interface Props {
 }
 
 const COLOR_MAP: Record<string, string> = {
-  negro: '#1c1917',
+  negro: '#000000',
   blanco: '#ffffff',
   rojo: '#dc2626',
   azul: '#2563eb',
@@ -175,8 +175,8 @@ export default function ProductBuyClient({ productId, productName, productPrice,
                   className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border cursor-pointer transition-all duration-200"
                   style={{
                     backgroundColor: hex,
-                    borderColor: isSelected ? '#1c1917' : light ? '#d6d3d1' : 'transparent',
-                    color: light ? '#1c1917' : '#ffffff',
+                    borderColor: isSelected ? '#000000' : light ? '#d6d3d1' : 'transparent',
+                    color: light ? '#000000' : '#ffffff',
                     outline: isSelected ? '2px solid #000000' : 'none',
                     outlineOffset: '2px',
                   }}
@@ -213,7 +213,7 @@ export default function ProductBuyClient({ productId, productName, productPrice,
                 aria-label={`Talla: ${size}${selectedSize === size ? ' (seleccionada)' : ''}`}
                 aria-pressed={selectedSize === size}
                 style={{
-                  borderColor: selectedSize === size ? '#1c1917' : '#d6d3d1',
+                  borderColor: selectedSize === size ? '#000000' : '#d6d3d1',
                   backgroundColor: selectedSize === size ? '#000000' : '#ffffff',
                   color: selectedSize === size ? '#ffffff' : '#000000',
                 }}
