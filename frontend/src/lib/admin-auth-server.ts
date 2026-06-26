@@ -48,28 +48,47 @@ export function verifyPassword(password: string, stored: string): boolean {
   return timingSafeEqual(Buffer.from(derived), Buffer.from(hash));
 }
 
-async function initAdminTable(): Promise<void> {
-  await execute(`CREATE TABLE IF NOT EXISTS admin_users (
+async function initUsersTable(): Promise<void> {
+  await execute(`CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(100) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'customer',
+    active BOOLEAN NOT NULL DEFAULT true,
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now()
   )`);
 }
 
+export async function migrateFromAdminUsers(): Promise<void> {
+  const tableExists = await queryOne<{ exists: boolean }>(
+    `SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'admin_users') as "exists"`
+  );
+  if (!tableExists?.exists) return;
+
+  await initUsersTable();
+  await execute(`
+    INSERT INTO users (username, password_hash, role, active, created_at, updated_at)
+    SELECT username, password_hash, 'admin', true, created_at, updated_at
+    FROM admin_users
+    ON CONFLICT (username) DO NOTHING
+  `);
+  await execute('DROP TABLE admin_users');
+}
+
 async function getAdminUser(username: string): Promise<{ id: number; username: string; password_hash: string } | null> {
   return queryOne<{ id: number; username: string; password_hash: string }>(
-    'SELECT id, username, password_hash FROM admin_users WHERE username = $1', [username]
+    'SELECT id, username, password_hash FROM users WHERE username = $1 AND role = $2', [username, 'admin']
   );
 }
 
 async function createAdminUser(username: string, password: string): Promise<void> {
-  await initAdminTable();
+  await initUsersTable();
   const hash = hashPassword(password);
   await execute(
-    'INSERT INTO admin_users (username, password_hash) VALUES ($1, $2) ON CONFLICT (username) DO UPDATE SET password_hash = $2, updated_at = now()',
-    [username, hash]
+    'INSERT INTO users (username, password_hash, role) VALUES ($1, $2, $3) ON CONFLICT (username) DO UPDATE SET password_hash = $2, role = $3, updated_at = now()',
+    [username, hash, 'admin']
   );
 }
 
@@ -78,12 +97,18 @@ export async function changeAdminPassword(username: string, currentPassword: str
   if (!user) return { success: false, error: 'Usuario no encontrado' };
   if (!verifyPassword(currentPassword, user.password_hash)) return { success: false, error: 'Contraseña actual incorrecta' };
   const hash = hashPassword(newPassword);
-  await execute('UPDATE admin_users SET password_hash = $1, updated_at = now() WHERE id = $2', [hash, user.id]);
+  await execute('UPDATE users SET password_hash = $1, updated_at = now() WHERE id = $2', [hash, user.id]);
   return { success: true };
 }
 
+let migrated = false;
+
 export async function validateCredentials(username: string, password: string): Promise<boolean> {
-  await initAdminTable();
+  await initUsersTable();
+  if (!migrated) {
+    await migrateFromAdminUsers();
+    migrated = true;
+  }
   const user = await getAdminUser(username);
   if (user) return verifyPassword(password, user.password_hash);
   if (ENV_USERNAME && ENV_PASSWORD && safeEqual(username, ENV_USERNAME) && safeEqual(password, ENV_PASSWORD)) {
