@@ -13,18 +13,6 @@ import ProductImageGallery from '@/components/ProductImageGallery';
 import ScrollToTopOnMount from '@/components/ScrollToTopOnMount';
 import type { Product } from '@/types/product';
 
-function sanitizeHtml(html: string): string {
-  return html
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
-    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
-    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '')
-    .replace(/ on\w+="[^"]*"/gi, '')
-    .replace(/ on\w+='[^']*'/gi, '')
-    .replace(/href="javascript:[^"]*"/gi, 'href="#"')
-    .replace(/href='javascript:[^']*'/gi, "href='#'");
-}
-
 const AVAILABILITY_LABELS: Record<string, string> = {
   available: 'Disponible',
   low_stock: 'Últimas unidades',
@@ -45,26 +33,24 @@ interface Props {
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  try {
-    const { data: product } = await getProduct(slug);
-    const images = product.images?.[0] ? [getImageUrl(product.images[0])] : [];
-    const description = product.description?.replace(/<[^>]*>/g, '').slice(0, 160) || `Compra ${product.name} por Q${product.price.toFixed(2)}`;
-    return {
+  const result = await getProduct(slug).catch(() => null);
+  if (!result) notFound();
+  const product = result.data;
+  const images = product.images?.[0] ? [getImageUrl(product.images[0])] : [];
+  const description = product.description?.replace(/<[^>]*>/g, '').slice(0, 160) || `Compra ${product.name} por Q${product.price.toFixed(2)}`;
+  return {
+    title: `${product.name} - ${SITE_CONFIG.name}`,
+    description,
+    openGraph: {
       title: `${product.name} - ${SITE_CONFIG.name}`,
       description,
-      openGraph: {
-        title: `${product.name} - ${SITE_CONFIG.name}`,
-        description,
-        url: `${SITE_URL}/producto/${slug}`,
-        images: images.length > 0 ? [{ url: images[0], width: 1200, height: 1600, alt: product.name }] : [],
-        locale: 'es_GT',
-        siteName: SITE_CONFIG.name,
-        type: 'website',
-      },
-    };
-  } catch {
-    return { title: `Producto no encontrado - ${SITE_CONFIG.name}` };
-  }
+      url: `${SITE_URL}/producto/${slug}`,
+      images: images.length > 0 ? [{ url: images[0], width: 1200, height: 1600, alt: product.name }] : [],
+      locale: 'es_GT',
+      siteName: SITE_CONFIG.name,
+      type: 'website',
+    },
+  };
 }
 
 async function fetchRelated(product: Product): Promise<Product[]> {
@@ -91,14 +77,9 @@ async function fetchRelated(product: Product): Promise<Product[]> {
 export default async function ProductoPage({ params }: Props) {
   const { slug } = await params;
 
-  let product: Product;
-  try {
-    const result = await getProduct(slug);
-    product = result.data;
-  } catch (err) {
-    if (err instanceof Error && err.message === 'Product not found') notFound();
-    throw err;
-  }
+  const result = await getProduct(slug).catch(() => null);
+  if (!result) notFound();
+  const product = result.data;
 
   const relatedProducts = await fetchRelated(product);
   const colors: string[] = Array.isArray(product.colors) ? product.colors : [];
@@ -224,10 +205,11 @@ export default async function ProductoPage({ params }: Props) {
                   Descripción
                 </h3>
                 <div
-                  className="text-sm leading-relaxed prose prose-sm max-w-none"
+                  className="text-sm leading-relaxed whitespace-pre-line"
                   style={{ color: BRAND_COLORS.textMuted }}
-                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.description) }}
-                />
+                >
+                  {product.description}
+                </div>
               </div>
             )}
 

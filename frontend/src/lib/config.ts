@@ -51,19 +51,19 @@ export const WHY_EMAS = [
 export const TESTIMONIALS = [
   {
     name: 'María F.',
-    text: '#000000',
+    text: 'Compré un vestido y me encantó. La calidad es increíble y el envío fue muy rápido. 100% recomendado.',
   },
   {
     name: 'Ana G.',
-    text: '#000000',
+    text: 'Atención excelente. Me asesoraron por WhatsApp para elegir la talla correcta y quedó perfecta. Volveré a comprar.',
   },
   {
     name: 'Carlos M.',
-    text: '#000000',
+    text: 'Compré una camisa formal y llegó antes de lo esperado. Producto original y bien empacado. Muy satisfecho.',
   },
   {
     name: 'Sofía R.',
-    text: '#000000',
+    text: 'Los accesorios son hermosos y de buena calidad. El precio es justo por la calidad que ofrecen. Recomiendo esta tienda.',
   },
 ];
 

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/admin-auth-server';
+import { handleApiError } from '@/lib/api-utils';
 
 export async function GET() {
   try {
@@ -8,7 +9,7 @@ export async function GET() {
       return NextResponse.json({ authenticated: false }, { status: 401 });
     }
     return NextResponse.json({ authenticated: true, username: session.username });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (err) {
+    return handleApiError(err);
   }
 }

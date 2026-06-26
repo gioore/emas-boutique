@@ -50,6 +50,16 @@ export interface FormattedProduct {
   brand: { id: number; name?: string; slug?: string | null } | null;
 }
 
+export function formatBrand(b: any): { id: number; name: string; slug: string; logo: { url: string } | null; active: boolean } {
+  return {
+    id: b.id,
+    name: b.name,
+    slug: b.slug,
+    logo: b.logo_url ? { url: b.logo_url } : null,
+    active: b.active ?? true,
+  };
+}
+
 export function formatProduct(p: ProductRow | null | undefined): FormattedProduct | null {
   if (!p) return null;
   let images: FormattedImage[] = [];

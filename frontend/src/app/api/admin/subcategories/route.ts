@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidateTag } from 'next/cache';
 import { requireAuth } from '@/lib/admin-auth-server';
 import { query, queryOne } from '@/lib/db';
-import { syncSequence } from '@/lib/product-utils';
+import { slugify, ensureUniqueSlug, syncSequence } from '@/lib/product-utils';
+import { handleApiError } from '@/lib/api-utils';
 
 export async function GET() {
   try {
     await requireAuth();
     const rows = await query('SELECT s.*, c.name as category_name FROM subcategories s LEFT JOIN categories c ON c.id = s.category_id ORDER BY s."order"');
     return NextResponse.json({ data: rows });
-  } catch (err: any) {
-    if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (err) {
+    return handleApiError(err);
   }
 }
 
@@ -27,20 +28,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Debes seleccionar una categoría' }, { status: 400 });
     }
 
-    let slug = data.slug || data.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-    const existing = await queryOne('SELECT id FROM subcategories WHERE slug = $1', [slug]);
-    if (existing) {
-      const count = await queryOne<{ n: number }>('SELECT COUNT(*) as n FROM subcategories WHERE slug LIKE $1', [`${slug}-%`]);
-      slug = `${slug}-${(count?.n ?? 0) + 1}`;
-    }
+    const slug = data.slug || slugify(data.name);
+    const uniqueSlug = await ensureUniqueSlug(slug, 'subcategories');
     await syncSequence('subcategories');
     const result = await queryOne<{ id: number }>(
       'INSERT INTO subcategories (name, slug, description, active, "order", category_id) VALUES ($1,$2,$3,$4,$5,$6) RETURNING id',
-      [data.name.trim(), slug, data.description || '', data.active ?? true, data.order ?? 0, data.category_id]
+      [data.name.trim(), uniqueSlug, data.description || '', data.active ?? true, data.order ?? 0, data.category_id]
     );
-    return NextResponse.json({ data: { id: result?.id, ...data, slug } }, { status: 201 });
-  } catch (err: any) {
-    if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    revalidateTag('catalog', 'max');
+    return NextResponse.json({ data: { id: result?.id, ...data, slug: uniqueSlug } }, { status: 201 });
+  } catch (err) {
+    return handleApiError(err);
   }
 }

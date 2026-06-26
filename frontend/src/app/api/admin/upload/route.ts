@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/admin-auth-server';
+import { handleApiError } from '@/lib/api-utils';
 import { createHash } from 'crypto';
 
 const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || '';
@@ -100,11 +101,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(results, { status: 201 });
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'Error al subir imagenes';
-    if (message === 'No autorizado') {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-    }
-    return NextResponse.json({ error: message }, { status: 500 });
+  } catch (err) {
+    return handleApiError(err);
   }
 }

@@ -2,13 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidateTag } from 'next/cache';
 import { requireAuth } from '@/lib/admin-auth-server';
 import { query, queryOne } from '@/lib/db';
-import { validateProductBody, ensureUniqueSlug, syncSequence } from '@/lib/product-utils';
-
-function parseImages(p: any): any[] {
-  if (Array.isArray(p.images)) return p.images;
-  if (typeof p.images === 'string') try { return JSON.parse(p.images); } catch { return []; }
-  return [];
-}
+import { slugify, validateProductBody, ensureUniqueSlug, syncSequence, parseImages } from '@/lib/product-utils';
+import { handleApiError } from '@/lib/api-utils';
 
 export async function GET() {
   try {
@@ -28,9 +23,8 @@ export async function GET() {
       old_price: p.old_price ? Number(p.old_price) : null,
     }));
     return NextResponse.json({ data: mapped });
-  } catch (err: any) {
-    if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (err) {
+    return handleApiError(err);
   }
 }
 
@@ -43,8 +37,8 @@ export async function POST(request: NextRequest) {
     const validationError = validateProductBody(data);
     if (validationError) return NextResponse.json({ error: validationError }, { status: 400 });
 
-    const slug = data.slug || data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    const uniqueSlug = await ensureUniqueSlug(slug);
+    const slug = data.slug || slugify(data.name);
+    const uniqueSlug = await ensureUniqueSlug(slug, 'products');
 
     await syncSequence('products');
 
@@ -64,8 +58,7 @@ export async function POST(request: NextRequest) {
 
     revalidateTag('catalog', 'max');
     return NextResponse.json({ data: { id: result?.id, ...data, slug: uniqueSlug } }, { status: 201 });
-  } catch (err: any) {
-    if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (err) {
+    return handleApiError(err);
   }
 }

@@ -1,16 +1,6 @@
 import { query, queryOne } from './db';
-import { formatProduct } from './format-product';
+import { formatProduct, formatBrand } from './format-product';
 import type { ProductRow } from './format-product';
-
-function formatBrand(b: any) {
-  return {
-    id: b.id,
-    name: b.name,
-    slug: b.slug,
-    logo: b.logo_url ? { url: b.logo_url } : null,
-    active: b.active ?? true,
-  };
-}
 
 export async function getProduct(slug: string) {
   const p = await queryOne<ProductRow>(`

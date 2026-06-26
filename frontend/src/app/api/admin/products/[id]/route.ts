@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidateTag } from 'next/cache';
 import { requireAuth } from '@/lib/admin-auth-server';
 import { queryOne, execute } from '@/lib/db';
-import { validateProductBody, ensureUniqueSlug } from '@/lib/product-utils';
+import { slugify, validateProductBody, ensureUniqueSlug, parseImages } from '@/lib/product-utils';
+import { handleApiError } from '@/lib/api-utils';
 import { createHash } from 'crypto';
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -18,14 +19,10 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
       WHERE p.id = $1
     `, [id]);
     if (!row) return NextResponse.json({ error: 'Producto no encontrado' }, { status: 404 });
-    let images: any[] = [];
-    if (Array.isArray(row.images)) images = row.images;
-    else if (typeof row.images === 'string') try { images = JSON.parse(row.images); } catch {}
-    const mapped = { ...row, images, price: Number(row.price), old_price: row.old_price ? Number(row.old_price) : null };
+    const mapped = { ...row, images: parseImages(row), price: Number(row.price), old_price: row.old_price ? Number(row.old_price) : null };
     return NextResponse.json({ data: mapped });
-  } catch (err: any) {
-    if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (err) {
+    return handleApiError(err);
   }
 }
 
@@ -39,8 +36,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const validationError = validateProductBody(data, true);
     if (validationError) return NextResponse.json({ error: validationError }, { status: 400 });
 
-    const slug = data.slug || data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    const uniqueSlug = await ensureUniqueSlug(slug, Number(id));
+    const slug = data.slug || slugify(data.name);
+    const uniqueSlug = await ensureUniqueSlug(slug, 'products', Number(id));
 
     await execute(`
       UPDATE products SET name=$1, slug=$2, price=$3, old_price=$4, category=$5, subcategory=$6,
@@ -59,9 +56,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
     revalidateTag('catalog', 'max');
     return NextResponse.json({ data: { id: Number(id), ...data, slug: uniqueSlug } });
-  } catch (err: any) {
-    if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (err) {
+    return handleApiError(err);
   }
 }
 
@@ -99,8 +95,7 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
     await execute('DELETE FROM products WHERE id = $1', [id]);
     revalidateTag('catalog', 'max');
     return NextResponse.json({ data: null });
-  } catch (err: any) {
-    if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (err) {
+    return handleApiError(err);
   }
 }

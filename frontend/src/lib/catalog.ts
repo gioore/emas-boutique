@@ -1,20 +1,10 @@
 import type { Brand, Category, Product, Subcategory } from '@/types/product';
 import { query } from './db';
-import { formatProduct } from './format-product';
+import { formatProduct, formatBrand } from './format-product';
 import type { ProductRow } from './format-product';
 
 export type CatalogSection = 'all' | 'mujer' | 'hombre';
 export type CategoryWithSubcategories = Category & { subcategories?: Subcategory[] };
-
-function formatBrand(b: any): Brand {
-  return {
-    id: b.id,
-    name: b.name,
-    slug: b.slug,
-    logo: b.logo_url ? { url: b.logo_url } : null,
-    active: b.active ?? true,
-  };
-}
 
 function formatCategory(c: any): CategoryWithSubcategories {
   return {

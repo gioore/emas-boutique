@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import { logError } from './logger';
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -9,7 +10,7 @@ const pool = new Pool({
 });
 
 pool.on('error', (err) => {
-  console.error('Unexpected error on idle client', err);
+  logError('DB Pool', err);
 });
 
 export async function query<T extends Record<string, unknown>>(text: string, params?: unknown[]): Promise<T[]> {
@@ -17,6 +18,9 @@ export async function query<T extends Record<string, unknown>>(text: string, par
   try {
     const result = await client.query(text, params);
     return result.rows as T[];
+  } catch (err) {
+    logError('DB query', err);
+    throw err;
   } finally {
     client.release();
   }
@@ -31,6 +35,9 @@ export async function execute(text: string, params?: unknown[]): Promise<void> {
   const client = await pool.connect();
   try {
     await client.query(text, params);
+  } catch (err) {
+    logError('DB execute', err);
+    throw err;
   } finally {
     client.release();
   }

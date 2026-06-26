@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidateTag } from 'next/cache';
 import { requireAuth } from '@/lib/admin-auth-server';
 import { execute, queryOne } from '@/lib/db';
+import { slugify } from '@/lib/product-utils';
+import { handleApiError } from '@/lib/api-utils';
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -9,9 +12,8 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
     const row = await queryOne('SELECT * FROM brands WHERE id = $1', [id]);
     if (!row) return NextResponse.json({ error: 'Marca no encontrada' }, { status: 404 });
     return NextResponse.json({ data: row });
-  } catch (err: any) {
-    if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (err) {
+    return handleApiError(err);
   }
 }
 
@@ -26,15 +28,15 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ error: 'El nombre de la marca es requerido' }, { status: 400 });
     }
 
-    const slug = data.slug || data.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    const slug = data.slug || slugify(data.name);
     await execute(
       'UPDATE brands SET name=$1, slug=$2, logo_url=$3, active=$4, updated_at=now() WHERE id=$5',
       [data.name.trim(), slug, data.logo_url || null, data.active ?? true, id]
     );
+    revalidateTag('catalog', 'max');
     return NextResponse.json({ data: { id: Number(id), ...data, slug } });
-  } catch (err: any) {
-    if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (err) {
+    return handleApiError(err);
   }
 }
 
@@ -47,9 +49,9 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
       return NextResponse.json({ error: `No se puede eliminar: ${refs.count} producto(s) usan esta marca` }, { status: 409 });
     }
     await execute('DELETE FROM brands WHERE id = $1', [id]);
+    revalidateTag('catalog', 'max');
     return NextResponse.json({ data: null });
-  } catch (err: any) {
-    if (err.message === 'No autorizado') return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (err) {
+    return handleApiError(err);
   }
 }
