@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { SITE_CONFIG, BRAND_COLORS } from '@/lib/config';
@@ -109,11 +110,14 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center gap-3 group">
-              <div
-                className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 group-hover:shadow-lg"
-                style={{ backgroundColor: BRAND_COLORS.black, color: BRAND_COLORS.white }}
-              >
-                EB
+              <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center transition-all duration-300 group-hover:shadow-lg">
+                <Image
+                  src="/brand/logo-header.jpg"
+                  alt={SITE_CONFIG.name}
+                  width={40}
+                  height={40}
+                  className="object-cover w-full h-full"
+                />
               </div>
               <span className="text-lg font-bold tracking-tight" style={{ color: BRAND_COLORS.text }}>
                 {SITE_CONFIG.name}
@@ -181,8 +185,14 @@ export default function Header() {
         <div className="fixed top-0 left-0 h-full w-72 z-[60] md:hidden shadow-2xl animate-slide-in-left" style={{ backgroundColor: BRAND_COLORS.background }}>
           <div className="flex flex-col pt-20 px-6 h-full">
             <div className="flex items-center gap-3 mb-10 border-b pb-6" style={{ borderColor: '#e5e5e5' }}>
-              <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: BRAND_COLORS.black, color: BRAND_COLORS.white }}>
-                EB
+              <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center">
+                <Image
+                  src="/brand/logo-header.jpg"
+                  alt={SITE_CONFIG.name}
+                  width={48}
+                  height={48}
+                  className="object-cover w-full h-full"
+                />
               </div>
               <div>
                 <p className="font-bold text-sm" style={{ color: BRAND_COLORS.text }}>{SITE_CONFIG.name}</p>

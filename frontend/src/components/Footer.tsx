@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import WhatsAppIcon from '@/components/WhatsAppIcon';
 import { SITE_CONFIG } from '@/lib/config';
 
@@ -9,8 +10,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12">
           <div className="sm:col-span-2 lg:col-span-1 reveal visible">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold" style={{ backgroundColor: '#000000', color: '#ffffff' }}>
-                EB
+              <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center">
+                <Image
+                  src="/brand/logo-footer.jpg"
+                  alt={SITE_CONFIG.name}
+                  width={40}
+                  height={40}
+                  className="object-cover w-full h-full"
+                />
               </div>
               <h3 className="text-white font-bold text-xl tracking-tight">{SITE_CONFIG.name}</h3>
             </div>

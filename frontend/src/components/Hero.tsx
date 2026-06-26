@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import WhatsAppIcon from '@/components/WhatsAppIcon';
 import { SITE_CONFIG } from '@/lib/config';
 
@@ -37,11 +38,15 @@ export default function Hero() {
         }}
       />
 
-      {/* EB watermark */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 select-none pointer-events-none">
-        <span className="text-[clamp(12rem,25vw,25rem)] font-black tracking-tighter opacity-[0.03]" style={{ color: '#ffffff' }}>
-          EB
-        </span>
+      {/* Logo watermark */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 select-none pointer-events-none w-[clamp(12rem,25vw,25rem)] h-[clamp(12rem,25vw,25rem)] opacity-[0.06]">
+        <Image
+          src="/brand/logo-header.jpg"
+          alt=""
+          width={400}
+          height={400}
+          className="object-contain w-full h-full"
+        />
       </div>
 
       <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-transparent to-transparent z-10" />
