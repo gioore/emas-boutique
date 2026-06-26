@@ -96,8 +96,8 @@ export default function AdminSidebar() {
         style={{ backgroundColor: '#1c1917', color: '#ffffff' }}
       >
         <div className="p-6 border-b flex items-center gap-3" style={{ borderColor: '#292524' }}>
-          <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold" style={{ backgroundColor: '#d4a373', color: '#1c1917' }}>
-            EB
+          <div className="w-9 h-9 rounded-full overflow-hidden" style={{ backgroundColor: '#d4a373' }}>
+            <img src="/brand/logo-header.jpg" alt="EMAS Boutique" className="w-full h-full object-cover" />
           </div>
           <div>
             <Link href="/admin" className="text-sm font-bold tracking-tight block">

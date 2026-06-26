@@ -40,8 +40,8 @@ export default function AdminLoginPage() {
     <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: '#faf7f2' }}>
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-4" style={{ backgroundColor: '#1c1917', color: '#ffffff' }}>
-            EB
+          <div className="w-14 h-14 rounded-full overflow-hidden mx-auto mb-4" style={{ backgroundColor: '#1c1917' }}>
+            <img src="/brand/logo-header.jpg" alt="EMAS Boutique" className="w-full h-full object-cover" />
           </div>
           <h1 className="text-2xl font-bold" style={{ color: '#1c1917' }}>EMAS Boutique Admin</h1>
           <p className="mt-1" style={{ color: '#78716c' }}>Inicia sesión para administrar</p>
