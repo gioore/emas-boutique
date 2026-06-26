@@ -69,11 +69,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/cambios-devoluciones" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#78716c' }}>
-                  Cambios y Devoluciones
-                </Link>
-              </li>
-              <li>
                 <Link href="/medios-de-pago" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#78716c' }}>
                   Medios de Pago
                 </Link>

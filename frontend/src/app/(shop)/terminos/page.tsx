@@ -79,30 +79,21 @@ la mayor precisión posible.
             para más información.
           </p>
 
-          <h2 className="text-2xl font-bold mt-10">8. Cambios y Devoluciones</h2>
-          <p>
-            Aceptamos cambios y devoluciones bajo los términos descritos en nuestra{' '}
-            <Link href="/cambios-devoluciones" className="font-semibold underline" style={{ color: BRAND_COLORS.secondary }}>
-              política de cambios y devoluciones
-            </Link>
-            .
-          </p>
-
-          <h2 className="text-2xl font-bold mt-10">9. Propiedad Intelectual</h2>
+          <h2 className="text-2xl font-bold mt-10">8. Propiedad Intelectual</h2>
           <p>
             Todas las marcas, logotipos y nombres de productos mencionados son propiedad
             de sus respectivos dueños. EMAS Boutique no reclama derechos de propiedad
             intelectual sobre las marcas que comercializa.
           </p>
 
-          <h2 className="text-2xl font-bold mt-10">10. Limitación de Responsabilidad</h2>
+          <h2 className="text-2xl font-bold mt-10">9. Limitación de Responsabilidad</h2>
           <p>
             EMAS Boutique no se hace responsable por daños indirectos, pérdida de lucro
             o inconvenientes derivados del uso de los productos adquiridos. Nuestra
             responsabilidad se limita al valor del producto adquirido.
           </p>
 
-          <h2 className="text-2xl font-bold mt-10">11. Ley Aplicable</h2>
+          <h2 className="text-2xl font-bold mt-10">10. Ley Aplicable</h2>
           <p>
             Estos términos se rigen por las leyes de la República de Guatemala. Cualquier
             controversia será sometida a la jurisdicción de los tribunales de la Ciudad de

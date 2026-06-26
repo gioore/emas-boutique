@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: `Envíos - ${SITE_CONFIG.name}`,
-  description: 'Información sobre envíos de EMAS Boutique a toda Guatemala. Conoce tiempos de entrega, costos y cobertura.',
+  description: 'Información sobre envíos de EMAS Boutique a todos los departamentos de Guatemala por medio de nuestra empresa de logística.',
 };
 
 export default function EnviosPage() {
@@ -14,62 +14,38 @@ export default function EnviosPage() {
           <span className="text-xs uppercase tracking-[0.3em] font-medium" style={{ color: BRAND_COLORS.textMuted }}>
             {SITE_CONFIG.name}
           </span>
-          <h1 className="text-4xl font-bold mt-2" style={{ color: BRAND_COLORS.text }}>Política de Envíos</h1>
+          <h1 className="text-4xl font-bold mt-2" style={{ color: BRAND_COLORS.text }}>Envíos</h1>
         </div>
       </div>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="prose prose-lg max-w-none" style={{ color: BRAND_COLORS.text }}>
           <p className="text-xl leading-relaxed" style={{ color: BRAND_COLORS.textMuted }}>
-            En EMAS Boutique realizamos entregas en la Ciudad de Guatemala y envíos a todo el país.
+            Realizamos envíos a todos los departamentos de Guatemala por medio de una empresa de logística.
           </p>
           <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />
 
-          <h2 className="text-2xl font-bold mt-10">Áreas de Entrega</h2>
+          <h2 className="text-2xl font-bold mt-10">Cobertura</h2>
           <p>
-            Cubrimos toda la República de Guatemala. Las entregas presenciales se coordinan
-            en puntos acordados dentro de la Ciudad de Guatemala y áreas metropolitanas.
-            Para el interior del país, realizamos envíos a través de agencias de encomiendas
-            con cobertura nacional.
+            Cubrimos los 22 departamentos de Guatemala. Trabajamos con una empresa de logística
+            confiable que garantiza la entrega de tu pedido en cualquier destino del país.
           </p>
 
           <h2 className="text-2xl font-bold mt-10">Tiempos de Entrega</h2>
-          <ul>
-            <li>
-              <strong>Ciudad de Guatemala:</strong> Entrega el mismo día o al día siguiente,
-              dependiendo de la hora de confirmación del pedido (antes de las 3:00 PM).
-            </li>
-            <li>
-              <strong>Interior del país:</strong> De 2 a 5 días hábiles, según el destino
-              y la agencia de encomiendas seleccionada.
-            </li>
-            <li>
-              <strong>Bajo pedido (pre-order):</strong> Los productos bajo pedido pueden
-              tener tiempos de entrega de 1 a 3 semanas. Te informaremos el tiempo estimado
-              antes de confirmar tu compra.
-            </li>
-          </ul>
+          <p>
+            El tiempo de entrega varía según el departamento y la ubicación exacta. Al confirmar
+            tu pedido te daremos una estimación precisa del tiempo de llegada.
+          </p>
 
           <h2 className="text-2xl font-bold mt-10">Costos de Envío</h2>
           <p>
-            El costo de envío varía según el peso, tamaño del paquete y destino. Te
-            proporcionaremos el costo exacto antes de confirmar tu pedido. En algunos
-            casos, ofrecemos envío gratis en compras mayores a Q500.00 (válido para
-            entregas en Ciudad de Guatemala).
+            El costo de envío depende del destino y del peso del paquete. Te proporcionaremos
+            el costo exacto antes de confirmar tu pedido.
           </p>
 
           <h2 className="text-2xl font-bold mt-10">Seguimiento de Pedidos</h2>
           <p>
             Una vez realizado tu pedido, te enviaremos un número de seguimiento por
-            WhatsApp para que puedas monitorear el estado de tu entrega. También puedes
-            contactarnos directamente para conocer el estatus de tu pedido.
-          </p>
-
-          <h2 className="text-2xl font-bold mt-10">Empaque</h2>
-          <p>
-            Todos nuestros productos son empacados cuidadosamente para garantizar que
-            lleguen en perfectas condiciones. Utilizamos empaques protectores y bolsas
-            selladas. Si el producto presenta daños durante el transporte, contáctanos
-            de inmediato para resolverlo.
+            WhatsApp para que puedas monitorear el estado de tu entrega.
           </p>
 
           <div className="w-16 h-0.5 my-8" style={{ backgroundColor: BRAND_COLORS.text }} />

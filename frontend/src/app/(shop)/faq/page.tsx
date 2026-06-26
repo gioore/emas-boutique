@@ -27,11 +27,6 @@ const faqs = [
       'Los envíos tienen un costo que varía según el destino y el peso del paquete. Consulta nuestra página de envíos para más detalles o escríbenos por WhatsApp para una cotización precisa.',
   },
   {
-    question: '¿Puedo cambiar o devolver un producto?',
-    answer:
-      'Sí, aceptamos cambios y devoluciones en caso de productos defectuosos o talla incorrecta, dentro de los primeros 3 días posteriores a la entrega. El producto debe estar sin uso, con etiquetas y en su empaque original. Consulta nuestra política completa en la página de Cambios y Devoluciones.',
-  },
-  {
     question: '¿Cómo sé qué talla elegir?',
     answer:
       'Contamos con una guía de tallas disponible en nuestra página. Sin embargo, las tallas pueden variar según la marca. Te recomendamos tomarte las medidas y consultarnos por WhatsApp para recomendarte la talla adecuada.',
