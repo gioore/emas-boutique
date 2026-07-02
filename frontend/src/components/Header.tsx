@@ -112,7 +112,7 @@ export default function Header() {
             <Link href="/" className="flex items-center gap-3 group">
               <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center transition-all duration-300 group-hover:shadow-lg">
                 <Image
-                  src="/brand/logo-header.jpg"
+                  src="/brand/logo-header.webp"
                   alt={SITE_CONFIG.name}
                   width={40}
                   height={40}
@@ -187,7 +187,7 @@ export default function Header() {
             <div className="flex items-center gap-3 mb-10 border-b pb-6" style={{ borderColor: '#e5e5e5' }}>
               <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center">
                 <Image
-                  src="/brand/logo-header.jpg"
+                  src="/brand/logo-header.webp"
                   alt={SITE_CONFIG.name}
                   width={48}
                   height={48}

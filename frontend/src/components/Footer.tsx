@@ -12,7 +12,7 @@ export default function Footer() {
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center">
                 <Image
-                  src="/brand/logo-footer.jpg"
+                  src="/brand/logo-footer.webp"
                   alt={SITE_CONFIG.name}
                   width={40}
                   height={40}
