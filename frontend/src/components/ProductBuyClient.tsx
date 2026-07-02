@@ -229,7 +229,7 @@ export default function ProductBuyClient({ productId, productName, productPrice,
       <div className="hidden sm:flex items-center gap-3 pt-6 border-t" style={{ borderColor: '#e5e5e5' }}>
         <button
           onClick={handleAddToCart}
-          className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 font-semibold rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 border-2"
+          className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 font-semibold rounded-full active:scale-[0.98] transition-all duration-200 border-2"
           style={{ borderColor: '#000000', color: '#000000', backgroundColor: '#ffffff' }}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -241,7 +241,7 @@ export default function ProductBuyClient({ productId, productName, productPrice,
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-10 py-4 text-white font-semibold rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-lg"
+          className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-10 py-4 text-white font-semibold rounded-full active:scale-[0.98] transition-all duration-200 shadow-lg"
           style={{ backgroundColor: '#25D366' }}
         >
           <WhatsAppIcon className="w-5 h-5" />

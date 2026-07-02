@@ -110,16 +110,17 @@ export default async function ProductoPage({ params }: Props) {
         <nav className="mb-8">
           <ol className="flex items-center gap-2 text-sm" style={{ color: BRAND_COLORS.textMuted }}>
             <li>
-              <Link href="/" className="hover:text-black transition-colors">Inicio</Link>
+              <Link href="/" scroll={false} className="hover:text-black transition-colors">Inicio</Link>
             </li>
             <li>/</li>
             <li>
-              <Link href="/catalogo" className="hover:text-black transition-colors">Catálogo</Link>
+              <Link href="/catalogo" scroll={false} className="hover:text-black transition-colors">Catálogo</Link>
             </li>
             <li>/</li>
             <li>
               <Link
                 href={product.cat?.name?.toLowerCase() === 'mujer' ? '/mujer' : product.cat?.name?.toLowerCase() === 'hombre' ? '/hombre' : '#'}
+                scroll={false}
                 className="hover:text-black transition-colors capitalize"
               >
                 {product.cat?.name || product.category}

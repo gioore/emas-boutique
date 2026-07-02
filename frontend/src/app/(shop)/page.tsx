@@ -23,7 +23,8 @@ function ViewAllLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className="inline-flex px-8 py-3 text-sm font-semibold rounded-full transition-all hover:scale-105"
+      scroll={false}
+      className="inline-flex px-8 py-3 text-sm font-semibold rounded-full transition-all"
       style={{ border: `2px solid ${BRAND_COLORS.text}`, color: BRAND_COLORS.text }}
     >
       {label}
@@ -105,11 +106,12 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <Link
               href="/mujer"
+              scroll={false}
               className="relative h-[450px] rounded-2xl overflow-hidden group block shadow-lg hover:shadow-2xl transition-shadow duration-500"
             >
               <div className="absolute inset-0 z-10" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)' }} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
-              <div className="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700" style={{ backgroundImage: "url('/brand/mujer-hero.svg')", backgroundColor: BRAND_COLORS.backgroundAlt }} />
+              <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700" style={{ backgroundImage: "url('/brand/mujer-hero.svg')", backgroundColor: BRAND_COLORS.backgroundAlt }} />
               <div className="absolute bottom-0 left-0 right-0 p-8 z-20">
                 <h3 className="text-3xl font-bold text-white mb-2">Mujer</h3>
                 <p className="text-zinc-200 text-sm">Vestidos, blusas, pantalones y más</p>
@@ -117,11 +119,12 @@ export default async function Home() {
             </Link>
             <Link
               href="/hombre"
+              scroll={false}
               className="relative h-[450px] rounded-2xl overflow-hidden group block shadow-lg hover:shadow-2xl transition-shadow duration-500"
             >
               <div className="absolute inset-0 z-10" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)' }} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
-              <div className="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700" style={{ backgroundImage: "url('/brand/hombre-hero.svg')", backgroundColor: BRAND_COLORS.backgroundAlt }} />
+              <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700" style={{ backgroundImage: "url('/brand/hombre-hero.svg')", backgroundColor: BRAND_COLORS.backgroundAlt }} />
               <div className="absolute bottom-0 left-0 right-0 p-8 z-20">
                 <h3 className="text-3xl font-bold text-white mb-2">Hombre</h3>
                 <p className="text-zinc-200 text-sm">Camisas, playeras, pantalones y más</p>
@@ -194,7 +197,8 @@ export default async function Home() {
                 <Link
                   key={brand.id}
                   href={`/catalogo?marca=${brand.id}`}
-                  className="px-8 py-4 rounded-xl border text-sm font-semibold transition-all hover:scale-105 hover:shadow-md"
+                  scroll={false}
+                  className="px-8 py-4 rounded-xl border text-sm font-semibold transition-all hover:shadow-md"
                   style={{ backgroundColor: BRAND_COLORS.white, borderColor: BRAND_COLORS.border, color: BRAND_COLORS.text }}
                 >
                   {brand.name}
@@ -258,7 +262,7 @@ export default async function Home() {
             href={`https://instagram.com/${SITE_CONFIG.instagram}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 mt-8 px-8 py-3.5 text-sm font-semibold rounded-full transition-all hover:scale-105 shadow-md"
+            className="inline-flex items-center gap-3 mt-8 px-8 py-3.5 text-sm font-semibold rounded-full transition-all shadow-md"
             style={{ backgroundColor: BRAND_COLORS.black, color: '#ffffff' }}
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -283,6 +287,7 @@ export default async function Home() {
           <div className="flex justify-center gap-4 flex-wrap">
             <Link
               href="/catalogo"
+              scroll={false}
               className="group relative overflow-hidden px-10 py-4 text-white font-semibold rounded-full transition-all duration-300 shadow-xl inline-flex items-center gap-2"
               style={{ backgroundColor: BRAND_COLORS.black }}
             >
@@ -299,7 +304,7 @@ export default async function Home() {
               className="group px-10 py-4 font-semibold rounded-full transition-all duration-300 inline-flex items-center gap-2"
               style={{ border: `2px solid ${BRAND_COLORS.text}`, color: BRAND_COLORS.text }}
             >
-              <WhatsAppIcon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+              <WhatsAppIcon className="w-5 h-5 transition-transform duration-300" />
               Pedir por WhatsApp
             </a>
           </div>

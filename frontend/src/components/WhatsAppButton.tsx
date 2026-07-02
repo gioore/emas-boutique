@@ -26,7 +26,7 @@ export default function WhatsAppButton({ phone = SITE_CONFIG.whatsapp, message =
       {showScroll && (
         <button
           onClick={scrollToTop}
-          className="w-10 h-10 rounded-full shadow-lg hover:scale-110 transition-all duration-200 flex items-center justify-center"
+          className="w-10 h-10 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center"
           style={{ backgroundColor: '#000000' , color: '#ffffff' }}
           aria-label="Volver arriba"
         >
@@ -39,7 +39,7 @@ export default function WhatsAppButton({ phone = SITE_CONFIG.whatsapp, message =
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-14 h-14 rounded-full shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-200 flex items-center justify-center animate-glow-gold"
+        className="w-14 h-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center animate-glow-gold"
         style={{ backgroundColor: '#25D366', color: '#ffffff' }}
         aria-label="Contactar por WhatsApp"
       >

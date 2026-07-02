@@ -29,17 +29,17 @@ export default function Footer() {
             <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-widest">Categorías</h4>
             <ul className="space-y-3 text-sm">
               <li>
-                <Link href="/mujer" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#78716c' }}>
+                <Link href="/mujer" scroll={false} className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#78716c' }}>
                   Mujer
                 </Link>
               </li>
               <li>
-                <Link href="/hombre" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#78716c' }}>
+                <Link href="/hombre" scroll={false} className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#78716c' }}>
                   Hombre
                 </Link>
               </li>
               <li>
-                <Link href="/catalogo" className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#78716c' }}>
+                <Link href="/catalogo" scroll={false} className="transition-all duration-200 hover:text-white hover:translate-x-1 inline-block" style={{ color: '#78716c' }}>
                   Catálogo
                 </Link>
               </li>

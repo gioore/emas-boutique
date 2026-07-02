@@ -79,6 +79,7 @@ export default function Header() {
             <Link
               key={sub.id}
               href={`/${cat.slug}?subcategoria=${encodeURIComponent(sub.name)}`}
+              scroll={false}
               className="px-3 py-2 rounded-lg text-sm font-medium transition-colors"
               style={{ color: BRAND_COLORS.text }}
               onClick={() => { setMenuOpen(false); setMegaOpen(null); }}
@@ -109,7 +110,7 @@ export default function Header() {
       <header className="sticky top-0 z-50 border-b" style={{ backgroundColor: 'rgba(255,255,255,0.98)', backdropFilter: 'blur-sm', borderColor: '#e5e5e5' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-3 group">
+            <Link href="/" scroll={false} className="flex items-center gap-3 group">
               <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center transition-all duration-300 group-hover:shadow-lg">
                 <Image
                   src="/brand/logo-header.webp"
@@ -135,8 +136,9 @@ export default function Header() {
                     onMouseLeave={handleMegaLeave}
                   >
                     <Link
-                      href={link.href}
-                      className="text-sm font-medium transition-colors animate-underline-center py-1 block"
+              href={link.href}
+              scroll={false}
+              className="text-sm font-medium transition-colors animate-underline-center py-1 block"
                       style={{ color: isActive(link.href) ? BRAND_COLORS.text : BRAND_COLORS.textMuted }}
                     >
                       {link.label}
@@ -152,7 +154,7 @@ export default function Header() {
                 href={`https://wa.me/${SITE_CONFIG.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm font-medium px-4 py-1.5 rounded-full transition-all hover:scale-105"
+                className="flex items-center gap-2 text-sm font-medium px-4 py-1.5 rounded-full transition-all"
                 style={{ backgroundColor: '#25D366', color: '#ffffff' }}
               >
                 <WhatsAppIcon className="w-4 h-4" />
@@ -205,6 +207,7 @@ export default function Header() {
                 <div key={link.href}>
                   <Link
                     href={link.href}
+                    scroll={false}
                     className="px-4 py-3 rounded-xl text-sm font-medium transition-all block"
                     style={{
                       backgroundColor: isActive(link.href) ? 'rgba(0,0,0,0.08)' : 'transparent',
@@ -223,6 +226,7 @@ export default function Header() {
                           <Link
                             key={sub.id}
                             href={`/${link.href.slice(1)}?subcategoria=${encodeURIComponent(sub.name)}`}
+                            scroll={false}
                             className="px-4 py-2 rounded-lg text-xs font-medium transition-colors"
                             style={{ color: BRAND_COLORS.textMuted }}
                             onClick={() => setMenuOpen(false)}
@@ -239,6 +243,7 @@ export default function Header() {
             <div className="pt-6 border-t flex flex-col gap-2" style={{ borderColor: '#e5e5e5' }}>
               <Link
                 href="/carrito"
+                scroll={false}
                 className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-semibold transition-all"
                 style={{ backgroundColor: '#f5f5f5', color: '#000000' }}
                 onClick={() => setMenuOpen(false)}

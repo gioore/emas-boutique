@@ -93,7 +93,7 @@ export default function Hero() {
             className="group px-10 py-4 font-semibold rounded-full transition-all duration-300 inline-flex items-center gap-2"
             style={{ border: '2px solid rgba(255,255,255,0.6)', color: '#ffffff' }}
           >
-            <WhatsAppIcon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+            <WhatsAppIcon className="w-5 h-5 transition-transform duration-300" />
             Pedir por WhatsApp
           </a>
         </div>

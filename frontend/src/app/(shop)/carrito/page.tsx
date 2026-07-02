@@ -39,7 +39,7 @@ export default function CarritoPage() {
         </p>
         <Link
           href="/catalogo"
-          className="px-8 py-3.5 text-white font-semibold rounded-full transition-all hover:scale-105 shadow-lg"
+          className="px-8 py-3.5 text-white font-semibold rounded-full transition-all shadow-lg"
           style={{ backgroundColor: BRAND_COLORS.black }}
         >
           Ver catálogo
@@ -171,7 +171,7 @@ export default function CarritoPage() {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-3 w-full py-4 text-white font-semibold rounded-full transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+            className="flex items-center justify-center gap-3 w-full py-4 text-white font-semibold rounded-full transition-all active:scale-[0.98] shadow-lg"
             style={{ backgroundColor: '#25D366' }}
           >
             <WhatsAppIcon className="w-5 h-5" />

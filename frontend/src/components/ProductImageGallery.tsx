@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { BRAND_COLORS } from '@/lib/config';
@@ -16,6 +16,35 @@ export default function ProductImageGallery({ images, productName, onSale, newAr
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
   const [zooming, setZooming] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  const openLightbox = (index: number) => {
+    if (!images[index]?.url) return;
+    setLightboxIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => setLightboxOpen(false);
+
+  const goNext = useCallback(() => {
+    setLightboxIndex((i) => (i + 1) % images.length);
+  }, [images.length]);
+
+  const goPrev = useCallback(() => {
+    setLightboxIndex((i) => (i - 1 + images.length) % images.length);
+  }, [images.length]);
+
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') goNext();
+      if (e.key === 'ArrowLeft') goPrev();
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [lightboxOpen, goNext, goPrev]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!zooming) return;
@@ -33,6 +62,7 @@ export default function ProductImageGallery({ images, productName, onSale, newAr
         onMouseEnter={() => setZooming(true)}
         onMouseLeave={() => setZooming(false)}
         onMouseMove={handleMouseMove}
+        onClick={() => openLightbox(selectedIndex)}
       >
         {images[selectedIndex]?.url ? (
           <>
@@ -109,6 +139,62 @@ export default function ProductImageGallery({ images, productName, onSale, newAr
               )}
             </button>
           ))}
+        </div>
+      )}
+
+      {lightboxOpen && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center"
+          onClick={closeLightbox}
+        >
+          <button
+            onClick={closeLightbox}
+            className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+            aria-label="Cerrar"
+          >
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={(e) => { e.stopPropagation(); goPrev(); }}
+                className="absolute left-4 z-20 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                aria-label="Anterior"
+              >
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); goNext(); }}
+                className="absolute right-4 z-20 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                aria-label="Siguiente"
+              >
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </>
+          )}
+
+          <div
+            className="relative max-w-[90vw] max-h-[90vh] w-full h-full flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {images[lightboxIndex]?.url && (
+              <Image
+                src={getOptimizedImageUrl(images[lightboxIndex], 1200)}
+                alt={productName}
+                fill
+                className="object-contain"
+                sizes="90vw"
+                priority
+              />
+            )}
+          </div>
         </div>
       )}
     </div>

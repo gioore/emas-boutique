@@ -14,9 +14,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-html {
-  scroll-behavior: smooth;
-}
 
 body {
   background: var(--background);

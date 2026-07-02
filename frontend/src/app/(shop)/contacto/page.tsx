@@ -36,7 +36,7 @@ export default function ContactoPage() {
               href={`https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(SITE_CONFIG.whatsappMessage)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold transition-all hover:scale-105"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold transition-all"
               style={{ backgroundColor: '#25D366' }}
             >
               <WhatsAppIcon className="w-5 h-5" />
@@ -55,7 +55,7 @@ export default function ContactoPage() {
               href={`https://instagram.com/${SITE_CONFIG.instagram}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold transition-all hover:scale-105"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold transition-all"
               style={{ backgroundColor: BRAND_COLORS.black }}
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 016.11 2.525c.636-.247 1.363-.416 2.427-.465C8.88 2.013 9.235 2 12.315 2zm0 2.048c-2.39 0-2.723.013-3.681.047-1.01.036-1.558.215-1.922.357-.48.188-.823.413-1.183.773-.36.36-.585.704-.773 1.183-.142.364-.321.911-.357 1.922-.034.958-.047 1.291-.047 3.681s.013 2.723.047 3.681c.036 1.01.215 1.558.357 1.922.188.48.413.823.773 1.183.36.36.704.585 1.183.773.364.142.911.321 1.922.357.958.034 1.291.047 3.681.047s2.723-.013 3.681-.047c1.01-.036 1.558-.215 1.922-.357.48-.188.823-.413 1.183-.773.36-.36.585-.704.773-1.183.142-.364.321-.911.357-1.922.034-.958.047-1.291.047-3.681s-.013-2.723-.047-3.681c-.036-1.01-.215-1.558-.357-1.922-.188-.48-.413-.823-.773-1.183-.36-.36-.704-.585-1.183-.773-.364-.142-.911-.321-1.922-.357-.958-.034-1.291-.047-3.681-.047zm0 3.543a5.145 5.145 0 100 10.29 5.145 5.145 0 100-10.29zm0 8.242a3.097 3.097 0 110-6.194 3.097 3.097 0 010 6.194zm5.33-7.868a1.2 1.2 0 100-2.4 1.2 1.2 0 000 2.4z" /></svg>
@@ -73,7 +73,7 @@ export default function ContactoPage() {
             {SITE_CONFIG.email ? (
               <Link
                 href={`mailto:${SITE_CONFIG.email}`}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all hover:scale-105"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all"
                 style={{ border: `2px solid ${BRAND_COLORS.text}`, color: BRAND_COLORS.text }}
               >
                 {SITE_CONFIG.email}

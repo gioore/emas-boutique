@@ -154,11 +154,19 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
   const safePage = Math.min(page, totalPages);
   const paginated = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
 
-  const goToPage = (p: number) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  const goToPage = (p: number) => {
+    setPage(p);
+    requestAnimationFrame(() => {
+      sortBarRef.current?.scrollIntoView({ behavior: 'instant', block: 'start' });
+    });
+  };
 
   const updateFilter = (key: keyof Filters, value: string) => {
     setFilters((current) => ({ ...current, [key]: value }));
     setPage(1);
+    requestAnimationFrame(() => {
+      sortBarRef.current?.scrollIntoView({ behavior: 'instant', block: 'start' });
+    });
   };
 
   const clearFilters = () => {
@@ -298,7 +306,7 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
 
         {/* Sticky sort bar */}
         {sticky && (
-          <div className="sticky top-16 z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 border-b shadow-sm" style={{ backgroundColor: 'rgba(250,247,242,0.95)', backdropFilter: 'blur-sm', borderColor: '#e5e5e5' }}>
+          <div className="sticky top-16 z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 border-b shadow-sm"             style={{ backgroundColor: 'rgba(255,255,255,0.95)', backdropFilter: 'blur-sm', borderColor: '#e5e5e5' }}>
             <div className="max-w-7xl mx-auto flex items-center justify-between">
               <p className="text-sm" style={{ color: BRAND_COLORS.textMuted }}>
                 {filtered.length} producto{filtered.length !== 1 ? 's' : ''}
