@@ -17,4 +17,6 @@ export function getOptimizedImageUrl(image: { url: string } | null | undefined, 
   return '/placeholder.svg';
 }
 
-export const OG_IMAGE_URL = `https://res.cloudinary.com/dt9ad6ovb/image/upload/w_1200,h_630,c_fill,q_auto,f_auto/emas-og`;
+import { SITE_URL } from './config';
+
+export const OG_IMAGE_URL = `${SITE_URL}/og-image.png`;
