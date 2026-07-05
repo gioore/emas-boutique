@@ -47,5 +47,5 @@ const ALLOWED_SEQUENCE_TABLES = ALLOWED_TABLES;
 
 export async function syncSequence(table: string): Promise<void> {
   if (!ALLOWED_SEQUENCE_TABLES.has(table)) throw new Error(`Table '${table}' not allowed for syncSequence`);
-  await execute(`SELECT setval('${table}_id_seq', COALESCE((SELECT MAX(id) FROM ${table}), 0))`);
+  await execute(`SELECT setval('${table}_id_seq', COALESCE((SELECT MAX(id) FROM ${table}), 0), false)`);
 }

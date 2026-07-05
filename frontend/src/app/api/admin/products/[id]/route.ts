@@ -86,7 +86,7 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
     const { id } = await params;
 
     const row = await queryOne<{ images: unknown }>('SELECT images FROM products WHERE id = $1', [id]);
-    const images = Array.isArray(row?.images) ? row.images : [];
+    const images = parseImages(row || { images: [] });
     if (images.length > 0) {
       const publicIds = images.map((img: any) => img.public_id).filter(Boolean);
       await Promise.all(publicIds.map(deleteCloudinaryImage));
