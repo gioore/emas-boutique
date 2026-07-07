@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidateTag } from 'next/cache';
 import { requireAuth } from '@/lib/admin-auth-server';
 import { query, queryOne } from '@/lib/db';
-import { slugify, validateProductBody, ensureUniqueSlug, syncSequence, parseImages } from '@/lib/product-utils';
+import { slugify, validateProductBody, ensureUniqueSlug, parseImages, syncSequence } from '@/lib/product-utils';
 import { handleApiError } from '@/lib/api-utils';
 
 export async function GET() {
