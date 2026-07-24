@@ -39,7 +39,7 @@ const faqs = [
   {
     question: '¿Tienen tienda física?',
     answer:
-      'Actualmente operamos de forma digital. Realizamos entregas presenciales en puntos acordados de la Ciudad de Guatemala y envíos a todo el país.',
+      '¡Sí! Visítanos en nuestra tienda física: ' + SITE_CONFIG.address + '. Te esperamos de lunes a sábado.',
   },
   {
     question: '¿Se pueden apartar productos?',
