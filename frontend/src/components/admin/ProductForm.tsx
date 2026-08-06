@@ -23,6 +23,13 @@ interface Subcategory {
   category_id: number | null;
 }
 
+interface ImageItem {
+  id?: number;
+  url: string;
+  public_id?: string;
+  file?: File;
+}
+
 interface ProductFormData {
   name: string;
   price: string;
@@ -39,7 +46,7 @@ interface ProductFormData {
   onSale: boolean;
   colors: string;
   tags: string;
-  images: { id: number; url: string; public_id?: string }[];
+  images: ImageItem[];
 }
 
 interface Props {
@@ -128,12 +135,27 @@ export default function ProductForm({ initialData, isEditing }: Props) {
   const sizeOptions = showShoeSizes ? SHOE_SIZE_OPTIONS : SIZE_OPTIONS;
 
   const toggleSize = (size: string) => {
-    setForm((prev) => ({
-      ...prev,
-      sizes: prev.sizes.includes(size)
-        ? prev.sizes.filter((s) => s !== size)
-        : [...prev.sizes, size],
-    }));
+    markDirty();
+    setForm((prev) => {
+      if (size === 'Consultar') {
+        if (prev.sizes.includes('Consultar')) {
+          return { ...prev, sizes: prev.sizes.filter((s) => s !== 'Consultar') };
+        }
+        return { ...prev, sizes: ['Consultar'] };
+      }
+      if (prev.sizes.includes('Consultar')) {
+        return {
+          ...prev,
+          sizes: [size],
+        };
+      }
+      return {
+        ...prev,
+        sizes: prev.sizes.includes(size)
+          ? prev.sizes.filter((s) => s !== size)
+          : [...prev.sizes, size],
+      };
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -146,6 +168,36 @@ export default function ProductForm({ initialData, isEditing }: Props) {
       setError('Debes seleccionar al menos una talla');
       setSaving(false);
       return;
+    }
+
+    if (form.images.length === 0) {
+      setError('Debes subir al menos una imagen');
+      setSaving(false);
+      return;
+    }
+
+    const pendingImages = form.images.filter(img => img.file);
+    let finalImages: { id: number; url: string; public_id?: string }[] = form.images.filter(img => !img.file).map(img => ({ id: img.id!, url: img.url, public_id: img.public_id }));
+
+    if (pendingImages.length > 0) {
+      for (const img of pendingImages) {
+        const uploadFormData = new FormData();
+        uploadFormData.append('files', img.file!);
+        const uploadRes = await fetch('/api/admin/upload', { method: 'POST', body: uploadFormData });
+        if (!uploadRes.ok) {
+          setSaving(false);
+          const errData = await uploadRes.json().catch(() => ({}));
+          const errMsg = errData.error || 'Error al subir imagenes';
+          console.error('[ProductForm] Upload failed:', uploadRes.status, errMsg);
+          setError(errMsg);
+          return;
+        }
+        const uploadData = await uploadRes.json();
+        const item = ((uploadData.data || uploadData) as any[])?.[0];
+        if (item && typeof item.id === 'number' && typeof item.url === 'string') {
+          finalImages.push({ id: item.id, url: item.url, public_id: item.public_id });
+        }
+      }
     }
 
     const slug = form.name
@@ -185,7 +237,7 @@ export default function ProductForm({ initialData, isEditing }: Props) {
       sku: form.sku || undefined,
       colors: colorsArray.length > 0 ? colorsArray : undefined,
       tags: tagsArray.length > 0 ? tagsArray : undefined,
-      images: form.images,
+      images: finalImages,
     };
 
     if (form.oldPrice && form.onSale) {
@@ -355,7 +407,7 @@ export default function ProductForm({ initialData, isEditing }: Props) {
           Tallas disponibles *
         </label>
         <div className="flex flex-wrap gap-2">
-          {sizeOptions.map((size) => (
+          {sizeOptions.filter(s => s !== 'Consultar').map((size) => (
             <button key={size} type="button" onClick={() => toggleSize(size)}
               className="px-4 py-2 border rounded-lg text-sm font-medium transition-all"
               style={{
@@ -370,6 +422,18 @@ export default function ProductForm({ initialData, isEditing }: Props) {
         {form.sizes.length === 0 && (
           <p className="text-xs mt-1" style={{ color: '#78716c' }}>Selecciona al menos una talla</p>
         )}
+        <button
+          type="button"
+          onClick={() => toggleSize('Consultar')}
+          className="mt-3 px-5 py-2.5 border-2 border-dashed rounded-lg text-sm font-medium transition-all"
+          style={{
+            borderColor: form.sizes.includes('Consultar') ? '#1c1917' : '#d6d3d1',
+            backgroundColor: form.sizes.includes('Consultar') ? '#1c1917' : '#ffffff',
+            color: form.sizes.includes('Consultar') ? '#ffffff' : '#44403c',
+          }}
+        >
+          {form.sizes.includes('Consultar') ? 'Consultar talla por WhatsApp' : '+ Consultar talla por WhatsApp'}
+        </button>
       </div>
 
       <div className="flex flex-wrap gap-6">
@@ -396,7 +460,7 @@ export default function ProductForm({ initialData, isEditing }: Props) {
       </div>
 
       <ImageUpload
-        existingImages={form.images.map((img) => ({ id: img.id, url: img.url, public_id: img.public_id }))}
+        existingImages={form.images.filter(img => img.id).map((img) => ({ id: img.id!, url: img.url, public_id: img.public_id }))}
         onImagesChange={(images) => updateField('images', images)}
       />
 

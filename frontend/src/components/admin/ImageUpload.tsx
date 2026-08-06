@@ -7,37 +7,34 @@ const MAX_IMAGES = 8;
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const MAX_IMAGE_DIMENSION = 1600;
 const IMAGE_QUALITY = 0.82;
-const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
+
+interface PendingImage {
+  url: string;
+  file: File;
+}
+
+interface UploadedImage {
+  id: number;
+  url: string;
+  public_id?: string;
+}
+
+type ImageItem = PendingImage | UploadedImage;
 
 interface Props {
   existingImages?: { id: number; url: string; alternativeText?: string | null; public_id?: string }[];
-  onImagesChange: (images: { id: number; url: string; public_id?: string }[]) => void;
+  onImagesChange: (images: ImageItem[]) => void;
 }
 
-interface UploadImage {
-  id?: number;
-  url: string;
-  file?: File;
-  uploading?: boolean;
-  error?: string;
-}
-
-interface UploadProgress {
-  stage: string;
-  current: number;
-  total: number;
-}
-
-function getErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : 'No se pudo subir la imagen';
-}
-
-function isUploadedImage(image: UploadImage): image is { id: number; url: string } {
-  return typeof image.id === 'number' && !image.file && !image.uploading && !image.error;
+function isUploaded(img: ImageItem): img is UploadedImage {
+  return 'id' in img && typeof (img as UploadedImage).id === 'number';
 }
 
 function validateFile(file: File): string | null {
-  if (!ACCEPTED_TYPES.includes(file.type)) return `${file.name}: formato no permitido`;
+  const ext = file.name.split('.').pop()?.toLowerCase();
+  const isHeic = ext === 'heic' || ext === 'heif';
+  if (!ACCEPTED_TYPES.includes(file.type) && !isHeic) return `${file.name}: formato no permitido`;
   if (file.size > MAX_FILE_SIZE) return `${file.name}: supera 10MB`;
   return null;
 }
@@ -68,7 +65,13 @@ async function compressImage(file: File): Promise<File> {
   const objectUrl = URL.createObjectURL(file);
 
   try {
-    const image = await loadImage(objectUrl);
+    let image: HTMLImageElement;
+    try {
+      image = await loadImage(objectUrl);
+    } catch {
+      return file;
+    }
+
     const scale = Math.min(1, MAX_IMAGE_DIMENSION / Math.max(image.width, image.height));
 
     if (scale === 1 && file.size <= 700 * 1024) return file;
@@ -100,18 +103,16 @@ async function compressImage(file: File): Promise<File> {
 }
 
 export default function ImageUpload({ existingImages = [], onImagesChange }: Props) {
-  const [uploading, setUploading] = useState(false);
-  const [images, setImages] = useState<UploadImage[]>(existingImages.map((img) => ({ id: img.id, url: img.url })));
+  const [images, setImages] = useState<ImageItem[]>(existingImages.map((img) => ({ id: img.id, url: img.url, public_id: img.public_id })));
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState('');
-  const [progress, setProgress] = useState<UploadProgress | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const syncImages = (nextImages: UploadImage[]) => {
-    onImagesChange(nextImages.filter(isUploadedImage));
+  const syncImages = (nextImages: ImageItem[]) => {
+    onImagesChange(nextImages);
   };
 
-  const updateImages = (updater: (current: UploadImage[]) => UploadImage[]) => {
+  const updateImages = (updater: (current: ImageItem[]) => ImageItem[]) => {
     setImages((current) => {
       const next = updater(current);
       syncImages(next);
@@ -119,8 +120,8 @@ export default function ImageUpload({ existingImages = [], onImagesChange }: Pro
     });
   };
 
-  const uploadFiles = async (files: FileList | File[]) => {
-    const currentCount = images.filter((image) => !image.error).length;
+  const handleFilesSelected = async (files: FileList | File[]) => {
+    const currentCount = images.length;
     const availableSlots = MAX_IMAGES - currentCount;
     const selectedFiles = Array.from(files).slice(0, Math.max(availableSlots, 0));
 
@@ -139,71 +140,40 @@ export default function ImageUpload({ existingImages = [], onImagesChange }: Pro
     if (validationErrors.length > 0) setError(validationErrors.join('. '));
     if (validFiles.length === 0) return;
 
-    setUploading(true);
-    setProgress({ stage: 'Preparando imagenes', current: 0, total: validFiles.length });
+    const compressedFiles: File[] = [];
+    for (let index = 0; index < validFiles.length; index += 1) {
+      compressedFiles.push(await compressImage(validFiles[index]));
+    }
 
-    const previews: UploadImage[] = validFiles.map((file) => ({
+    const previews: PendingImage[] = compressedFiles.map((file) => ({
       url: URL.createObjectURL(file),
       file,
-      uploading: true,
     }));
 
     updateImages((current) => [...current, ...previews]);
-
-    try {
-      const compressedFiles: File[] = [];
-
-      for (let index = 0; index < validFiles.length; index += 1) {
-        setProgress({ stage: 'Optimizando imagenes', current: index + 1, total: validFiles.length });
-        compressedFiles.push(await compressImage(validFiles[index]));
-      }
-
-      const formData = new FormData();
-      compressedFiles.forEach((file) => formData.append('files', file));
-
-      setProgress({ stage: 'Subiendo imagenes', current: compressedFiles.length, total: compressedFiles.length });
-
-      const res = await fetch('/api/admin/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Error al subir imagenes');
-
-      const uploaded = (Array.isArray(data) ? data : [data])
-        .filter((item): item is { id: number; url: string } => typeof item?.id === 'number' && typeof item?.url === 'string')
-        .map((item) => ({ id: item.id, url: item.url, public_id: (item as any).public_id }));
-
-      updateImages((current) => {
-        const previewUrls = new Set(previews.map((preview) => preview.url));
-        return [...current.filter((image) => !previewUrls.has(image.url)), ...uploaded];
-      });
-    } catch (uploadError) {
-      setError(getErrorMessage(uploadError));
-      updateImages((current) => {
-        const previewUrls = new Set(previews.map((preview) => preview.url));
-        return current.filter((image) => !previewUrls.has(image.url));
-      });
-    } finally {
-      previews.forEach((preview) => URL.revokeObjectURL(preview.url));
-      setUploading(false);
-      setProgress(null);
-      if (inputRef.current) inputRef.current.value = '';
-    }
   };
 
-  const removeImage = (index: number) => {
+  const removeImage = async (index: number) => {
+    const image = images[index];
+    if (isUploaded(image) && image.public_id) {
+      try {
+        await fetch('/api/admin/delete-image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ publicId: image.public_id }),
+        });
+      } catch {}
+    }
     updateImages((current) => {
-      const image = current[index];
-      if (image?.file) URL.revokeObjectURL(image.url);
+      if (!isUploaded(image) && image.file) URL.revokeObjectURL(image.url);
       return current.filter((_, currentIndex) => currentIndex !== index);
     });
   };
 
-  const getImageSrc = (img: UploadImage) => {
-    if (img.file) return img.url;
-    return img.url.startsWith('http') ? img.url : '/placeholder.svg';
+  const getImageSrc = (img: ImageItem) => {
+    if ('file' in img && img.file) return img.url;
+    const url = (img as UploadedImage).url;
+    return url?.startsWith('http') ? url : '/placeholder.svg';
   };
 
   return (
@@ -223,23 +193,23 @@ export default function ImageUpload({ existingImages = [], onImagesChange }: Pro
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inputRef.current?.click(); } }}
         onDragOver={(event) => { event.preventDefault(); setDragOver(true); }}
         onDragLeave={() => setDragOver(false)}
-        onDrop={(event) => { event.preventDefault(); setDragOver(false); void uploadFiles(event.dataTransfer.files); }}
+        onDrop={(event) => { event.preventDefault(); setDragOver(false); void handleFilesSelected(event.dataTransfer.files); }}
         onClick={() => inputRef.current?.click()}
       >
         <svg className="w-10 h-10 mx-auto mb-3" style={{ color: '#78716c' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
         </svg>
         <p className="text-sm mb-1" style={{ color: '#57534e' }}>
-          {uploading && progress ? `${progress.stage} (${progress.current}/${progress.total})` : 'Arrastra imagenes aqui o haz clic para seleccionar'}
+          Arrastra imagenes aqui o haz clic para seleccionar
         </p>
         <p className="text-xs" style={{ color: '#78716c' }}>JPG, PNG, WebP. Se optimizan automáticamente antes de subir.</p>
         <input
           ref={inputRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp"
+          accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif"
           multiple
           className="hidden"
-          onChange={(event) => event.target.files && void uploadFiles(event.target.files)}
+          onChange={(event) => event.target.files && void handleFilesSelected(event.target.files)}
         />
       </div>
 
@@ -260,15 +230,10 @@ export default function ImageUpload({ existingImages = [], onImagesChange }: Pro
                 className="object-cover"
                 unoptimized
               />
-              {img.uploading && (
-                <div className="absolute inset-0 flex items-center justify-center text-xs font-medium" style={{ backgroundColor: 'rgba(28,25,23,0.55)', color: '#ffffff' }}>
-                  Subiendo
-                </div>
-              )}
               <button
                 type="button"
                 onClick={(event) => { event.stopPropagation(); removeImage(index); }}
-                className="absolute top-1 right-1 w-6 h-6 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute top-1 right-1 w-6 h-6 rounded-full flex items-center justify-center transition-opacity"
                 style={{ backgroundColor: '#dc2626', color: '#ffffff' }}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

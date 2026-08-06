@@ -1,0 +1,27 @@
+import { createHash } from 'crypto';
+
+const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || '';
+const API_KEY = process.env.CLOUDINARY_API_KEY || '';
+const API_SECRET = process.env.CLOUDINARY_API_SECRET || '';
+
+export async function deleteCloudinaryImage(publicId: string): Promise<void> {
+  if (!CLOUD_NAME || !API_KEY || !API_SECRET) return;
+  const timestamp = Math.floor(Date.now() / 1000);
+  const signature = createHash('sha1')
+    .update(`public_id=${publicId}&timestamp=${timestamp}${API_SECRET}`)
+    .digest('hex');
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/destroy`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ public_id: publicId, api_key: API_KEY, timestamp: String(timestamp), signature }),
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+    if (!res.ok) console.error('[Cloudinary] Delete failed:', await res.text());
+  } catch (err) {
+    console.error('[Cloudinary] Delete error:', err);
+  }
+}

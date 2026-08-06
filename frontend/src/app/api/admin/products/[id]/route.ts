@@ -4,7 +4,7 @@ import { requireAuth } from '@/lib/admin-auth-server';
 import { queryOne, execute } from '@/lib/db';
 import { slugify, validateProductBody, ensureUniqueSlug, parseImages } from '@/lib/product-utils';
 import { handleApiError } from '@/lib/api-utils';
-import { createHash } from 'crypto';
+import { deleteCloudinaryImage } from '@/lib/cloudinary';
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -30,7 +30,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   try {
     await requireAuth();
     const { id } = await params;
-    const body = await request.json();
+    const body: any = await request.json().catch(() => null);
+    if (!body) return NextResponse.json({ error: 'JSON inválido en el cuerpo de la solicitud' }, { status: 400 });
     const data = body.data || body;
 
     const validationError = validateProductBody(data, true);
@@ -59,28 +60,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   } catch (err) {
     return handleApiError(err);
   }
-}
-
-const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || '';
-const API_KEY = process.env.CLOUDINARY_API_KEY || '';
-const API_SECRET = process.env.CLOUDINARY_API_SECRET || '';
-
-async function deleteCloudinaryImage(publicId: string): Promise<void> {
-  if (!CLOUD_NAME || !API_KEY || !API_SECRET) return;
-  const timestamp = Math.floor(Date.now() / 1000);
-  const signature = createHash('sha1')
-    .update(`public_id=${publicId}&timestamp=${timestamp}${API_SECRET}`)
-    .digest('hex');
-  try {
-    await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/destroy`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ public_id: publicId, api_key: API_KEY, timestamp: String(timestamp), signature }),
-    });
-  } catch {}
-}
-
-export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+}export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await requireAuth();
     const { id } = await params;

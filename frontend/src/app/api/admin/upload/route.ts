@@ -9,7 +9,7 @@ const API_SECRET = process.env.CLOUDINARY_API_SECRET || '';
 
 const MAX_FILES = 8;
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
-const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
 
 function isFile(value: FormDataEntryValue): value is File {
   return typeof File !== 'undefined' && value instanceof File;
@@ -40,7 +40,9 @@ export async function POST(request: NextRequest) {
     }
 
     for (const file of files) {
-      if (!ACCEPTED_TYPES.includes(file.type)) {
+      const ext = file.name.split('.').pop()?.toLowerCase();
+      const isHeic = ext === 'heic' || ext === 'heif';
+      if (!ACCEPTED_TYPES.includes(file.type) && !isHeic) {
         return NextResponse.json({ error: `Formato no permitido: ${file.name}` }, { status: 400 });
       }
       if (file.size > MAX_FILE_SIZE) {
@@ -68,14 +70,19 @@ export async function POST(request: NextRequest) {
       let lastError: Error | null = null;
       for (let attempt = 0; attempt < 2; attempt++) {
         try {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 30000);
           const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
             method: 'POST',
             body: formData,
+            signal: controller.signal,
           });
+          clearTimeout(timeout);
 
           if (!res.ok) {
             const errText = await res.text();
-            lastError = new Error(errText);
+            lastError = new Error(`Cloudinary HTTP ${res.status}: ${errText}`);
+            console.error(`[Upload] Cloudinary error for ${file.name}:`, lastError.message);
             if (attempt === 0) continue;
             throw lastError;
           }
@@ -94,13 +101,14 @@ export async function POST(request: NextRequest) {
           break;
         } catch (err) {
           lastError = err instanceof Error ? err : new Error('Error al subir imagen');
+          console.error(`[Upload] Attempt ${attempt + 1} failed for ${file.name}:`, lastError.message);
           if (attempt === 0) continue;
           throw lastError;
         }
       }
     }
 
-    return NextResponse.json(results, { status: 201 });
+    return NextResponse.json({ data: results }, { status: 201 });
   } catch (err) {
     return handleApiError(err);
   }
