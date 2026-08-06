@@ -6,5 +6,6 @@ export function handleApiError(err: unknown): NextResponse {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
   }
   console.error('[API Error]', err);
-  return NextResponse.json({ error: message }, { status: 500 });
+  const isProduction = process.env.NODE_ENV === 'production';
+  return NextResponse.json({ error: isProduction ? 'Error interno del servidor' : message }, { status: 500 });
 }

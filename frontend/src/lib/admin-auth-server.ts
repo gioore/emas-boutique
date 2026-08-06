@@ -130,7 +130,7 @@ export function verifyToken(token: string): { valid: boolean; username?: string 
     if (!encodedPayload || !signature) return { valid: false };
     if (!safeEqual(signature, signPayload(encodedPayload))) return { valid: false };
     const payload = JSON.parse(decodeBase64Url(encodedPayload));
-    if (payload.exp < Date.now()) return { valid: false };
+    if (typeof payload.exp !== 'number' || payload.exp < Date.now()) return { valid: false };
     return { valid: true, username: payload.username };
   } catch {
     return { valid: false };

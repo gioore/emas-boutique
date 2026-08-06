@@ -61,7 +61,14 @@ export default function AdminLayout({
     );
   }
 
-  if (!authed || sessionExpired) return null;
+  if (!authed || sessionExpired) {
+    if (sessionExpired) router.push('/admin/login');
+    return loading ? (
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#faf7f2' }}>
+        <div className="w-8 h-8 border-4 rounded-full border-t-transparent animate-spin" style={{ borderColor: '#1c1917', borderTopColor: 'transparent' }} />
+      </div>
+    ) : null;
+  }
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen pt-14 lg:pt-0" style={{ backgroundColor: '#faf7f2' }}>

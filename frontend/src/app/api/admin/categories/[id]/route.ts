@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidateTag } from 'next/cache';
 import { requireAuth } from '@/lib/admin-auth-server';
 import { execute, queryOne } from '@/lib/db';
-import { slugify } from '@/lib/product-utils';
+import { slugify, ensureUniqueSlug } from '@/lib/product-utils';
 import { handleApiError } from '@/lib/api-utils';
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -21,7 +21,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   try {
     await requireAuth();
     const { id } = await params;
-    const body = await request.json();
+    const body: any = await request.json().catch(() => null);
+    if (!body) return NextResponse.json({ error: 'JSON inválido en el cuerpo de la solicitud' }, { status: 400 });
     const data = body.data || body;
 
     if (!data.name || typeof data.name !== 'string' || !data.name.trim()) {
@@ -29,6 +30,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     const slug = data.slug || slugify(data.name);
+    const uniqueSlug = await ensureUniqueSlug(slug, 'categories', Number(id));
     await execute(
       'UPDATE categories SET name=$1, slug=$2, description=$3, active=$4, "order"=$5, updated_at=now() WHERE id=$6',
       [data.name.trim(), slug, data.description || '', data.active ?? true, data.order ?? 0, id]

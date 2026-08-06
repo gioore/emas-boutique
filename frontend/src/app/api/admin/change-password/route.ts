@@ -5,7 +5,8 @@ import { handleApiError } from '@/lib/api-utils';
 export async function POST(request: NextRequest) {
   try {
     const session = await requireAuth();
-    const body = await request.json();
+    const body: any = await request.json().catch(() => null);
+    if (!body) return NextResponse.json({ error: 'JSON inválido en el cuerpo de la solicitud' }, { status: 400 });
     const currentPassword = typeof body.currentPassword === 'string' ? body.currentPassword : '';
     const newPassword = typeof body.newPassword === 'string' ? body.newPassword : '';
 

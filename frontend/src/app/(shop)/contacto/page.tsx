@@ -98,7 +98,6 @@ export default function ContactoPage() {
             <p className="mt-4 text-sm" style={{ color: BRAND_COLORS.textMuted }}>
               Hacemos entregas en toda Guatemala.
             </p>
-            </p>
           </div>
         </div>
       </div>

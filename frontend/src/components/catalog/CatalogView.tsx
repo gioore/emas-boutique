@@ -143,7 +143,12 @@ export default function CatalogView({ mode, title, subtitle, products, brands, c
       case 'price-desc': result.sort((a, b) => b.price - a.price); break;
       case 'name-asc': result.sort((a, b) => a.name.localeCompare(b.name)); break;
       case 'name-desc': result.sort((a, b) => b.name.localeCompare(a.name)); break;
-      default: result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()); break;
+      default: result.sort((a, b) => {
+        const aTime = new Date(a.createdAt).getTime();
+        const bTime = new Date(b.createdAt).getTime();
+        if (isNaN(aTime) || isNaN(bTime)) return 0;
+        return bTime - aTime;
+      }); break;
     }
     return result;
   }, [filters, mode, products]);

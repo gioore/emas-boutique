@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/lib/db';
+import { handleApiError } from '@/lib/api-utils';
 
 export async function GET() {
   try {
@@ -16,8 +17,10 @@ export async function GET() {
         .map((s: any) => ({ id: s.id, name: s.name, slug: s.slug })),
     }));
 
-    return NextResponse.json({ data: categories });
-  } catch {
-    return NextResponse.json({ data: [] });
+    return NextResponse.json({ data: categories }, {
+      headers: { 'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=600' },
+    });
+  } catch (err) {
+    return handleApiError(err);
   }
 }

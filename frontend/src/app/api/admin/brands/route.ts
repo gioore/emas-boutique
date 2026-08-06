@@ -18,7 +18,8 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     await requireAuth();
-    const body = await request.json();
+    const body: any = await request.json().catch(() => null);
+    if (!body) return NextResponse.json({ error: 'JSON inválido en el cuerpo de la solicitud' }, { status: 400 });
     const data = body.data || body;
 
     if (!data.name || typeof data.name !== 'string' || !data.name.trim()) {

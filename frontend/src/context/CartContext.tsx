@@ -66,9 +66,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const updateQuantity = useCallback((productId: number, size: string, qty: number) => {
+    if (qty <= 0) {
+      setItems(prev => prev.filter(i => !(i.id === productId && i.size === size)));
+      return;
+    }
     setItems(prev =>
       prev.map(i =>
-        i.id === productId && i.size === size ? { ...i, quantity: Math.max(1, qty) } : i
+        i.id === productId && i.size === size ? { ...i, quantity: qty } : i
       )
     );
   }, []);
