@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getImageUrl } from '@/lib/images';
+import { getOptimizedImageUrl } from '@/lib/images';
 import { TableSkeleton } from '@/components/Skeleton';
 
 interface Product {
@@ -219,7 +219,7 @@ export default function AdminDashboard() {
                           <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0" style={{ backgroundColor: '#f5f0e8' }}>
                             {product.images?.[0] && (
                               <Image
-                                src={getImageUrl(product.images[0])}
+                                src={getOptimizedImageUrl(product.images[0], 200)}
                                 alt=""
                                 width={48}
                                 height={48}
@@ -307,7 +307,7 @@ export default function AdminDashboard() {
                   <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0" style={{ backgroundColor: '#f5f0e8' }}>
                     {product.images?.[0] && (
                       <Image
-                        src={getImageUrl(product.images[0])}
+                        src={getOptimizedImageUrl(product.images[0], 200)}
                         alt=""
                         width={56}
                         height={56}

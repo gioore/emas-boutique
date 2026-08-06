@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
+import { getOptimizedImageUrl } from '@/lib/images';
 import { SITE_CONFIG, SITE_URL, BRAND_COLORS } from '@/lib/config';
 import WhatsAppIcon from '@/components/WhatsAppIcon';
 
@@ -20,6 +21,7 @@ export default function CarritoPage() {
       if (i < items.length - 1) lines.push('');
     });
     lines.push(`\nTotal: Q${totalPrice.toFixed(2)}`);
+    lines.push('\nMétodo de pago: A convenir');
     return encodeURIComponent(lines.join('\n'));
   };
 
@@ -77,7 +79,7 @@ export default function CarritoPage() {
               <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden shrink-0" style={{ backgroundColor: '#f5f5f5' }}>
                 {item.image ? (
                   <Image
-                    src={item.image}
+                    src={getOptimizedImageUrl({ url: item.image }, 200)}
                     alt={item.name}
                     width={96}
                     height={96}
