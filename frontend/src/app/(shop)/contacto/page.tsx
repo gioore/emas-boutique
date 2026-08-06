@@ -90,10 +90,14 @@ export default function ContactoPage() {
             </div>
             <h2 className="text-xl font-bold mb-2" style={{ color: BRAND_COLORS.text }}>Ubicación</h2>
             <p className="mb-4" style={{ color: BRAND_COLORS.textMuted }}>
-              Visítanos en nuestra tienda física.
+              Visítanos en nuestra tienda física o solicita envío a toda Guatemala.
             </p>
             <p className="font-semibold" style={{ color: BRAND_COLORS.text }}>
               {SITE_CONFIG.address}
+            </p>
+            <p className="mt-4 text-sm" style={{ color: BRAND_COLORS.textMuted }}>
+              Hacemos entregas en toda Guatemala.
+            </p>
             </p>
           </div>
         </div>

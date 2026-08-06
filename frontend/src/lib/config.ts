@@ -14,10 +14,10 @@ export const SITE_CONFIG = {
   whatsapp: '50237620694',
   whatsappDisplay: '+502 3762-0694',
   email: 'info@emasboutique.com',
+  address: 'Km 70.5 Ruta al Atlántico, Gasolinera Shell y Hotel Valle Nuevo, Local "Emas Boutique"',
   heroTitle: 'Tu estilo',
   heroSubtitle: '100% original',
   heroDescription: 'Vestidos, blusas, pantalones, bolsos y accesorios. Envíos a toda Guatemala.',
-  address: 'Km 70.5 Ruta al Atlántico, gasolinera Shell y Hotel Valle Nuevo, local EMAS Boutique',
   whatsappMessage: '¡Hola! Quiero información sobre EMAS BOUTIQUE.',
   whatsappProductMessage: (name: string, price: number) =>
     `Hola, me interesa este producto: ${name} - Q${price.toFixed(2)}. ¿Está disponible?`,

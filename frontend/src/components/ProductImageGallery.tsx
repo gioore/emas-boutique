@@ -13,6 +13,7 @@ interface Props {
 }
 
 export default function ProductImageGallery({ images, productName, onSale, newArrival }: Props) {
+  if (images.length === 0) return null;
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
   const [zooming, setZooming] = useState(false);
@@ -105,11 +106,6 @@ export default function ProductImageGallery({ images, productName, onSale, newAr
           {newArrival && (
             <span className="px-3 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: BRAND_COLORS.black, color: '#ffffff' }}>
               Nuevo Ingreso
-            </span>
-          )}
-          {!onSale && !newArrival && (
-            <span className="px-3 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: BRAND_COLORS.black, color: '#ffffff' }}>
-              100% Original
             </span>
           )}
         </div>

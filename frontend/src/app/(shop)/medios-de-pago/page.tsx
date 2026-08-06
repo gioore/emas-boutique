@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: `Medios de Pago - ${SITE_CONFIG.name}`,
-  description: 'Conoce los métodos de pago disponibles en EMAS Boutique: transferencia bancaria, efectivo y más. Compra seguro en Guatemala.',
+  description: 'Conoce los métodos de pago disponibles en EMAS Boutique: transferencia bancaria, efectivo, Visa Link y más. Compra seguro en Guatemala.',
 };
 
 export default function MediosDePagoPage() {
@@ -56,6 +56,19 @@ export default function MediosDePagoPage() {
           <ul>
             <li>Tigo Money</li>
             <li>Otras billeteras digitales disponibles en Guatemala</li>
+          </ul>
+
+          <h2 className="text-2xl font-bold mt-10">Visa Link</h2>
+          <p>
+            Aceptamos pagos a través de Visa Link, una plataforma segura que te permite
+            pagar con tarjeta de crédito o débito desde un enlace que te enviamos por
+            WhatsApp.
+          </p>
+          <ul>
+            <li>Recibes un enlace de pago seguro al confirmar tu pedido</li>
+            <li>Puedes pagar con tarjeta de crédito o débito Visa</li>
+            <li>El pago es procesado de forma segura por Visa Link</li>
+            <li>No compartas tu enlace de pago con nadie más</li>
           </ul>
 
           <h2 className="text-2xl font-bold mt-10">Seguridad</h2>

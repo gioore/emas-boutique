@@ -53,11 +53,6 @@ export default function ProductCard({ product }: Props) {
               Nuevo
             </span>
           )}
-          {!product.onSale && !product.newArrival && (
-            <span className="px-2.5 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: '#000000', color: '#ffffff' }}>
-              100% Original
-            </span>
-          )}
           {product.availability === 'out_of_stock' && (
             <span className="px-2.5 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: '#666666', color: '#ffffff' }}>
               Agotado
